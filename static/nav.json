@@ -1,0 +1,23 @@
+{
+	"business": [
+		{
+			"title": "Информация о услуги",
+			"navlink": true,
+			"navurl": "/business/infoservice",
+			"drop": false
+		}
+		
+	],
+	"moderator": {
+		"userId": 1,
+		"id": 1,
+		"title": "delectus aut autem",
+		"completed": false
+	},
+	"administrator": {
+		"userId": 1,
+		"id": 1,
+		"title": "delectus aut autem",
+		"completed": false
+	}
+}

@@ -1,0 +1,27 @@
+{
+  "name": "kurganApp",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "@nuxtjs/axios": "^5.13.6",
+    "core-js": "^3.15.1",
+    "md5": "^2.3.0",
+    "nuxt": "^2.15.7",
+    "vue-click-outside": "^1.1.0",
+    "vue-select": "^3.13.0",
+    "vue-slide-toggle": "^1.1.1",
+    "vue2-datepicker": "^3.10.1",
+    "vue3-slide-up-down": "^1.2.3"
+  },
+  "devDependencies": {
+    "fibers": "^5.0.0",
+    "sass": "^1.39.2",
+    "sass-loader": "^10.2.0"
+  }
+}
