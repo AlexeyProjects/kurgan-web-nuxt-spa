@@ -43,20 +43,16 @@
 
 				images.forEach((item) => {
 					var _this = this;
-					let errors = {
-
-					}
 					item.src = URL.createObjectURL(item)
-					// _this.$set(item, 'errors')
-					
+					item.errors = {}
+					item.errors.format = ''
 					if ( item.size >= 2621440 ) {
-						
-						// _this.$set(item.errors, 'size', true)
-						item.errors.size = true
+						_this.$set(item.errors, 'size', true)
+						// item.errors.size = true
 					}
 					else {
-						// _this.$set(item.errors, 'size', false)
-						item.errors.size = false
+						_this.$set(item.errors, 'size', false)
+						// item.errors.size = false
 					}
 					var reader = new FileReader();
 			        reader.onload = function (e) {
@@ -67,12 +63,12 @@
 			              item.dimensions.height = img.height
 			              let format = img.width/img.height
 			              if ( format === (16/9) || format === (1/1) || format === (4/3) ) {
-			              	item.errors.format = false
-			              	// _this.$set(item.errors, 'format', false)
+			              	// item.errors.format = false
+			              	_this.$set(item.errors, 'format', false)
 			              }
 			              else {
-			              	item.errors.format = true
-			              	// _this.$set(item.errors, 'format', true)
+			              	// item.errors.format = true
+			              	_this.$set(item.errors, 'format', true)
 			              }
 			              item.format = format
 			            };
