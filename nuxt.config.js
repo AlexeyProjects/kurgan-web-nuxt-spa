@@ -52,9 +52,7 @@ export default {
     '@nuxtjs/axios',
   ],
   router: {
-    // target: 'static',
     base: './',
-    // mode: 'hash' 
   },
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
@@ -64,9 +62,7 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     router: {
-    // target: 'static',
     base: './',
-    // mode: 'hash' 
   }
   }
 }

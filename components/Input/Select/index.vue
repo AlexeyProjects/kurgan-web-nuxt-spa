@@ -6,9 +6,19 @@
 		<div 
 		@click="openSelect"
 		class="input-select-header row">
-			<div class="input-select-header__title">
-				{{  title != '' ? title : options[0] }}
+
+			<div v-if="multiple == false" class="input-select-header__title">
+				{{  title != '' ? title : items[0].title }}
 			</div>
+			
+			<div v-if="multiple && lang === 'rus'" class="input-select-header__title">
+				{{  title != '' ? title : items[0].title }}
+			</div>
+
+			<div v-if="multiple && lang === 'eng'" class="input-select-header__title">
+				{{  titleEn != '' ? titleEn : items[0].titleEn }}
+			</div>
+
 			<div class="input-select-header__icon">
 				<svg 
 				class="input-select-header__icon__arrow"
@@ -22,13 +32,33 @@
 		class="input-select-dropbar"
 		
 		v-if="opened"
-		>
+		>	
+
 			<div
+			v-if="multiple === false"
 			@click="chooseOption(item)"
 			class="input-select-dropbar__item"
-			v-for="(item,key,index) in options"
+			v-for="(item,key,index) in items"
 			>
-				{{ item }}
+				{{ item.title }}
+			</div>
+
+			<div
+			v-if="multiple && lang === 'rus'"
+			@click="chooseOption(item)"
+			class="input-select-dropbar__item"
+			v-for="(item,key,index) in items"
+			>
+				{{ item.title }}
+			</div>
+
+			<div
+			v-if="multiple && lang === 'eng'"
+			@click="chooseOption(item)"
+			class="input-select-dropbar__item"
+			v-for="(item,key,index) in items"
+			>
+				{{ item.titleEn }}
 			</div>
 		</div>
 	</div>
@@ -45,12 +75,17 @@
 		directives: {
 		    ClickOutside
 		},
+		props: {
+			items: [],
+			lang: '',
+			multiple: false
+		},
 		data() {
 			return {
-				options: ['Первый', 'Второй', 'Третий'],
 				opened: false,
 				choosed: '',
-				title: 'Выберите'
+				title: 'Выберите',
+				titleEn: 'Choose'
 			}
 		},
 		methods: {
@@ -62,7 +97,16 @@
 			},
 			chooseOption: function(item) {
 				this.choosed = item
-				this.title = item
+				if ( !this.multiple ) {
+					this.title = item.title
+				}
+				if ( this.lang === 'eng' && this.multiple ) {
+					this.titleEn = item.titleEn
+				}
+				else if ( this.lang === 'rus' && this.multiple ) {
+					this.title = item.title
+				}
+				
 				this.hideSelect()
 				this.$emit('chooseSelect', this.choosed)
 			}

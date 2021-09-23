@@ -919,6 +919,9 @@ input,textarea {
 				display: flex;
 				align-items: stratch;
 				margin-bottom: 2.4rem;
+				input {
+					width: 100%;
+				}
 				&.dissable {
 					opacity: 0.5;
 					input {
@@ -949,8 +952,11 @@ input,textarea {
 						}
 						input {
 							display: none;
-							&:not(:checked) + svg .wrap{
+							&:checked + svg .wrap{
 								fill: $main-color;
+							}
+							&:not(:checked) + svg .wrap{
+								// fill: $main-color;
 							}
 						}
 					}
@@ -970,6 +976,9 @@ input,textarea {
 						&__field {
 							width: 20rem;
 							margin-right: 1rem;
+						}
+						&__item {
+
 						}
 					}
 				}
