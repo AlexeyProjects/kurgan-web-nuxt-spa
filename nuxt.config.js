@@ -52,10 +52,9 @@ export default {
     '@nuxtjs/axios',
   ],
   router: {
-    middleware: 'auth',
-    target: 'static',
+    // target: 'static',
     base: './',
-    mode: 'hash' 
+    // mode: 'hash' 
   },
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
@@ -65,10 +64,9 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     router: {
-    // middleware: 'auth',
-    target: 'static',
+    // target: 'static',
     base: './',
-    mode: 'hash' 
-  //}
+    // mode: 'hash' 
+  }
   }
 }

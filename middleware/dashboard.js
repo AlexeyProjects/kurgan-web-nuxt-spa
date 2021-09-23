@@ -1,19 +1,20 @@
-export default function () {
-	// let user = JSON.parse(window.localStorage.getItem('user'))
-	// if (user === undefined) {
-	// 	window.location = `/login`
-	// }
-	// if ( user.role != 'BUSINESS' ) {
-	// 	let lowUppercase = user.role
-	// 	redirect({ path: `/${lowUppercase}` })
-	// 	window.location = `/${lowUppercase}`
-	// }
-	// else if ( user.role != 'MODERATOR' ) {
-	// 	let lowUppercase = user.role
-	// 	window.location = `/${lowUppercase}`
-	// }
-	// else if ( user.role != 'ADMINISTRATOR' ) {
-	// 	let lowUppercase = user.role
-	// 	window.location = `/${lowUppercase}`
-	// }
+export default function({ route, from, store, redirect }) {
+	let user = JSON.parse(window.localStorage.getItem('user'))
+
+	if (user === null && window.location != '/login' ) {
+		redirect({ path: `/login` })	
+	}
+
+	if ( user != null ) {
+		let lowUppercase = user.role
+		if ( user.role != 'BUSINESS' ) {
+			redirect({ path: `/${lowUppercase}` })
+		}
+		else if ( user.role != 'MODERATOR' ) {
+			redirect({ path: `/${lowUppercase}` })
+		}
+		else if ( user.role != 'ADMINISTRATOR' ) {
+			redirect({ path: `/${lowUppercase}` })
+		}
+	}
 }
