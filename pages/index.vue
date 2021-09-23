@@ -1,5 +1,7 @@
 <template>
-  
+  <div class="container">
+  	INDEX
+  </div>
 </template>
 
 <script>

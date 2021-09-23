@@ -67,24 +67,22 @@
 				this.userData.passwordHash = md5(val)
 			},
 			loginAuth: function() {
-				console.log(this.userData)
-				axios({url: 'http://ovz1.j04830129.meo8n.vps.myjino.ru:49263/api/auth/login', data: this.userData, method: 'POST' })
-				.then((res) => {
-					console.log(res)
-				})
 				this.$store.dispatch('login/auth', this.userData)
 				.then((res) => {
 					console.log(res)
-					if ( this.USER.role === "BUSINESS" ) {
-						this.$router.push({ path: `/business` })	
+					if ( this.USER ) {
+						this.$router.push({ path: `/` })	
 					}
-					else if ( this.USER.role === "MODERATOR" ) {
-						this.$router.push({ path: `/moderator` })
-					}
+					// if ( this.USER.role === "BUSINESS" ) {
+					// 	this.$router.push({ path: `/business` })	
+					// }
+					// else if ( this.USER.role === "MODERATOR" ) {
+					// 	this.$router.push({ path: `/moderator` })
+					// }
 					
-					else if ( this.USER.role === "ADMINISTRATOR" ) {	
-						this.$router.push({ path: `/admin` })
-					}
+					// else if ( this.USER.role === "ADMINISTRATOR" ) {	
+					// 	this.$router.push({ path: `/admin` })
+					// }
 
 					console.log('METHOD ACCEPT')
 				})
