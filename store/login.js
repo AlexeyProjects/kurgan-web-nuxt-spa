@@ -28,7 +28,7 @@ export const actions = {
     return new Promise((resolve, reject) => {
       commit('auth_request')
       console.log(user)
-      axios({url: 'http://ovz1.j04830129.meo8n.vps.myjino.ru:49174/api/auth/login', data: user, method: 'POST' })
+      axios({url: 'http://ovz1.j04830129.meo8n.vps.myjino.ru:49210/api/auth/login', data: user, method: 'POST' })
       .then(resp => {
         resolve(resp)
         const user = resp.data.data
@@ -56,7 +56,7 @@ export const actions = {
       let token = localStorage.getItem('token');
       console.log(token)
       axios({
-        url: 'http://ovz1.j04830129.meo8n.vps.myjino.ru:49174/api/auth/logout',
+        url: 'http://ovz1.j04830129.meo8n.vps.myjino.ru:49210/api/auth/logout',
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
