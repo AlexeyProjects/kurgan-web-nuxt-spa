@@ -2,11 +2,11 @@ import Vuex from 'vuex'
 import axios from 'axios'
 
 export const state = () => ({
-  
+
 })
 
 export const mutations = {
-  
+
 }
 
 export const actions = {
@@ -15,11 +15,11 @@ export const actions = {
       console.log(data)
       axios(
         {
-          url: 'http://ovz1.j04830129.meo8n.vps.myjino.ru:49263/api/service/1',
+          url: 'http://ovz1.j04830129.meo8n.vps.myjino.ru:49174/api/service/1',
           method: 'POST',
           headers: {
             'Content-Type': `multipart/form-data; boundary=WebAppBoundary`
-          }, 
+          },
           data: data
         }
         )
@@ -43,7 +43,7 @@ export const actions = {
       console.log(data)
       axios(
         {
-          url: 'http://ovz1.j04830129.meo8n.vps.myjino.ru:49263/api/city/0',
+          url: 'http://ovz1.j04830129.meo8n.vps.myjino.ru:49174/api/city/0',
           method: 'GET'
         }
         )
@@ -66,5 +66,5 @@ export const actions = {
 
 
 export const getters = {
-  
+
 }

@@ -28,7 +28,7 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
-      
+
       '@/assets/scss/main.scss',
       // '@/assets/scss/variables.scss'
 
@@ -56,7 +56,7 @@ export default {
   },
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: 'http://ovz1.j04830129.meo8n.vps.myjino.ru:49263/api/',
+    baseURL: 'http://ovz1.j04830129.meo8n.vps.myjino.ru:49174/api/',
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
