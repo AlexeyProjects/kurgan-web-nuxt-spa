@@ -1,8 +1,11 @@
 <template>
 	<div class="main-content">
 		<div class="gallery">
-			<div class="gallery__title">
-				Обложка услуги
+			<div class="gallery-header">
+				<div class="gallery-header__title">
+					Галерея услуги
+				</div>
+				
 			</div>
 			<div class="gallery-list cover">
 				<!-- :class="{ error: itemCover.errors.size === true || itemCover.errors.format === true }" -->
@@ -70,9 +73,17 @@
 		</div>
 
 		<div class="gallery">
-			<div class="gallery__title">
-				Галерея услуги
+			<div class="gallery-header">
+				<div class="gallery-header__title">
+					Галерея услуги
+				</div>
+				<div 
+				v-if="gallery.images.length != 0"
+				class="gallery-header__qty">
+					Загружено {{ gallery.images.length }} из 14 фото
+				</div>
 			</div>
+			
 			<div 
 			:class="{ show : gallery.showMoreGallery } "
 			class="gallery-list hidden">
@@ -182,13 +193,17 @@
 			<div v-if="langCard == 'rus'" class="card-data-content rus">
 				<div class="card-data-content__field">
 					<label for="">Название услуги</label>
-					<input v-model="card.service.title" type="text">
+					<input 
+					placeholder="Введите название услуги" 
+					v-model="card.service.title" type="text">
 				</div>
 				<div class="card-data-content__field geo">
 					<label for="">Введите местоположение</label>
 					<div class="input-icon">
 						<IconGeo></IconGeo>
-						<input v-model="card.service.address.address" type="text">
+						<input 
+						placeholder="Введите местоположение" 
+						v-model="card.service.address.address" type="text">
 					</div>
 					
 				</div>
@@ -197,6 +212,7 @@
 					<InputSelect
 					:multiple="true"
 					:lang="'rus'"
+					:title="'Выберите вид услуги'"
 					:items="template.category"
 					@chooseSelect="chooseCategory"
 					></InputSelect>
@@ -204,15 +220,24 @@
 
 				<div class="card-data-content__field textarea">
 					<label for="">Описание</label> 
-					<textarea v-model="card.service.description" placeholder="ВВедите" class="input-textarea" name="" id="" cols="30" rows="10">
-				
+					<textarea v-model="card.service.description" 
+					class="input-textarea" 
+					name="" 
+					id="" 
+					cols="30" 
+					placeholder="Введите описание" 
+					rows="10">
+					
 					</textarea>
+					
 				</div>
 			</div>
 			<div v-if="langCard == 'eng'" class="card-data-content eng">
 				<div class="card-data-content__field">
 					<label for="">Название услуги</label>
-					<input v-model="card.service.titleEn" type="text">
+					<input 
+					placeholder="Enter name of service" 
+					v-model="card.service.titleEn" type="text">
 				</div>
 				<div class="card-data-content__field geo">
 					<label for="">Введите местоположение</label>
@@ -227,6 +252,7 @@
 					<InputSelect
 					:multiple="true"
 					:lang="'eng'"
+					:titleEn="'Choose category of service'"
 					:items="template.category"
 					@chooseSelect="chooseCategory"
 					></InputSelect>
@@ -234,8 +260,10 @@
 
 				<div class="card-data-content__field textarea">
 					<label for="">Описание</label> 
-					<textarea v-model="card.service.descriptionEn" placeholder="ВВедите" class="input-textarea" name="" id="" cols="30" rows="10">
-				
+					<textarea v-model="card.service.descriptionEn" placeholder="Enter description of serivce" class="input-textarea" name="
+					
+					" id="" cols="30" rows="10">
+					
 					</textarea>
 				</div>
 			</div>
@@ -247,7 +275,7 @@
 			<div class="card-time-list">
 				<Datatime 
 				:item="itemWeek"
-				v-for="(itemWeek, key, index) in availabilitiesReverse"
+				v-for="(itemWeek, key, index) in card.service.availabilities"
 				></Datatime>
 				<!-- <Datatime :data="[]"></Datatime>
 				<Datatime :data="[]"></Datatime>
@@ -269,11 +297,22 @@
 			class="card-buttons__item act btn">
 				Сохранить
 			</div>
-			<div class="card-buttons__item subact btn">
+			<div 
+			@click="previewShow"
+			class="card-buttons__item subact btn">
 				<IconEyebold></IconEyebold>
 				Предпросмотр
 			</div>
 		</div>
+		<transition name="viewslide">
+			<ViewingItem 
+			@previewHide="previewHide"
+			:card="card.service"
+			v-if="previewShowing">
+			
+			</ViewingItem>
+		</transition>
+		
 	</div>
 </template>
 
@@ -288,81 +327,76 @@
 					images: [],
 					showMoreGallery: false
 				},
-				refreshGallery: false,
 				card: {
-					service: {
-						title: 'Ресторан «Аврора»',
-						titleEn: 'Restaurant "Aurora"',
-						description: 'Ресторан аврора, это то место, где ты можешь не только вкусно покушать, но и насладиться прекрасным сервисом!',
-						descriptionEn: 'Aurora restaurant is the place where you can not only have a delicious meal, but also enjoy excellent service!',
-						status: 'Moderate',
-						phone: '',
-						site: '',
-						email: '',
-						cover: '',
-						address: {
-							id: 0,
-							address: 'Курган, ул. Володарского, 42',
-							latitude: 55.43887570480391,
-							longitude: 65.34238242692281
+					"service": {
+
+						"title": "Ресторан «Аврора»",
+						"titleEn": " Aurora",
+						"description": "Ресторан аврора, это то место, где ты можешь не только вкусно покушать, но и насладиться прекрасным сервисом!",
+						"descriptionEn": "Aurora restaurant is the place where you can not only have a delicious meal, but also enjoy excellent service!",
+						"status": "MODERATION",
+						"phone": "",
+						"site": "",
+						"email": "",
+						"address": {
+							"address": "Курган, ул. Володарского, 42",
+							"latitude": 55.43887570480391,
+							"longitude": 65.34238242692281
 						},
-						category: {
-							id: '',
-							title: '',
-							titleEn: ''
+						"category": {
+							"title": "",
+							"titleEn": ""
 						},
-						medias: [],
-						cover: '',
-						availabilities: [
+						"availabilities": [
 
 							{
-								id: 0,
-								enable: false,
-								day: 'Воскресенье',
-								start: '08:00',
-								end: '21:00'
+
+								"enable": false,
+								"day": 0,
+								"start": "08:00",
+								"end": "21:00"
 							},
 							{
-								id: 1,
-								enable: true,
-								day: 'Понедельник',
-								start: '08:00',
-								end: '21:00'
+
+								"enable": true,
+								"day": 1,
+								"start": "08:00",
+								"end": "21:00"
 							},
 							{
-								id: 2,
-								enable: true,
-								day: 'Вторник',
-								start: '08:00',
-								end: '21:00'
+
+								"enable": true,
+								"day": 2,
+								"start": "08:00",
+								"end": "21:00"
 							},
 							{
-								id: 3,
-								enable: true,
-								day: 'Среда',
-								start: '08:00',
-								end: '21:00'
+
+								"enable": true,
+								"day": 3,
+								"start": "08:00",
+								"end": "21:00"
 							},
 							{
-								id: 4,
-								enable: true,
-								day: 'Четверг',
-								start: '08:00',
-								end: '21:00'
+
+								"enable": true,
+								"day": 4,
+								"start": "08:00",
+								"end": "21:00"
 							},
 							{
-								id: 5,
-								enable: true,
-								day: 'Пятница',
-								start: '08:00',
-								end: '21:00'
+
+								"enable": true,
+								"day": 5,
+								"start": "08:00",
+								"end": "21:00"
 							},
 							{
-								id: 6,
-								enable: false,
-								day: 'Суббота',
-								start: '08:00',
-								end: '21:00'
+
+								"enable": false,
+								"day": 6,
+								"start": "08:00",
+								"end": "21:00"
 							}
 
 						]
@@ -374,27 +408,13 @@
 				template: {
 					category: [
 						{
-							id: 0,
-							title: 'Категория 1',
-							titleEn: 'Category 1'
-						},
-						{
 							id: 1,
 							title: 'Категория 2',
 							titleEn: 'Category 2 '
-						},
-						{
-							id: 2,
-							title: 'Категория 3',
-							titleEn: 'Category 3 '
-						},
-						{
-							id: 3,
-							title: 'Категория 4',
-							titleEn: 'Category 4 '
 						}
 					]
 				},
+				previewShowing: false,
 				langCard: 'rus'
 
 			}
@@ -408,19 +428,21 @@
 		methods: {
 			loadPreviewCover(images) {
 				this.cover.images = images
+				console.log(this.cover.images[0])
 				
-				this.$nextTick(() => {
-			         console.log(images)
-			   	})
 			},
 			loadPreviewGallery(images) {
 				console.log(images)
 				
-				this.gallery.images = images
-				// this.showAllGallery()
-				this.$nextTick(() => {
-			        this.showAllGallery
-			   	})
+				
+				for ( let key in images ) {
+					this.gallery.images.push(images[key])
+					console.log(images[key])
+				}
+			   	console.log(this.gallery.images)
+			   	console.log(typeof this.gallery.images)
+			   	console.log(Array.isArray(this.gallery.images))
+			   	
 			},
 			deleteImage(key, arr) {
 
@@ -429,7 +451,6 @@
 			chooseCategory(val) {
 				console.log(val)
 				this.card.service.category = val
-				this.card.service.category.title = val
 			},
 			changeCardLang(lang) {
 				if ( lang === 'rus' ) {
@@ -447,28 +468,63 @@
 			},
 			sendService() {
 				let formData = new FormData();
-				formData.append("service", this.card);
-				formData.append("medias", this.gallery.images);
-				formData.append("cover", this.cover.images);
+				let obj = this.card.service
+
+				const json = JSON.stringify(obj);
+				formData.append('service', new Blob([json], {
+				  type: 'application/json',
+				}));
+
+				formData.append('medias', new Blob([JSON.stringify(this.gallery.images)], {
+				  type: 'application/json',
+				}));
+
+				formData.append("cover", this.cover.images[0]);
+
+				console.log(formData)
 				this.$store.dispatch('service/send', formData)
+				.then((res) => {
+					console.log(res)
+				})
+				.catch((err) => {	
+					console.log(err)
+				})
 			},
 			getCity() {
 				this.$store.dispatch('service/getCity')
+			},
+			previewShow(id) {
+				document.body.classList.add('noscroll')
+				this.previewShowing = true
+			},
+			previewHide() {
+				document.body.classList.remove('noscroll')
+				this.previewShowing = false
+			},
+			arraymove(arr, fromIndex, toIndex) {
+			    var element = arr[fromIndex];
+			    arr.splice(fromIndex, 1);
+			    arr.splice(toIndex, 0, element);
+			    console.log(arr)
+			    return arr
 			}
 
 		},
 		computed: {
-			availabilitiesReverse() {
-				function arraymove(arr, fromIndex, toIndex) {
-				    var element = arr[fromIndex];
-				    arr.splice(fromIndex, 1);
-				    arr.splice(toIndex, 0, element);
-				    console.log(arr)
-				    return arr
-				}
-				return arraymove(this.card.service.availabilities, 0, 6)
+			// availabilitiesReverse() {
+			// 	function arraymove(arr, fromIndex, toIndex) {
+			// 	    var element = arr[fromIndex];
+			// 	    arr.splice(fromIndex, 1);
+			// 	    arr.splice(toIndex, 0, element);
+			// 	    console.log(arr)
+			// 	    return arr
+			// 	}
+			// 	return arraymove(this.card.service.availabilities, 0, 6)
 				
-			}
+			// }
+		},
+		mounted() {
+			this.arraymove(this.card.service.availabilities, 0, 6)
 		}
 	}
 </script>

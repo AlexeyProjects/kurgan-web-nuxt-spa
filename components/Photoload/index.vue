@@ -83,6 +83,7 @@
 				
 				console.log(fileBuffer)
 				this.$emit('unloadPhoto', this.fileBuffer)
+				this.fileBuffer = []
 			},
 		},
 		computed: {

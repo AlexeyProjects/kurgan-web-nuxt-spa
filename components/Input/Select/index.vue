@@ -78,14 +78,15 @@
 		props: {
 			items: [],
 			lang: '',
+			title: '',
+			titleEn: '',
 			multiple: false
 		},
 		data() {
 			return {
 				opened: false,
 				choosed: '',
-				title: 'Выберите',
-				titleEn: 'Choose'
+
 			}
 		},
 		methods: {

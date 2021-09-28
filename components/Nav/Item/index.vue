@@ -1,6 +1,6 @@
 <template>
 	<div class="nav-item unselectable">
-		<NuxtLink v-if="navlink" :to="navurl"
+		<NuxtLink v-if="navlink && !navTitle" :to="navurl"
 
 		@click="openDrop"
 		class="nav-item__header" >
@@ -15,7 +15,7 @@
 
 			</div>
 		</NuxtLink>
-		<div v-if="!navlink"
+		<div v-if="!navlink && !navTitle"
 
 		@click="openDrop"
 		class="nav-item__header" >
@@ -30,6 +30,16 @@
 
 			</div>
 		</div>
+
+	
+			
+			
+			
+			<div v-if="navTitle" class="nav-item__title">
+				{{ title }}
+			</div>
+		
+
 		<transition name="slide">
 			<div v-if="droped" class="nav-item-drop">
 				<slot name="nav_drop" >
@@ -53,7 +63,8 @@
 			title: '',
 			navlink: false,
 			drop: false,
-			navurl: ''
+			navurl: '',
+			navTitle: false
 		},
 		data() {
 			return {

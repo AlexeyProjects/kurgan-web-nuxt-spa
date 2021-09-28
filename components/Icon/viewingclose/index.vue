@@ -1,0 +1,6 @@
+<template>
+	<svg class="icon" width="4.8rem" height="4.8rem" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+		<circle cx="24" cy="24" r="24" fill="white"/>
+		<path d="M32 17.4L30.6 16L24 22.6L17.4 16L16 17.4L22.6 24L16 30.6L17.4 32L24 25.4L30.6 32L32 30.6L25.4 24L32 17.4Z" fill="#333333"/>
+	</svg>
+</template>

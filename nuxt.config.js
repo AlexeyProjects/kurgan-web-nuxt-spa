@@ -52,17 +52,17 @@ export default {
     '@nuxtjs/axios',
   ],
   router: {
-    base: './',
+    // base: './',
   },
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: 'http://ovz1.j04830129.meo8n.vps.myjino.ru:49263/api/',
+    baseURL: 'http://ovz1.j04830129.meo8n.vps.myjino.ru/api/',
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     router: {
-    base: './',
+    // base: './',
   }
   }
 }
