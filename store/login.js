@@ -28,7 +28,7 @@ export const actions = {
     return new Promise((resolve, reject) => {
       commit('auth_request')
       console.log(user)
-      axios({url: `${this.$axios.defaults.baseURL}auth/login`, data: user, method: 'POST' })
+      axios({url: 'http://ovz1.j04830129.meo8n.vps.myjino.ru/api/auth/login', data: user, method: 'POST' })
       .then(resp => {
         resolve(resp)
         const user = resp.data.data
@@ -44,7 +44,6 @@ export const actions = {
         resolve(resp)
       })
       .catch(err => {
-        console.log(axios.defaults.headers.common['X-Auth-Token'])
         reject(err)
         localStorage.removeItem('token')
       })
@@ -52,12 +51,12 @@ export const actions = {
   },
   logout({commit}, user) {
     return new Promise((resolve, reject) => {
-      
+
       console.log(user)
       let token = localStorage.getItem('token');
       console.log(token)
       axios({
-        url: `${this.$axios.defaults.baseURL}auth/logout`,
+        url: 'http://ovz1.j04830129.meo8n.vps.myjino.ru/api/auth/logout',
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
