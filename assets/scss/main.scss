@@ -1277,7 +1277,9 @@ input,textarea {
 				font-size: 1.2rem;
 				display: flex;
 				align-items: center;
+				transition: .2s;
 				&:hover {
+					background-color: rgba(0,0,0,0.1);
 					cursor: pointer;
 				}
 				.icon {
@@ -1303,7 +1305,7 @@ input,textarea {
 		}
 	}
 	table {
-		width: 100%;
+		width: 90%;
 		
 		border-collapse: collapse;
 		tr {

@@ -82,7 +82,7 @@
 				</NavItem>
 
 				<!--  -->
-				
+
 				<NavItem 
 				slot="nav-item" 
 				
@@ -124,7 +124,7 @@
 					<div class="nav-item-drop__item" slot="nav_drop">Опубликованые </div>
 					<div class="nav-item-drop__item" slot="nav_drop">На модерации </div>
 				</NavItem>
-				
+
 				<NavItem 
 				slot="nav-item" 
 				
@@ -226,11 +226,13 @@
 		},
 		methods: {
 			...mapActions([
-				'admin/service/getServices'
+				// 'admin/service/getServices',
+				// 'admin/users/getServices'
 			])
 		},
 		mounted() {
-			this.$store.dispatch('admin/service/getServices')
+			// this.$store.dispatch('admin/service/getServices')
+			
 		}
 	}
 </script>

@@ -48,7 +48,7 @@
 					 	v-for="(item,key,index) in getAllServices.rows"
 					 	> -->
 					 	<tr 
-					 	v-for="(item,key,index) in rows"
+					 	v-for="(item,key,index) in getUsers.rows"
 					 	>
 					 		<td
 					 			
@@ -64,6 +64,7 @@
 
 					 		<td >
 					 			<TableSettings
+					 			:type="'user'"
 					 			:status="item.status"
 					 			>
 					 				
@@ -89,7 +90,7 @@
 							</div>
 						</div>
 						<div class="table-footer__pagination__number">
-							1
+							{{ this.currentPage }}-{{ this.qtyPage }}
 						</div>
 						<div class="table-footer__pagination-arrows">
 							<div class="table-footer__pagination-arrows__next">
@@ -116,32 +117,7 @@
 	import { mapGetters, mapActions } from 'vuex'
 
 	export default {
-		computed: {
-			...mapGetters({
-				getAllServices:	'admin/service/getAllService'
-			}),
-			getStatus() {
-				let statusTitle = ''
-				switch(this.item.status) {
-					case 'MODERATION' :
-						statusTitle = 'На модерации'
-						break;
-					case 'PUBLISH' :
-						statusTitle = 'Опубликован'
-						break;
-					case 'REMOVED' :
-						statusTitle = 'Удаленный'
-						break;
-					case 'REJECTED' :
-						statusTitle = 'Отклонён'
-						break;
-					case 'NEW' :
-						statusTitle = 'Новый'
-						break;
-				}
-				return statusTitle
-			}
-		},
+		
 		data() {
 			return {
 				headers: [
@@ -192,18 +168,65 @@
 						"status": 'PUBLISHED'
 			
 					}
-				] 
+				],
+				currentPage: 1,
+				qtyPage: 0,
+				responseData: {}
 			}
 		},
 		layout: 'admin',
+		computed: {
+			...mapGetters({
+				getUsers: 'admin/users/getUsers'
+			}),
+			getStatus() {
+				let statusTitle = ''
+				switch(this.item.status) {
+					case 'MODERATION' :
+						statusTitle = 'На модерации'
+						break;
+					case 'PUBLISH' :
+						statusTitle = 'Опубликован'
+						break;
+					case 'REMOVED' :
+						statusTitle = 'Удаленный'
+						break;
+					case 'REJECTED' :
+						statusTitle = 'Отклонён'
+						break;
+					case 'NEW' :
+						statusTitle = 'Новый'
+						break;
+				}
+				return statusTitle
+			},
+			getPageQty() {
+				let total = this.responseData.total
+				let partQty = Math.round(total / 10) * 10
+				console.log(partQty)
+				if ( total > partQty  ) {
+					partQty += 10
+				}
+				console.log(partQty)
+				let qtyPage = partQty/10
+				this.qtyPage = qtyPage
+			}
+		},
 		methods: {
-			// openSettings(id) {
-			// 	this.settingsShow = !this.settingsShow
-			// }
-			...mapActions(['admin/users/getServices'])
+			
+			...mapActions(['admin/users/getUsers'])
 		},
 		mounted() {
-			this.$store.dispatch('admin/users/getServices')
+			this.$store.dispatch('admin/users/getUsers', 
+				{ 
+					role: 'MODERATOR',
+					offset: 0
+				}
+			)
+			.then((res) => {
+				this.responseData = res.data
+				console.log(res.data)
+			})
 		}
 	}
 </script>

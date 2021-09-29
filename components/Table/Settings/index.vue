@@ -7,7 +7,7 @@
 		</div>
 		
 		<div
-		v-if="settingsShow"
+		v-if="settingsShow && type != 'user'"
 		class="table-settings-list">
 			<div class="table-settings-list__item">
 				<IconReturn></IconReturn>
@@ -30,12 +30,28 @@
 				Удалить
 			</div>
 		</div>
+
+		<div
+		v-if="settingsShow && type == 'user'"
+		class="table-settings-list">
+			<div class="table-settings-list__item">
+				<IconEye></IconEye>
+				Посмотреть
+			</div>
+			<div class="table-settings-list__item">
+				<IconDelete></IconDelete>
+				Заблокировать
+			</div>
+		</div>
 	</div>
 	
 </template>
 
 <script>
 	export default {
+		props: {
+			type: ''
+		},
 		data() {
 			return {
 				settingsShow: false

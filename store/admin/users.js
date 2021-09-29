@@ -2,21 +2,29 @@ import Vuex from 'vuex'
 import axios from 'axios'
 
 export const state = () => ({
-  users: []
+  users: {
+    users: [],
+    moderators: []
+  }
 })
 
 export const mutations = {
   putUsers(state, data) {
-    state.users = data
+    state.users.users = data
+  },
+  putModerators(state,data) {
+    state.users.moderators = data
   }
 }
 
 export const actions = {
-  getServices({commit}, data){
+  getUsers({commit}, params){
     return new Promise((resolve, reject) => {
+      console.log(params)
       console.log(resolve)
+      
       axios(    
-          `${this.$axios.defaults.baseURL}admin/users?&role=MODERATOR`,
+          `${this.$axios.defaults.baseURL}admin/users?&role=${params.role}&offset=${params.offset}`,
         {  
           // data: data,
           method: 'GET',
@@ -41,12 +49,44 @@ export const actions = {
         console.log(err)
       })
     })
-  }
+  },
+  createModerator({commit}, data){
+    return new Promise((resolve, reject) => {
+      console.log(resolve)
+      axios(    
+          `${this.$axios.defaults.baseURL}admin/moderator`,
+        {  
+          data: data,
+          method: 'POST',
+          Accept: 'application/json',
+          headers: {
+            'X-Auth-Token': localStorage.getItem('token'),
+          }, 
+          
+        }
+        )
+      .then(resp => {
+        resolve(resp)
+        
+        console.log(resp)
+
+
+
+      })
+      .catch(err => {
+        reject(err)
+        console.log(err)
+      })
+    })
+  },
 }
 
 
 export const getters = {
-  getAllUsers(state) {
-    return state.users
+  getUsers(state) {
+    return state.users.users
+  },
+  getAllModerators(state) {
+    return state.users.moderator
   }
 }

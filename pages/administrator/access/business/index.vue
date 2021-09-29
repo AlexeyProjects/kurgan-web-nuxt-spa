@@ -48,7 +48,7 @@
 					 	v-for="(item,key,index) in getAllServices.rows"
 					 	> -->
 					 	<tr 
-					 	v-for="(item,key,index) in rows"
+					 	v-for="(item,key,index) in getUsers.rows"
 					 	>
 					 		<td
 					 			
@@ -113,7 +113,7 @@
 </template>
 
 <script>
-	import { mapGetters } from 'vuex'
+	import { mapGetters, mapActions } from 'vuex'
 
 	export default {
 		computed: {
@@ -201,10 +201,19 @@
 			}
 		},
 		layout: 'admin',
+		computed: {
+			...mapGetters({
+				getUsers: 'admin/users/getUsers'
+			})
+		},
 		methods: {
-			// openSettings(id) {
-			// 	this.settingsShow = !this.settingsShow
-			// }
+			getListUsers() {
+				this.$store.dispatch('admin/users/getUsers', 'BUSINESS', 0)
+			},
+			...mapActions(['admin/users/getUsers'])
+		},
+		mounted() {
+			this.getListUsers()
 		}
 	}
 </script>

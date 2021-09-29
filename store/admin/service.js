@@ -15,16 +15,16 @@ export const actions = {
   getServices({commit}, data){
     return new Promise((resolve, reject) => {
       console.log(resolve)
-      axios(
-          "http://ovz1.j04830129.meo8n.vps.myjino.ru/api/service?cityId=1",
-        {
+      axios(    
+          `${this.$axios.defaults.baseURL}service?cityId=1`,
+        {  
           // data: data,
           method: 'GET',
           Accept: 'application/json',
           headers: {
             'X-Auth-Token': localStorage.getItem('token'),
-          },
-
+          }, 
+          
         }
         )
       .then(resp => {
