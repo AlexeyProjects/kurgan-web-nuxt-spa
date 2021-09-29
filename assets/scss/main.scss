@@ -529,6 +529,7 @@ input,textarea {
 }
 .leftbar {
 	position: fixed;
+
 	-webkit-transform: translateZ(0);
 	top: 0;
 	float: left;
@@ -543,10 +544,19 @@ input,textarea {
 	&-wrap {
 		position: relative;
 		height: 100%;
+		padding-bottom: 13rem;
+		&-content {
+			height: 100%;
+			overflow: auto;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+		}
 		&-panel {
 			width: 28.4rem;
 			padding: 1.2rem 1.6rem;
-			position: absolute;
+			margin-top: 13rem;
+			margin-bottom: 13rem;
 			border-bottom: 1px solid #F5F7FA;
 			bottom: 15rem;
 			&-header {
@@ -660,6 +670,8 @@ input,textarea {
 			}
 			&__icon {
 				margin-right: 1.8rem;
+				width: 2.4rem;
+				height: 2.4rem;
 			}
 			&__arrow {
 				position: absolute;
@@ -681,6 +693,9 @@ input,textarea {
 		&__title {
 			font-weight: 300;
 			padding: 0 1rem;
+			&.nuxt-link-active {
+				background-color: unset;
+			}
 		}
 	}
 }
@@ -1408,3 +1423,25 @@ input,textarea {
 		}
 	}
 }
+
+/* ===== Scrollbar CSS ===== */
+  /* Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #adadad #ffffff;
+  }
+
+  /* Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: #ffffff;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: #adadad;
+    border-radius: 10px;
+    border: 2px solid #ffffff;
+  }

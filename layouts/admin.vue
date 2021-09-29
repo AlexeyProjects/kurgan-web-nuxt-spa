@@ -10,6 +10,7 @@
 				class="nav-item__title" 
 				:drop="false" 
 				:navTitle="true"
+				:navurl="'/administrator'" 
 				:title="'Данные приложения'">
 				</NavItem>
 
@@ -81,7 +82,7 @@
 				</NavItem>
 
 				<!--  -->
-
+				
 				<NavItem 
 				slot="nav-item" 
 				
@@ -123,6 +124,84 @@
 					<div class="nav-item-drop__item" slot="nav_drop">Опубликованые </div>
 					<div class="nav-item-drop__item" slot="nav_drop">На модерации </div>
 				</NavItem>
+				
+				<NavItem 
+				slot="nav-item" 
+				
+				class="nav-item__title" 
+				:drop="false" 
+				:navTitle="true"
+				:navurl="'/administrator/additionally'"
+				:title="'Дополнительно'">
+				</NavItem>
+
+				<NavItem 
+				slot="nav-item" 
+				:drop="false" 
+				:navlink="true" 
+				:navurl="'/administrator/additionally/rules'" 
+				:title="'Правила путешественника'">
+					<IconTraveling class="nav-item__header__icon" slot="icon"></IconTraveling>
+					<div class="nav-item-drop__item" slot="nav_drop">Опубликованые </div>
+					<div class="nav-item-drop__item" slot="nav_drop">На модерации </div>
+				</NavItem>
+
+				<NavItem 
+				slot="nav-item" 
+				:drop="false" 
+				:navlink="true" 
+				:navurl="'/administrator/additionally/feedback'" 
+				:title="'Обратная связь'">
+					<IconFeedback class="nav-item__header__icon" slot="icon"></IconFeedback>
+					<div class="nav-item-drop__item" slot="nav_drop">Опубликованые </div>
+					<div class="nav-item-drop__item" slot="nav_drop">На модерации </div>
+				</NavItem>
+
+				<NavItem 
+				slot="nav-item" 
+				:drop="false" 
+				:navlink="true" 
+				:navurl="'/administrator/additionally/info'" 
+				:title="'О приложении'">
+					<IconInfo class="nav-item__header__icon" slot="icon"></IconInfo>
+					<div class="nav-item-drop__item" slot="nav_drop">Опубликованые </div>
+					<div class="nav-item-drop__item" slot="nav_drop">На модерации </div>
+				</NavItem>
+
+				<NavItem 
+				slot="nav-item" 
+				:drop="false" 
+				:navlink="true" 
+				:navurl="'/administrator/additionally/useraccept'" 
+				:title="'Пользовательское согл.'">
+					<IconUseraccept class="nav-item__header__icon" slot="icon"></IconUseraccept>
+					<div class="nav-item-drop__item" slot="nav_drop">Опубликованые </div>
+					<div class="nav-item-drop__item" slot="nav_drop">На модерации </div>
+				</NavItem>
+
+				<NavItem 
+				slot="nav-item" 
+				:drop="false" 
+				:navlink="true" 
+				:navurl="'/administrator/additionally/politika'" 
+				:title="'Политика конф.'">
+					<IconKonf class="nav-item__header__icon" slot="icon"></IconKonf>
+					<div class="nav-item-drop__item" slot="nav_drop">Опубликованые </div>
+					<div class="nav-item-drop__item" slot="nav_drop">На модерации </div>
+				</NavItem>
+
+				<NavItem 
+				slot="nav-item" 
+				:drop="false" 
+				:navlink="true" 
+				:navurl="'/administrator/additionally/help'" 
+				:title="`Раздел «помощь»`">
+					<IconHelp class="nav-item__header__icon" slot="icon"></IconHelp>
+					<div class="nav-item-drop__item" slot="nav_drop">Опубликованые </div>
+					<div class="nav-item-drop__item" slot="nav_drop">На модерации </div>
+				</NavItem>
+
+
 
 			</Nav>
 		</Leftbar>

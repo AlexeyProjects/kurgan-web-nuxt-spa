@@ -35,9 +35,17 @@
 			
 			
 			
-			<div v-if="navTitle" class="nav-item__title">
+			<div 
+
+			v-if="navTitle && !navurl" class="nav-item__title">
 				{{ title }}
 			</div>
+
+			<NuxtLink 
+			:to="navurl"
+			v-if="navTitle && navurl" class="nav-item__title">
+				{{ title }}
+			</NuxtLink>
 		
 
 		<transition name="slide">

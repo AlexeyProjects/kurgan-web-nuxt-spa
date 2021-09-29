@@ -70,8 +70,12 @@
 				this.$store.dispatch('login/auth', this.userData)
 				.then((res) => {
 					console.log(res)
+					console.log(res.headers["x-auth-token"])
 					if ( this.USER ) {
 						this.$router.push({ path: `/` })	
+					}
+					for(let entry of res.headers.entries()) {
+					    console.log(entry);
 					}
 					// if ( this.USER.role === "BUSINESS" ) {
 					// 	this.$router.push({ path: `/business` })	

@@ -5,11 +5,17 @@
 			<NuxtLink to="/">
 				<slot name="logotype"></slot>
 			</NuxtLink>
-			
-			<slot name="nav">
+			<div class="leftbar-wrap-content">
+				<slot name="nav">
 				<!-- <slot name="title"></slot> -->
-			</slot>
-			<LeftbarPanel class="leftbar-wrap-panel" ></LeftbarPanel>
+				</slot>
+				<LeftbarPanel
+				class="leftbar-wrap-panel" 
+				>
+					
+				</LeftbarPanel>
+			</div>
+			
 		</div>
 		
 	</div>

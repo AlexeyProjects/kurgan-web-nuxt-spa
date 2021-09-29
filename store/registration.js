@@ -28,7 +28,7 @@ export const actions = {
 	return new Promise((resolve, reject) => {
 		console.log('get')
 	    // commit('auth_request')
-	    axios({url: 'http://ovz1.j04830129.meo8n.vps.myjino.ru/api/registration', data: user, method: 'POST' })
+	    axios({url: `${this.$axios.defaults.baseURL}registration`, data: user, method: 'POST' })
 	    .then(resp => {
 	    	console.log(resp)
 		    // const token = resp.data.token
@@ -50,5 +50,5 @@ export const actions = {
 
 
 export const getters = {
-
+  
 }

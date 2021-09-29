@@ -2,25 +2,28 @@ import Vuex from 'vuex'
 import axios from 'axios'
 
 export const state = () => ({
-
+  
 })
 
 export const mutations = {
-
+  
 }
 
 export const actions = {
   send({commit}, data){
     return new Promise((resolve, reject) => {
       console.log(data)
-      axios(
-        {
-          url: 'http://ovz1.j04830129.meo8n.vps.myjino.ru/api/service/1',
+      axios(    
+          'http://ovz1.j04830129.meo8n.vps.myjino.ru:49174/api/service/1',
+        {  
+          data: data,
           method: 'POST',
+          Accept: 'application/json',
           headers: {
+            'X-Auth-Token': localStorage.getItem('token'),
             'Content-Type': `multipart/form-data; boundary=WebAppBoundary`
-          },
-          data: data
+          }, 
+          
         }
         )
       .then(resp => {
@@ -29,7 +32,6 @@ export const actions = {
         console.log(resp)
 
 
-        axios.defaults.headers.common['X-Auth-Token'] = token
 
       })
       .catch(err => {
@@ -43,7 +45,7 @@ export const actions = {
       console.log(data)
       axios(
         {
-          url: 'http://ovz1.j04830129.meo8n.vps.myjino.ru/api/city/0',
+          url: 'http://ovz1.j04830129.meo8n.vps.myjino.ru:49174/api/service/3',
           method: 'GET'
         }
         )
@@ -66,5 +68,5 @@ export const actions = {
 
 
 export const getters = {
-
+  
 }

@@ -30,33 +30,38 @@ export const actions = {
       console.log(user)
       axios({url: 'http://ovz1.j04830129.meo8n.vps.myjino.ru/api/auth/login', data: user, method: 'POST' })
       .then(resp => {
+        console.log(resp.headers)
         resolve(resp)
         const user = resp.data.data
         const token = resp.headers["x-auth-token"]
+
+        
+        console.log(resp.headers)
         console.log(token)
         localStorage.setItem('isLogged', true)
         localStorage.setItem('user', JSON.stringify(user))
         localStorage.setItem('token', token)
 
         axios.defaults.headers.common['X-Auth-Token'] = token
-        console.log(axios.defaults.headers.common['X-Auth-Token'])
+
         commit('auth_success', user, token)
         resolve(resp)
       })
       .catch(err => {
+
         reject(err)
-        localStorage.removeItem('token')
+        // localStorage.removeItem('token')
       })
     })
   },
   logout({commit}, user) {
     return new Promise((resolve, reject) => {
-
+      
       console.log(user)
       let token = localStorage.getItem('token');
       console.log(token)
       axios({
-        url: 'http://ovz1.j04830129.meo8n.vps.myjino.ru/api/auth/logout',
+        url: `${this.$axios.defaults.baseURL}auth/logout`,
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
