@@ -1384,6 +1384,7 @@ input,textarea {
 		&__pagination {
 			display: flex;
 			&__number {
+				position: relative;
 				display: flex;
 				align-items: center;
 				justify-content: center;
@@ -1391,6 +1392,33 @@ input,textarea {
 				height: 4rem;
 				width: 4rem;
 				color: $main-color;
+				&:hover {
+					cursor: pointer;
+				}
+				&-pages {
+					width: 14rem;
+					max-height: 26.7rem;
+					color: #000;
+					left: -40%;
+					position: absolute;
+					bottom: 110%;
+					border: 1px solid #D6D6D6;
+					background-color: #ffffff;
+					border-radius: 8px;
+					&-list {
+						padding: 0.2rem;
+						&__item {
+							padding: 1.2rem 1.6rem;
+							border-radius: 8px;
+							transition: .2s;
+							&:hover {
+								cursor: pointer;
+								background-color: #F5F5F5;
+							}
+						}
+					}
+					
+				}
 			}
 			&-arrows {
 				display: flex;

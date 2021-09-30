@@ -89,8 +89,26 @@
 								</svg>
 							</div>
 						</div>
-						<div class="table-footer__pagination__number">
+						<div 
+						@click="showPaginationPages"
+						class="table-footer__pagination__number">
+
 							{{ this.currentPage }}-{{ this.qtyPage }}
+							<div 
+							v-if="paginationShow"
+							class="table-footer__pagination__number-pages">
+								<div class="table-footer__pagination__number-pages-list">
+									<div 
+									@click="sortListInPaginate(item.start - 1, item)"
+									:class="{ active: choosedPageList === item }"
+									class="table-footer__pagination__number-pages-list__item"
+									v-for="(item,index,key) in pageList"
+									>
+										{{ item.start }} - {{ item.end }} 
+									</div>
+
+								</div>
+							</div>
 						</div>
 						<div class="table-footer__pagination-arrows">
 							<div class="table-footer__pagination-arrows__next">
@@ -171,6 +189,9 @@
 				],
 				currentPage: 1,
 				qtyPage: 0,
+				pageList: [],
+				choosedPageList: [],
+				paginationShow: false,
 				responseData: {}
 			}
 		},
@@ -200,33 +221,117 @@
 				}
 				return statusTitle
 			},
-			getPageQty() {
-				let total = this.responseData.total
-				let partQty = Math.round(total / 10) * 10
-				console.log(partQty)
-				if ( total > partQty  ) {
-					partQty += 10
-				}
-				console.log(partQty)
-				let qtyPage = partQty/10
-				this.qtyPage = qtyPage
-			}
+			
 		},
 		methods: {
 			
-			...mapActions(['admin/users/getUsers'])
+			...mapActions(['admin/users/getUsers']),
+			getPageQty() {
+				const rowsize = 20
+				console.log(rowsize)
+				let total = this.responseData.total
+				console.log(total)
+				let partQty = Math.round(total / rowsize) * rowsize
+				console.log(partQty)
+				if ( total > partQty  ) {
+					partQty += rowsize
+				}
+				console.log(partQty)
+				let qtyPage = partQty/rowsize
+				this.qtyPage = qtyPage
+				console.log(qtyPage)
+				let pageList = []
+				let pageListNew = []
+				
+				let pagListObg = {}
+				let object = new Object();
+				for (var i = 0; i < this.qtyPage; i++) {
+
+					let lastItterate = this.qtyPage - 1
+
+					if ( i == 0 ) {
+						console.log(`Иттерация ${i}`)
+						object.pageQty = i
+						object.start = 1;
+						object.end = rowsize
+					}
+					else if ( i != this.qtyPage ) {
+						object.pageQty = i
+						object.start = object.start + 20
+
+						if ( i == lastItterate ) {
+							object.end = this.responseData.total
+						}
+						else {
+							object.end = object.end + 20
+						}
+						
+						console.log(`Иттерация ${i}`)
+					}
+					
+					let pushingObj =  {} 
+					pushingObj.start = object.start
+					pushingObj.end = object.end
+					pushingObj.pageQty = object.pageQty
+					pageList.push(pushingObj)
+					console.log(object)
+					console.log(pageList)
+				}
+				this.pageList = pageList
+				console.log(pageList)
+				// pageListNew.push(
+				// 	new Object
+				// )
+				
+
+			},
+			showPaginationPages() {
+				this.paginationShow = !this.paginationShow
+			},
+			getUsersList(offset,limit,role) {
+				this.$store.dispatch('admin/users/getUsers', 
+					{ 
+						role: role,
+						offset: offset,
+						limit: limit
+					}
+				)
+				.then((res) => {
+					this.responseData = res.data
+					console.log(res.data)
+					this.getPageQty()
+				})
+			},
+			// Не работает проверка + присвоения класса ( Игнорирует наличие item в this.choosedPageList )
+			sortListInPaginate(offset, itemPage) {
+				console.log('sssssssssssssssssssssssssss')
+				console.log(itemPage)
+				this.choosedPageList === itemPage
+				console.log(itemPage)
+				this.currentPage = itemPage.pageQty + 1
+				if ( this.choosedPageList === itemPage ) {
+					return 
+
+				}
+				else {
+					this.choosedPageList = itemPage
+
+
+					this.getUsersList(offset,20,'MODERATOR')
+
+				}
+
+				
+			}
+			
 		},
 		mounted() {
-			this.$store.dispatch('admin/users/getUsers', 
-				{ 
-					role: 'MODERATOR',
-					offset: 0
-				}
-			)
-			.then((res) => {
-				this.responseData = res.data
-				console.log(res.data)
-			})
+			this.getUsersList(0,20,'MODERATOR')
+			this.getPageQty()
+			// this.sortListInPaginate(0, this.pageList[0])
+			
+			
+			
 		}
 	}
 </script>
