@@ -40,7 +40,7 @@
 						<label for="">Название города (Русский язык)</label>
 						<input 
 						placeholder="Название города" 
-						v-model="name" type="text">
+						v-model="cityInfo.name" type="text">
 					</div>
 
 					<div 
@@ -49,7 +49,7 @@
 						<label for="">Название города (Английский язык)</label>
 						<input 
 						placeholder="Название города" 
-						v-model="nameEn" type="text">
+						v-model="cityInfo.nameEn" type="text">
 					</div>
 					
 					
@@ -57,28 +57,31 @@
 					
 				</div>
 				<div class="card-data-content__editors">
+				<!-- Русский Editor -->
 					<label 
 					v-if="langCard == 'rus'"
 					class="label-default" for="">Описание (Русский язык)</label>
 					<VueEditor
 					v-if="langCard === 'rus'"
 					:editor-toolbar="customToolbar"
-					v-model="contentEditor"
+					v-model="cityInfo.contentEditor"
 					/>
+
+				<!-- English Editor -->
 					<label 
 					v-if="langCard == 'eng'"
 					class="label-default" for="">Описание (Английский язык)</label>
 					<VueEditor
 					v-if="langCard === 'eng'"
 					:editor-toolbar="customToolbar"
-					v-model="contentEditorEn"
+					v-model="cityInfo.contentEditorEn"
 					/>
 				</div>
 				
 				<div class="card-buttons">
 					
 					<div 
-					@click="sendService"
+					
 					class="card-buttons__item act btn">
 						Сохранить
 					</div>
@@ -99,6 +102,16 @@
 				</div>
 			</div>
 		</div>
+		<transition name="viewslide">
+			<ViewingItem 
+			@previewHide="previewHide"
+			:data="cityInfo"
+			:type="'editor'"
+			:show="previewShowing"
+			>
+			
+			</ViewingItem>
+		</transition>
 	</div>
 </template>
 
@@ -132,12 +145,7 @@
 		data() {
 			return {
 				langCard: 'rus',
-				contentEditor: `Основан в 1679 году, но поселение на этом месте существовало с 1553 года.
-
-Расположен в Уральском федеральном округе, на берегах Тобола и его притока Тоболашки. `,
-				contentEditorEn: `It was founded in 1679, but a settlement has existed on this site since 1553.
-
-Located in the Ural Federal District, on the banks of the Tobol and its tributary Tobolashka.`,
+				
 				customToolbar: [
 			      ["bold", "italic", "underline"],
 			      [{ list: "ordered" }, { list: "bullet" }],
@@ -145,8 +153,19 @@ Located in the Ural Federal District, on the banks of the Tobol and its tributar
 			      [{ align: "" }, { align: "center" }, { align: "right"}, { align: "justify"}],
 			      [{ color: [] }]
 			    ],
-			    name: '',
-			    nameEn: ''
+			    
+			    cityInfo: {
+			    	name: '',
+			    	nameEn: '',
+			    	contentEditor: `Основан в 1679 году, но поселение на этом месте существовало с 1553 года.
+
+Расположен в Уральском федеральном округе, на берегах Тобола и его притока Тоболашки. `,
+					contentEditorEn: `It was founded in 1679, but a settlement has existed on this site since 1553.
+
+Located in the Ural Federal District, on the banks of the Tobol and its tributary Tobolashka.`,
+
+			    },
+			    previewShowing: false
 			    
 			}
 		},
@@ -164,6 +183,12 @@ Located in the Ural Federal District, on the banks of the Tobol and its tributar
 				else if ( lang === 'eng' ) {
 					this.langCard = 'eng'
 				}
+			},
+			previewShow() {
+				this.previewShowing = true
+			},
+			previewHide() {
+				this.previewShowing = false
 			},
 	  	}
 	}

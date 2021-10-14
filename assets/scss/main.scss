@@ -1306,6 +1306,13 @@ label {
 					justify-content: space-between;
 					margin-bottom: 3rem;
 				}
+				&--editor {
+					img {
+						max-width: 100%;
+						border-radius: 6px;
+					}
+					
+				}
 			}
 		}
 	}

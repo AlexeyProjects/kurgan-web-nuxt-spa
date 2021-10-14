@@ -4,11 +4,19 @@
 			<div v-if="show" class="viewing-wrap">
 				<div class="viewing-body">
 					<div 
-					v-if="type != 'user'"
+					v-if="type === 'infoservice'"
 					class="viewing-body-wrap">
 						<div class="viewing-body-header">
 							<div class="viewing-body-header__title ">
 								Предварительный просмотр
+							</div>
+
+							<div class="viewing-body-header__translate ">
+								Предварительный просмотр
+							</div>
+
+							<div class="viewing-body-header__btn act ">
+								Завершить просмотр
 							</div>
 							
 						</div>
@@ -56,6 +64,7 @@
 
 						</div>
 					</div>
+
 					<div 
 					v-if="type === 'user'"
 					class="viewing-body-wrap">
@@ -169,6 +178,37 @@
 
 						</div>
 					</div>
+
+					<div 
+					v-if="type === 'editor'"
+					class="viewing-body-wrap">
+						<div class="viewing-body-header">
+							<div class="viewing-body-header__title ">
+								Информация о пользователе
+							</div>
+							
+						</div>
+						<div class="viewing-body-content">
+							<div class="viewing-body-content__title title">
+								{{ data.name }}
+							</div>
+
+							
+							<div class="viewing-body-content-wrap viewing-body-content-wrap--editor">
+								<div 
+								v-html="data.contentEditor"
+								class="">
+									
+								</div>
+							</div>
+
+
+
+
+							
+
+						</div>
+					</div>
 					
 					
 					
@@ -191,6 +231,7 @@
 	export default {
 		props: {
 			card: [],
+			data: {},
 			type: '',
 			show: false
 		},

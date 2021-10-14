@@ -7,7 +7,8 @@
 				</div>
 				
 			</div>
-			<div class="gallery-list cover">
+			<div 
+			class="gallery-list cover">
 				<!-- :class="{ error: itemCover.errors.size === true || itemCover.errors.format === true }" -->
 				<!-- <GalleryPhoto 
 				v-for="(itemCover,key,index) in cover.images"
@@ -308,6 +309,7 @@
 			<ViewingItem 
 			@previewHide="previewHide"
 			:card="card.service"
+			:type="'infoservice'"
 			v-if="previewShowing">
 			
 			</ViewingItem>
