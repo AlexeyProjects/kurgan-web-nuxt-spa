@@ -9,9 +9,9 @@ COPY middleware /build/middleware/
 COPY pages /build/pages/
 COPY static /build/static/
 COPY store /build/store/
-RUN npm install --no-update-notifier
-RUN npm install @vue/cli -g
-RUN npm run generate
+RUN yarn add --no-update-notifier
+RUN yarn install
+RUN yarn run generate
 
 FROM nginx:1.21.3-alpine
 COPY --from=build /build/dist /opt/web
