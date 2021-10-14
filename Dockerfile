@@ -9,7 +9,7 @@ COPY middleware /build/middleware/
 COPY pages /build/pages/
 COPY static /build/static/
 COPY store /build/store/
-RUN yarn add --no-update-notifier
+RUN yarn add update-notifier
 RUN yarn install
 RUN yarn run generate
 
