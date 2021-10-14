@@ -41,6 +41,13 @@ body {
 	&.checkbox {
 		border-radius: 2px; 
 	}
+	&.accept {
+		&.black {
+			path {
+				fill: #000;
+			}
+		}
+	}
 	&:hover {
 		cursor: pointer
 	}
@@ -94,11 +101,20 @@ body {
 		background-color: #000;
 		color: #fff;
 		border-color: #000;
+		&.nofill {
+			background-color: #fff;
+			color: #000;
+		}
 	}
 	&.subact {
 		background: #F5F5F5;
 		color: #000000;
 		border-color: #F5F5F5;
+	}
+	&.red {
+		background-color: #FF5247;
+		color: #fff;
+		border-color: #FF5247;
 	}
 	&.grey {
 		background-color: #F5F5F5;
@@ -159,6 +175,16 @@ input,textarea {
 	  	border-color: #000000;
 	}
 }
+label {
+	&.label-default {
+		margin-bottom: .8rem;
+		margin-left: 1.6rem;
+		font-size: 1.2rem;
+		font-weight: 500;
+		color: #555555;
+	}
+	
+}
 
 .photo {
 	&-load {
@@ -215,7 +241,7 @@ input,textarea {
 	width: 1290px;
 	margin: auto;
 	position: relative;
-	overflow-x: hidden;
+	// overflow-x: hidden;
 	// padding: 0 0 0 32.6rem;
 }
 
@@ -702,8 +728,14 @@ input,textarea {
 .topbar {
 	display: flex;
 	justify-content: space-between;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	height: 8.8rem;
+	background-color: #fff;
 	padding: 2.6rem 0rem 2.6rem 3rem;
-	box-shadow: 4px 8px 16px rgba(69, 79, 89, 0.04);
+	box-shadow: 0 5px 5px -5px rgba(69, 79, 89, 0.04);
+	// box-shadow: 4px 8px 16px rgba(69, 79, 89, 0.04);
 	&-history {
 
 		display: flex;
@@ -780,7 +812,7 @@ input,textarea {
 }
 
 .viewslide-enter-to, .viewslide-leave {
-	transform: translate(-100%, 0);
+	transform: translate(0%, 0);
 
 
 }
@@ -795,10 +827,19 @@ input,textarea {
 .main {
 	margin: 0 0 0 32.6rem;
 	&-content {
-		margin: 3rem;
+		margin: 11.4rem 0rem 3rem 3rem;
 		width: 63rem;
+		&.loading {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+
+		}
 		&.full {
 			width: 91.4rem;
+			&.loading {
+				height: 85rem;
+			}
 		}
 		&.dashboard {
 			width: 85rem;
@@ -1021,7 +1062,11 @@ input,textarea {
 
 				}
 			}
+			&__editors {
+				margin-bottom: 4.8rem;
+			}
 		}
+
 	}
 	&-time {
 		margin-bottom: 7.2rem;
@@ -1153,8 +1198,16 @@ input,textarea {
 	}
 	
 }
-
+.popup {
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.7);
+}
 .viewing {
+	display: none;
 	position: fixed;
 	left: 0;
 	top: 0;
@@ -1247,6 +1300,13 @@ input,textarea {
 					}
 				}
 			}
+			&-wrap {
+				&-row {
+					display: flex;
+					justify-content: space-between;
+					margin-bottom: 3rem;
+				}
+			}
 		}
 	}
 }
@@ -1305,8 +1365,8 @@ input,textarea {
 		}
 	}
 	table {
-		width: 90%;
-		
+		width: 100%;
+		border: 1px solid #F5F7FA;
 		border-collapse: collapse;
 		tr {
 			max-height: 6.4rem;
@@ -1408,9 +1468,14 @@ input,textarea {
 					&-list {
 						padding: 0.2rem;
 						&__item {
+							display: flex;
+							justify-content: space-between;
 							padding: 1.2rem 1.6rem;
 							border-radius: 8px;
 							transition: .2s;
+							&.active {
+								background-color: #F5F5F5;
+							}
 							&:hover {
 								cursor: pointer;
 								background-color: #F5F5F5;
@@ -1475,3 +1540,43 @@ input,textarea {
     border-radius: 10px;
     border: 2px solid #ffffff;
   }
+
+
+.svg-loader{
+  display:flex;
+  position: relative;
+  align-content: space-around;
+  justify-content: center;
+}
+.loader-svg{
+  position: absolute;
+  left: 0; right: 0; top: 0; bottom: 0;
+  fill: none;
+  stroke-width: 5px;
+  stroke-linecap: round;
+  stroke: $main-color;
+}
+.loader-svg.bg{
+  stroke-width: 8px;
+  stroke: rgb(207, 205, 245);
+}
+
+.animate{
+  stroke-dasharray: 242.6;
+  animation: fill-animation 1s cubic-bezier(1,1,1,1) 0s infinite;
+}
+
+@keyframes fill-animation{
+  0%{
+    stroke-dasharray: 40 242.6;
+    stroke-dashoffset: 0;
+  }
+  50%{
+    stroke-dasharray: 141.3;
+    stroke-dashoffset: 141.3;
+  }
+  100%{
+    stroke-dasharray: 40 242.6;
+    stroke-dashoffset: 282.6;
+  }
+}

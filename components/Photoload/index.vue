@@ -42,7 +42,7 @@
 				var fileBuffer=[];
 
 				images.forEach((item) => {
-					var _this = this;
+					var vm = this;
 					item.src = URL.createObjectURL(item)
 					// item.errors = {}
 					// item.errors.format = ''

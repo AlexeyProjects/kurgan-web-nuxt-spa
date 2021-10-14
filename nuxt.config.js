@@ -30,6 +30,7 @@ export default {
   css: [
       
       '@/assets/scss/main.scss',
+      '@/assets/scss/editor.css',
       // '@/assets/scss/variables.scss'
 
   ],
@@ -50,6 +51,7 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    "vue2-editor/nuxt"
   ],
   router: {
     base: './',

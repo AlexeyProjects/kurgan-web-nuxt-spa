@@ -24,7 +24,7 @@ export const actions = {
       console.log(resolve)
       
       axios(    
-          `${this.$axios.defaults.baseURL}admin/users?&role=${params.role}&offset=${params.offset}&limit=${params.limit}`,
+          `${this.$axios.defaults.baseURL}admin/users?${params}`,
         {  
           // data: data,
           method: 'GET',

@@ -7,6 +7,7 @@
 		</div>
 		
 		<div
+		v-click-outside="hideSettings"
 		v-if="settingsShow && type != 'user'"
 		class="table-settings-list">
 			<div class="table-settings-list__item">
@@ -34,11 +35,15 @@
 		<div
 		v-if="settingsShow && type == 'user'"
 		class="table-settings-list">
-			<div class="table-settings-list__item">
+			<div 
+			@click="checkUser"
+			class="table-settings-list__item">
 				<IconEye></IconEye>
 				Посмотреть
 			</div>
-			<div class="table-settings-list__item">
+			<div 
+			@click="blockUser"
+			class="table-settings-list__item">
 				<IconDelete></IconDelete>
 				Заблокировать
 			</div>
@@ -48,6 +53,8 @@
 </template>
 
 <script>
+	import ClickOutside from 'vue-click-outside'
+
 	export default {
 		props: {
 			type: ''
@@ -60,7 +67,17 @@
 		methods: {
 			openSettings(id) {
 				this.settingsShow = !this.settingsShow
-			}
+			},
+			hideSettings() {
+				console.log('xx')
+				this.settingsShow = false
+			},
+			checkUser() {
+				this.$emit('checkUser')
+			},
+			blockUser() {
+				this.$emit('blockUser')
+			},
 		},
 	}
 </script>
