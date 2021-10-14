@@ -50,11 +50,10 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios',
-    "vue2-editor/nuxt"
+    '@nuxtjs/axios'
   ],
   router: {
-    base: './',
+    // base: './',
   },
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
@@ -64,7 +63,7 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     router: {
-    base: './',
+    // base: './',
   }
   }
 }
