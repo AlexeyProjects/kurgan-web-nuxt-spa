@@ -8,6 +8,7 @@ export const state = () => ({
 export const mutations = {
   showLoading(state) {
     state.loading = true
+    console.log('loading show')
   },
   hideLoading(state) {
     state.loading = false

@@ -35,7 +35,7 @@
 		>	
 
 			<div
-			v-if="multiple === false"
+			v-if="multiple === false && title != item.title"
 			@click="chooseOption(item)"
 			class="input-select-dropbar__item"
 			v-for="(item,key,index) in items"
@@ -110,6 +110,11 @@
 				
 				this.hideSelect()
 				this.$emit('chooseSelect', this.choosed)
+			}
+		},
+		mounted() {
+			if ( this.title === this.items[0].title ) {
+				this.choosed = this.items[0]
 			}
 		}
 	}

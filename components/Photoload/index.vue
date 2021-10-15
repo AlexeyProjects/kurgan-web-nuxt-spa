@@ -38,11 +38,12 @@
 				
 			},
 			loadPreviewGallery(event) {
+				console.log(event.target.files)
 				let images = event.target.files
 				var fileBuffer=[];
 
-				images.forEach((item) => {
-					var vm = this;
+				Array.from(event.target.files).forEach((item) => {
+					var _this = this;
 					item.src = URL.createObjectURL(item)
 					// item.errors = {}
 					// item.errors.format = ''

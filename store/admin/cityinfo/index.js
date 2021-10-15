@@ -2,38 +2,36 @@ import Vuex from 'vuex'
 import axios from 'axios'
 
 export const state = () => ({
-  
+  cityInfo: {}
 })
 
 export const mutations = {
-  
+  putCityInfo(state,data) {
+    state.cityInfo = data
+  }
 }
 
 export const actions = {
-  send({commit}, params){
+  getCityInfo({commit}, data) {
     return new Promise((resolve, reject) => {
-      console.log(params)
-      console.log(params.data)
+      console.log(data)
       axios(    
-          `${this.$axios.defaults.baseURL}${params.params}`,
+          `${this.$axios.defaults.baseURL}city/1`,
         {  
-          data: params.data,
-          method: 'POST',
-          Accept: 'application/json',
+          method: 'GET',
           headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
             'X-Auth-Token': localStorage.getItem('token'),
-            'Content-Type': `multipart/form-data; boundary=WebAppBoundary`
           }, 
           
         }
         )
       .then(resp => {
+        
         resolve(resp)
-
         console.log(resp)
-
-
-
+        commit('putCityInfo', resp.data.data)
       })
       .catch(err => {
         reject(err)
@@ -41,25 +39,31 @@ export const actions = {
       })
     })
   },
-  getData({commit}, params){
+  sendCityinfo({commit}, data){
     return new Promise((resolve, reject) => {
-      console.log(params)
-      axios(
-        {
-          url: `${this.$axios.defaults.baseURL}${params.params}`,
-          method: 'GET',
+      console.log(data)
+      axios(    
+          `${this.$axios.defaults.baseURL}city/1`,
+        {  
+          data: data,
+          method: 'PUT',
+          
+
           headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
             'X-Auth-Token': localStorage.getItem('token'),
           }, 
+          
         }
         )
       .then(resp => {
+        
         resolve(resp)
-
+        console.log('get service')
         console.log(resp)
 
 
-        axios.defaults.headers.common['X-Auth-Token'] = token
 
       })
       .catch(err => {
@@ -67,10 +71,12 @@ export const actions = {
         console.log(err)
       })
     })
-  },
+  }
 }
 
 
 export const getters = {
-  
+  cityInfo(state) {
+    return state.cityInfo
+  }
 }

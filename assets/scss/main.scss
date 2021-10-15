@@ -125,6 +125,9 @@ body {
 		background-color: #E3E5E5;
 		color: #979C9E;
 	}
+	&.widthauto {
+		width: auto;
+	}
 	&:hover {
 		cursor: pointer;
 	}
@@ -144,6 +147,7 @@ body {
 	&:not(:placeholder-shown) {
 	  	border-color: #000000;
 	}
+
 	&-mask {
 		position: relative;
 		&__showpass {
@@ -1246,6 +1250,9 @@ label {
 			
 			box-shadow: (4px 8px 16px rgba(69, 79, 89, 0.04));
 			margin-bottom: 2.4rem;
+			.input-select {
+				width: 16rem;
+			}
 			&__title {
 				font-size: 1.8rem;
 				font-weight: 500;
@@ -1253,6 +1260,19 @@ label {
 			&__btn {
 				width: 19.4rem;
 				font-size: 1.4rem;
+			}
+			&--editor {
+				width: 100%;
+				// padding: 2.4rem 72rem 2.4rem 11rem;
+			}
+			&-wrap {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				width: 63rem;
+				&--editor {
+
+				}
 			}
 		}
 		&-content {
@@ -1586,4 +1606,30 @@ label {
     stroke-dasharray: 40 242.6;
     stroke-dashoffset: 282.6;
   }
+}
+
+
+.translate {
+	display: flex;
+	font-size: 1.2rem;
+	padding: 0.2rem;
+	background-color: #F2F4F5;
+	border-radius: 8px;
+
+	&__item {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0.5rem 3.4rem;
+		&--editor {
+			padding: 0.5rem 2rem;
+		}
+		&.active {
+			background-color: #fff;
+			border-radius: 8px;
+		}
+		&:hover {
+			cursor: pointer;
+		}
+	}
 }

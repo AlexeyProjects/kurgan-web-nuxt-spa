@@ -216,13 +216,18 @@
 </style>
 
 <script>
-	import { mapActions } from 'vuex'
+	import { mapActions, mapGetters } from 'vuex'
 	export default {
 		name: 'admin',
 		data() {
 			return {
 
 			}
+		},
+		computed: {
+			...mapGetters({
+				globalLoading: 'globalLoading'
+			})
 		},
 		methods: {
 			...mapActions([
@@ -232,7 +237,7 @@
 		},
 		mounted() {
 			// this.$store.dispatch('admin/service/getServices')
-			
+			console.log(this.globalLoading)		
 		}
 	}
 </script>

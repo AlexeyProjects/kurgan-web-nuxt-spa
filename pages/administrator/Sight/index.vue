@@ -27,7 +27,9 @@
 							Поиск
 						</div>
 					</div>
-					<div class="table-header__btn btn act">
+					<div 
+					@click="addSight"
+					class="table-header__btn btn act">
 
 						Добавить достопримечательность
 					</div>
@@ -51,7 +53,7 @@
 					 	v-for="(item,key,index) in getAllServices.rows"
 					 	> -->
 					 	<tr 
-					 	v-for="(item,key,index) in rows"
+					 	v-for="(item,key,index) in responseData.rows"
 					 	>
 					 		<td
 					 			
@@ -135,11 +137,20 @@
 			</div>
 			
 		</div>
+		<ViewingItem 
+		@previewHide="previewHide"
+		:show="previewShowing"
+		:type="'sight'"
+		:choosedSight="choosedSight"
+		>
+			
+		
+		</ViewingItem>
 	</div>
 </template>
 
 <script>
-	import { mapGetters } from 'vuex'
+	import { mapGetters, mapActions } from 'vuex'
 
 	export default {
 		computed: {
@@ -161,6 +172,13 @@
 		},
 		data() {
 			return {
+				cover: {
+					images: [],
+				},
+				gallery: {
+					images: [],
+					showMoreGallery: false
+				},
 				headers: [
 					{
 						title: 'ID',
@@ -217,14 +235,43 @@
 						"status": 'PUBLISHED',
 						"cover": 'https://imgur.com/eoIiORL.png'
 					},
-				]
+				],
+				responseData: '',
+				previewShowing: false,
+				langCard: 'rus',
+				choosedSight: {}
+
 			}
 		},
 		layout: 'admin',
 		methods: {
+			...mapActions({
+				getData: 'service/getData'
+			}),
+			addSight() {
+				console.log('show')
+				this.previewShow()
+			},
+			previewShow() {
+				this.previewShowing = true
+			},
+			previewHide() {
+				this.previewShowing = false
+			},
 			// openSettings(id) {
 			// 	this.settingsShow = !this.settingsShow
 			// }
+		},
+		mounted() {
+			let params = {}
+			params = {
+				params: 'place?cityId=1'
+			}
+			this.getData(params)
+			.then((res) =>{
+				this.responseData = res.data
+				console.log(res)
+			})
 		}
 	}
 </script>
