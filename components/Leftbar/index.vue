@@ -1,7 +1,15 @@
 <template>
-	<div class="leftbar">
+	<div 
+	:class="{ open: rightMenu }"
+	class="leftbar">
 		<div class="leftbar-wrap">
-
+			<div 
+			@click="hideRightMenu"
+			class="leftbar__close">
+				<IconClose></IconClose>
+			</div>
+			
+			
 			<NuxtLink to="/">
 				<slot name="logotype"></slot>
 			</NuxtLink>
@@ -26,5 +34,26 @@
 </style>
 
 <script>
-	
+	import { mapGetters } from 'vuex'
+	export default {
+		props: {
+			showBurgerIcon: false
+		},
+		data() {
+			return {
+				showLeftbar: false
+			}
+		},
+		computed: {
+			...mapGetters({
+				rightMenu: 'nav/rightMenu'
+			})
+		},
+		methods: {
+			hideRightMenu() {
+				this.$store.commit('nav/hideRightMenu')
+			},
+		}
+		
+	}
 </script>

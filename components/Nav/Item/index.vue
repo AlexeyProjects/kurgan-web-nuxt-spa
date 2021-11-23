@@ -1,29 +1,41 @@
 <template>
-	<div class="nav-item unselectable">
-		<NuxtLink v-if="navlink && !navTitle" :to="navurl"
+	<div 
+	
+	class="nav-item unselectable">
+		<div 
+		class=""
+		@click="openDrop(title)"
+		>
+		<NuxtLink 
+		
+		v-if="navlink && !navTitle" :to="navurl"
 
-		@click="openDrop"
+		
+		
 		class="nav-item__header" >
 			<slot name="icon" > </slot>
-			<div class="nav-item__header__title">
+			<div 
+			
+			class="nav-item__header__title">
 				{{ title }}
 			</div>
-			<div v-if="drop"  class="nav-item__header__arrow">
+			<div v-if="true"  class="nav-item__header__arrow">
 
 				<IconDot v-if="!droped" class="nav-item__header__arrow--dot"></IconDot>
 				<IconArrowNav v-if="droped" class="nav-item__header__arrow--arrow"></IconArrowNav>
 
 			</div>
 		</NuxtLink>
+		</div>
 		<div v-if="!navlink && !navTitle"
 
-		@click="openDrop"
+		
 		class="nav-item__header" >
 			<slot name="icon" > </slot>
 			<div class="nav-item__header__title">
 				{{ title }}
 			</div>
-			<div v-if="drop"  class="nav-item__header__arrow">
+			<div  class="nav-item__header__arrow">
 
 				<IconDot v-if="!droped" class="nav-item__header__arrow--dot"></IconDot>
 				<IconArrowNav v-if="droped" class="nav-item__header__arrow--arrow"></IconArrowNav>
@@ -76,17 +88,22 @@
 		},
 		data() {
 			return {
-				droped: false
+				droped: false,
+				choosedItem: []
+
 			}
 		},
 		methods: {
-			openDrop: function() {
-				if ( !this.drop ) {
-					return
-				}
-				else {
-					this.droped = !this.droped
-				}
+			openDrop: function(el) {
+				console.log(el)
+				this.choosedItem = el
+				// if ( !this.drop ) {
+				// 	return
+				// }
+				// else {
+					this.drop = !this.drop
+					// this.droped = !this.droped
+				// }
 				
 			}
 		}

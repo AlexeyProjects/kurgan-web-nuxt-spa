@@ -1,7 +1,8 @@
 <template>
 	 <div class="photo-load">
 	 	<label :for="name">
-	 		<IconFileload></IconFileload>
+	 		<slot name="icon"></slot>
+	 		
 	 		{{ title }}
 	 	</label>
 	 	<input 
@@ -31,6 +32,7 @@
 			title: '',
 			multiple: false,
 			name: ''
+			
 		},
 		methods: {
 			previewFiles(event) {

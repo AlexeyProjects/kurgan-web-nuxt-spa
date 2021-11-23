@@ -2,7 +2,7 @@
 	<div class="profile main-content">
 		<div class="profile-role">
 			<div class="profile-role__text">
-				Модератор
+				{{ getRole }}
 			</div>
 			<div class="profile-role__answers">
 				Есть вопросы? <a href="#">Напишите нам</a>
@@ -31,3 +31,39 @@
 		</div>
 	</div>
 </template>
+
+<style>	
+
+</style>
+
+<script>	
+	export default {
+		data() {
+			return {
+
+			}
+		},
+		computed: {
+			getRole() {
+				let result = ''
+
+				let roleKey =  JSON.parse(localStorage.getItem('user'))
+				switch(roleKey.role) {
+					case 'BUSINESS' :
+						result = 'Бизнес-пользователь'
+						break;
+					case 'MODERATOR' :
+						result = 'Модератор'
+						break;
+					case 'ADMINISTRATOR' :
+						console.log("Oranges are $0.59 a pound.");
+						result = 'Главный администратор'
+						break;
+				}
+				
+				// return roleKey
+				return result		
+			}
+		}
+	}
+</script>	

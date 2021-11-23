@@ -41,6 +41,37 @@ export const actions = {
       })
     })
   },
+  put({commit}, params){
+    return new Promise((resolve, reject) => {
+      console.log(params)
+      console.log(params.data)
+      axios(    
+          `${this.$axios.defaults.baseURL}${params.params}`,
+        {  
+          data: params.data,
+          method: 'PUT',
+          headers: {
+            'accept': 'application/json',
+            'X-Auth-Token': localStorage.getItem('token'),
+            'Content-Type': `multipart/form-data; boundary=WebAppBoundary`
+          }, 
+          
+        }
+        )
+      .then(resp => {
+        resolve(resp)
+
+        console.log(resp)
+
+
+
+      })
+      .catch(err => {
+        reject(err)
+        console.log(err)
+      })
+    })
+  },
   getData({commit}, params){
     return new Promise((resolve, reject) => {
       console.log(params)
@@ -59,7 +90,7 @@ export const actions = {
         console.log(resp)
 
 
-        axios.defaults.headers.common['X-Auth-Token'] = token
+        
 
       })
       .catch(err => {

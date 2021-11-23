@@ -289,6 +289,7 @@
 		</div>
 		<div class="card-buttons">
 			<div 
+			v-if="false"
 			@click="getCity"
 			class="card-buttons__item act btn">
 				получить город

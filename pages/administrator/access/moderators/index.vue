@@ -24,11 +24,23 @@
 			class="table">
 				<div class="table-header">
 					<div class="table-header-panel">
-						<input 
-						v-model="searchInput"
-						placeholder="Найти" 
-						class="input table-header-panel__search" type="text">
-						<div 
+						<div class="input withicon">
+							<input 
+							v-model="searchInput"
+							placeholder="Найти" 
+							class="input table-header-panel__search" type="text">
+							<div 
+							@click="clearSearch"
+							>
+								<IconClose
+								v-if="searching"
+								></IconClose>
+							</div>
+							
+						</div>
+						
+
+						<div
 						@click="searchTable"
 						class="table-header-panel__btn btn black">
 							Поиск
@@ -51,7 +63,7 @@
 
 					<tbody>
 					 	<tr 
-					 	v-for="(item,key,index) in getUsers.rows"
+					 	v-for="(item,key,index) in responseData.rows"
 					 	>
 					 		<td
 					 			
@@ -70,6 +82,7 @@
 
 					 			:type="'user'"
 					 			:status="item.status"
+					 			:item="item"
 					 			@checkUser="checkUser(item)"
 					 			>
 					 				
@@ -88,6 +101,9 @@
 					@sortListInPaginate="sortListInPaginate"
 					@paginationNext="paginationNext"
 					@paginationPrev="paginationPrev"
+					@getQtyPage="getQtyPage"
+					@paginationStart="paginationStart"
+					@paginationEnd="paginationEnd"
 					></TablePagination>
 
 					
@@ -97,6 +113,7 @@
 				<Loader
 				v-if="globalLoading"
 				></Loader>
+
 				<ViewingItem
 				
 				@previewHide="previewHide"
@@ -127,7 +144,7 @@
 						sort: false,
 					},
 					{
-						title: 'Права модератора',
+						title: 'Статус',
 						name: 'Name',
 						sort: false,
 					},
@@ -177,6 +194,7 @@
 				paginationShow: false,
 				responseData: {},
 				searchInput: '',
+				searching: false,
 				forQuery: {
 					role: 'MODERATOR',
 					offset: 0,
@@ -215,12 +233,13 @@
 				return statusTitle
 			},
 			getParamsForQuery() { 
-				return `&role=${this.forQuery.role}&offset=${this.forQuery.offset}&limit=${this.forQuery.limit}&search=${this.searchInput}`
+				return `admin/users?role=${this.forQuery.role}&offset=${this.forQuery.offset}&limit=${this.forQuery.limit}&search=${this.searchInput}`
 			}
 		},
 		methods: {
-			
-			...mapActions(['admin/users/getUsers']),
+			...mapActions({
+				queryData: 'service/getData'
+			}),
 			showPaginationPages() {
 				this.paginationShow = !this.paginationShow
 			},
@@ -229,51 +248,59 @@
 					this.forQuery.offset = offset
 					this.currentPage = currentPage
 					console.log(currentPage)
-					this.getUsersList()
+					this.getData()
 				
 			},
 			paginationNext(offset) {
 					this.forQuery.offset = offset
-					this.getUsersList()
+					this.getData()
 					this.currentPage += 1
 				
 				
 			},
 			paginationPrev(offset) {
 					this.forQuery.offset = offset
-					this.getUsersList()
+					this.getData()
 					this.currentPage -= 1
 				
 			},
 			paginationStart() {
 				if ( this.currentPage != 1 ) {
 					this.forQuery.offset = 0
-					this.getUsersList()
+					this.getData()
 					this.currentPage = 1
 				}
 				else {
 					return
 				}
 			},
-			paginationEnd() {
-				if ( this.currentPage != this.qtyPage ) {
-					this.forQuery.offset = this.pageList[this.pageList.length - 1].start - 1
-					this.getUsersList()
-					this.currentPage = this.qtyPage
-				}
-				else {
-					return
-				}
+			paginationEnd(offset) {
+				this.forQuery.offset = offset
+				this.getData()
+				this.currentPage = this.qtyPage
+			},
+			getQtyPage(value) {
+				this.qtyPage = value
 			},
 			searchTable() {
 				this.forQuery.offset = 0
 				this.currentPage = 1
-				this.getUsersList()
+				this.searching = true
+				this.getData()
 			},
-			getUsersList() {
+			clearSearch() {
+				this.searchInput = ''
+				this.searching = false
+				this.getData()
+			},
+			getData() {
 				this.$store.commit('showLoading')
-				this.$store.dispatch('admin/users/getUsers', this.getParamsForQuery)
+				let params = {}
+				// this.$store.dispatch('admin/users/getUsers', this.getParamsForQuery)
+				params.params = this.getParamsForQuery
+				this.queryData(params)
 				.then((res) => {
+
 					this.responseData = res.data
 					console.log(res.data)
 
@@ -296,7 +323,7 @@
 		},
 		mounted() {
 
-			this.getUsersList()			
+			this.getData()		
 			
 		}
 	}

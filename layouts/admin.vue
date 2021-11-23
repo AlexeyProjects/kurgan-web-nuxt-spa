@@ -1,6 +1,11 @@
 <template>
-	<div class="container">
-		<Leftbar>
+	<div 
+	
+	class="container">
+		<Leftbar
+		:class="{ hidehover: showBurgerIcon }"
+		:showBurgerIcon="showBurgerIcon"
+		>
 			<Logotype slot="logotype" class="logotype"></Logotype>
 
 			<Nav slot="nav">
@@ -30,7 +35,7 @@
 				slot="nav-item" 
 				:navlink="true" 
 				:navurl="'/administrator/sight'" 
-				:drop="false" 
+				:drop="true" 
 				:title="'Достопримечательности'">
 					<IconSight class="nav-item__header__icon" slot="icon"></IconSight>
 					<div class="nav-item-drop__item" slot="nav_drop">Опубликованые </div>
@@ -39,7 +44,7 @@
 
 				<NavItem 
 				slot="nav-item" 
-				:drop="false" 
+				:drop="true" 
 				:navlink="true" 
 				:navurl="'/administrator/events'" 
 				:title="'События в городе'">
@@ -50,7 +55,7 @@
 
 				<NavItem 
 				slot="nav-item" 
-				:drop="false" 
+				:drop="true" 
 				:navlink="true" 
 				:navurl="'/administrator/services'" 
 				:title="'Услуги'">
@@ -61,7 +66,7 @@
 
 				<NavItem 
 				slot="nav-item" 
-				:drop="false" 
+				:drop="true" 
 				:navlink="true" 
 				:navurl="'/administrator/audiogid'" 
 				:title="'Аудиогид'">
@@ -72,7 +77,7 @@
 
 				<NavItem 
 				slot="nav-item" 
-				:drop="false" 
+				:drop="true" 
 				:navlink="true" 
 				:navurl="'/administrator/museumgid'" 
 				:title="'Музейный гид'">
@@ -131,7 +136,7 @@
 				class="nav-item__title" 
 				:drop="false" 
 				:navTitle="true"
-				:navurl="'/administrator/additionally'"
+				:navurl="false"
 				:title="'Дополнительно'">
 				</NavItem>
 
@@ -205,23 +210,39 @@
 
 			</Nav>
 		</Leftbar>
-		<Nuxt />
+		
+		<Nuxt 
+		
+		
+		>
+		</Nuxt>
 		
 	</div>
   
 </template>
 
-<style>	
-
+<style lang="scss">	
+	.leftbar {
+		&__checkmouse {
+			position: fixed;
+			width: 10rem;
+			top: 0;
+			left: 0;
+			height: 100vh;
+		}
+	}
 </style>
 
 <script>
 	import { mapActions, mapGetters } from 'vuex'
 	export default {
 		name: 'admin',
+		layout: 'admin',
+	  	middleware: 'auth',
+	  	middleware: 'ADMIN',
 		data() {
 			return {
-
+				showBurgerIcon: false
 			}
 		},
 		computed: {
@@ -233,7 +254,21 @@
 			...mapActions([
 				// 'admin/service/getServices',
 				// 'admin/users/getServices'
-			])
+			]),
+			showRightBurger(event) {
+				if ( !this.showBurgerIcon ) {
+					this.showBurgerIcon = true
+				}
+				
+				console.log(event)
+				
+			},
+			hideRightBurger() {
+				if ( this.showBurgerIcon ) {
+					this.showBurgerIcon = false
+				}
+				console.log('hide')
+			}
 		},
 		mounted() {
 			// this.$store.dispatch('admin/service/getServices')

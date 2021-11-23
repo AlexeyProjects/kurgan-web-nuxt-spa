@@ -1,5 +1,7 @@
 <template>
-	<div class="table-footer__pagination">
+	<div 
+	v-if=""
+	class="table-footer__pagination">
 		<div class="table-footer__pagination-arrows">
 			<div 
 			@click="paginationStart"
@@ -86,7 +88,10 @@
 		methods: {
 			getPageQty() {
 				const rowsize = 20
+				console.log(this.responseData)
 				let total = this.responseData.total
+
+				console.log(total)
 				let partQty = Math.round(total / rowsize) * rowsize
 				console.log(partQty)
 				console.log('partQty')
@@ -97,6 +102,7 @@
 
 				let qtyPage = partQty/rowsize
 				this.qtyPage = qtyPage
+				this.$emit('getQtyPage', qtyPage)
 				console.log(qtyPage)
 				let pageList = []
 				let pageListNew = []
@@ -188,10 +194,13 @@
 				}
 			},
 			paginationEnd() {
+				console.log('end')
 				if ( this.currentPage != this.qtyPage ) {
 					let offset = 0
 					offset = this.pageList[this.pageList.length - 1].start - 1
 					this.$emit('paginationEnd', offset)
+					this.currentPage = this.qtyPage
+					console.log(this.currentPage)
 				}
 				else {
 					return

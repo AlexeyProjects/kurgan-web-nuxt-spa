@@ -2,16 +2,16 @@
 	<div class="main">
 		<Topbar
 		:title="'Помощь'"
-		:history="false"
+		:history="true"
 		>
 			<div slot="history" class="">
-				<NuxtLink to="/index">
-					
+				<NuxtLink to="/">
+					Панель информации/
 				</NuxtLink>
 			
 			</div>
 		</Topbar>
-		
+		<Help class="main-content full"></Help>
 	</div>
 </template>
 

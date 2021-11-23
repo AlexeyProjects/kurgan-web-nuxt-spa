@@ -44,7 +44,13 @@
 
 				<div class="card-data-content__field select">
 					<label for="">Вид мероприятия</label> 
-					<InputSelect style="width: 41rem"></InputSelect>
+					<InputSelect
+					
+					:multiple="false"
+					:title="'Выберите вид услуги'"
+					:items="template.category"
+					@chooseSelect="chooseCategory"
+					></InputSelect>
 				</div>
 
 				<div class="card-data-content__field geo">
@@ -65,13 +71,13 @@
 				<div class="card-time-list row">
 					<div class="card-data-content__field card-time-list__field">
 						<label for="">С</label>
-						<input placeholder="00:00" type="text">
+						<input value="08:00" type="time">
 					</div>
 					<div class="card-data-content__field 
 					card-time-list__field
 					">
 						<label for="">До (необязательно)</label>
-						<input placeholder="00:00" type="text">
+						<input value="20:00" type="time">
 					</div>
 
 				</div>
@@ -140,6 +146,25 @@
 		          },
 		          monthBeforeYear: false,
 		        },
+				template: {
+					category: [
+						{
+							id: 1,
+							title: 'Категория 2',
+							titleEn: 'Category 2 '
+						},
+						{
+							id: 2,
+							title: 'Категория 2',
+							titleEn: 'Category 2 '
+						},
+						{
+							id: 3,
+							title: 'Категория 2',
+							titleEn: 'Category 2 '
+						}
+					]
+				},
 			}
 		}
 	}

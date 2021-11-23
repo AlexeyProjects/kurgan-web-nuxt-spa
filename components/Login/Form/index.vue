@@ -15,6 +15,7 @@
 			</label>
 			<InputPassword
 			@inputChange="getPassword"
+			@tabEnter="loginAuth"
 			>
 				<div v-show="errors.password"  class="error red">
 					Пароли введен неверно 
@@ -63,6 +64,9 @@
 			...mapActions([
 				'login/auth'
 			]),
+			onEnterClick: function() {
+			     alert('Enter was pressed');
+			},
 			getPassword(val) {
 				this.userData.passwordHash = md5(val)
 			},

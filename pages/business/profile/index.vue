@@ -12,6 +12,7 @@
 			</div>
 		</Topbar>
 		<Profile></Profile>
+		
 	</div>
 </template>
 

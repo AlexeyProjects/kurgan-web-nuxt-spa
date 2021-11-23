@@ -6,6 +6,7 @@
 		placeholder="***************" 
 		class="input login-form-inputs__item" 
 		name="password"
+		v-on:keyup.enter="onEnterClick"
 		:input="inputChange(value)"
 		:type="type">
 		<div 
@@ -44,7 +45,9 @@
 			}
 		},
 		methods: {
-
+			onEnterClick: function() {
+		     	this.$emit('tabEnter')
+		    },
 			showPass: function() {
 				if ( this.type === 'password' ) {
 					this.type = 'text'

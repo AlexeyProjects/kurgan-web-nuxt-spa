@@ -3,6 +3,7 @@ import axios from 'axios'
 
 export const state = () => ({
   data: '',
+  rightMenu: false
 
 })
 
@@ -10,6 +11,13 @@ export const mutations = {
   PUT_NAV(state,data){
     state.data = data
   },
+  showRightMenu(state) {
+    state.rightMenu = true
+    console.log('show')
+  },
+  hideRightMenu(state) {
+    state.rightMenu = false
+  }
   
 }
 
@@ -33,5 +41,8 @@ export const getters = {
   },
   ADMINISTRATOR(state) {
     return state.data.administrator
+  },
+  rightMenu(state) {
+    return state.rightMenu
   }
 }

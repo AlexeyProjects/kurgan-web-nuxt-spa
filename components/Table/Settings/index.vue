@@ -1,28 +1,37 @@
 <template>
-	<div class="settings">
+	<div 
+	ref="icon"
+	class="settings">
 		<div 
-		@click="openSettings(id)"
+		@click="openSettings(item)"
 		>
 			<IconThreedots class="table-dots"></IconThreedots>
 		</div>
 		
 		<div
+
 		v-click-outside="hideSettings"
 		v-if="settingsShow && type != 'user'"
-		class="table-settings-list">
+		class="table-settings-list"
+		:style="position"
+		>
 			<div class="table-settings-list__item">
 				<IconReturn></IconReturn>
 				Снять с публикации
 			</div>
 			<div class="table-settings-list__item">
-				<IconEnter></IconEnter>
+				<IconEnter
+				v-click-outside="hideSettings"
+				></IconEnter>
 				Опубликовать
 			</div>
 			<div class="table-settings-list__item">
 				<IconEye></IconEye>
 				Посмотреть
 			</div>
-			<div class="table-settings-list__item">
+			<div 
+			@click="changeItem(item)"
+			class="table-settings-list__item">
 				<IconEdit></IconEdit>
 				Изменить
 			</div>
@@ -33,6 +42,7 @@
 		</div>
 
 		<div
+		v-click-outside="hideSettings"
 		v-if="settingsShow && type == 'user'"
 		class="table-settings-list">
 			<div 
@@ -57,27 +67,77 @@
 
 	export default {
 		props: {
-			type: ''
+			type: '',
+			item: {},
 		},
 		data() {
 			return {
-				settingsShow: false
+				settingsShow: false,
+				id: '',
+				position: {
+					right: '0'
+				}
+			}
+		},
+		computed: {
+			getPositionValue() {
+				
+				let result = null
+				result = this.$refs.icon.getBoundingClientRect();
+				console.log(result)
+				return result.left
 			}
 		},
 		methods: {
-			openSettings(id) {
+			openSettings(item) {
 				this.settingsShow = !this.settingsShow
 			},
 			hideSettings() {
 				console.log('xx')
 				this.settingsShow = false
 			},
+			// Default Table //
+			changeItem(item) {
+				this.$emit('changeItem',item.id)
+				this.hideSettings()
+			},
+			// User //
 			checkUser() {
 				this.$emit('checkUser')
 			},
 			blockUser() {
 				this.$emit('blockUser')
 			},
+			myEventHandler(e) {
+				let widthscreen = window.innerWidth
+			    let result = this.$refs.icon.getBoundingClientRect();
+			    let computedPosRight = widthscreen - result.right
+			    console.log(computedPosRight)
+			    if ( computedPosRight < 130 ) {
+			    	this.position = {}
+			    	this.position.right = '100%'
+			    	
+			    }
+			    else {
+			    	this.position = {}
+			    	this.position.left = '100%'
+			    	
+			    }
+			    
+			}
+		},
+		mounted() {
+			this.id = this.item.id
+			this.popupItem = this.$el
+		},
+		directives: {
+			ClickOutside
+		},
+		created() {
+		  window.addEventListener("resize", this.myEventHandler);
+		},
+		destroyed() {
+		  window.removeEventListener("resize", this.myEventHandler);
 		},
 	}
 </script>

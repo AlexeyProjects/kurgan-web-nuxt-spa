@@ -52,6 +52,9 @@
 	import { mapActions } from 'vuex'
 	export default {
 		name: 'business',
+		layout: 'admin',
+	  	middleware: 'auth',
+	  	middleware: 'BUSINESS',
 		data() {
 			return {
 

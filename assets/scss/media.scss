@@ -1,0 +1,40 @@
+@media screen and ( max-width: 1300px ) {
+    .leftbar {
+        transform: translateX(0);
+    }
+}
+
+@media screen and ( max-width: 1280px ) {
+    .leftbar {
+        transform: translateX(-100%);
+        box-shadow: 4px 8px 19px rgb(69 79 89 / 30%);
+        z-index: 110;
+        &.open {
+            transform: translateX(0);
+            z-index: 110;
+            .leftbar {
+                &__close {
+                    display: block;;
+                }
+            }
+        }
+        &__close {
+            display: none;;
+        }
+    }
+    .container {
+        width: 100%;
+    }
+    .main {
+        margin: 0;
+        &-content {
+            margin: 11.4rem 0rem 3rem 0rem;
+            padding: 2rem;
+        }
+    }
+    .topbar {
+        &__burger {
+            display: block;
+        }
+    }
+}
