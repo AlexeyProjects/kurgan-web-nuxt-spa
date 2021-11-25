@@ -1,4 +1,4 @@
-FROM node:lts as build
+FROM node:15.14.0 as build
 WORKDIR /build
 ENV PATH /build/node_modules/.bin:$PATH
 COPY nuxt.config.js package.json /build/
