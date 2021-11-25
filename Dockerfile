@@ -10,6 +10,7 @@ COPY pages /build/pages/
 COPY static /build/static/
 COPY store /build/store/
 RUN yarn add update-notifier
+RUN yarn add vue-load-image
 RUN yarn install
 RUN yarn run generate
 
