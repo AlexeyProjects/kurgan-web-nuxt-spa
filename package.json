@@ -13,13 +13,14 @@
     "core-js": "^3.15.1",
     "md5": "^2.3.0",
     "nuxt": "^2.15.7",
+    "qrcode.vue": "1",
     "vue-click-outside": "^1.1.0",
+    "vue-load-image": "0.2.0",
     "vue-select": "^3.13.0",
-    "vue2-editor": "2.10.3",
     "vue-slide-toggle": "^1.1.1",
     "vue2-datepicker": "^3.10.1",
-    "vue3-slide-up-down": "^1.2.3",
-    "vue-load-image": "0.2.0"
+    "vue2-editor": "2.10.3",
+    "vue3-slide-up-down": "^1.2.3"
   },
   "devDependencies": {
     "fibers": "^5.0.0",

@@ -1488,7 +1488,7 @@
 								</div>
 								<div 
 								v-if="method === 'add'"
-								@click="sendService('place/1')"
+								@click="sendServiceJson('museumGuide/1')"
 								class="viewing-body-header__btn btn widthauto withicon act ">
 									<IconSave></IconSave>
 									{{ methodsTitle }}
@@ -1496,7 +1496,7 @@
 
 								<div 
 								v-if="method === 'change'"
-								@click="sendService(`place/${choosedSight.id}`)"
+								@click="sendServiceJson(`museumGuide/${choosedSight.id}`)"
 								class="viewing-body-header__btn btn widthauto withicon act ">
 									<IconSave></IconSave>
 									{{ methodsTitle }}
@@ -1530,12 +1530,18 @@
 									>
 									
 									</GalleryPhoto> -->
-									<div 
-									
-									
+									<qrcode-vue
+									id="qrcode"
 									class="gallery-list__item"
-									v-if="true"
+									render-as='canvas'
+									
+									:value="choosedSight.url"  
+									level="H" />
+									<div 
 									>
+									<a  
+									v-show="false"
+									id="downloadQrcode" download="qrcode.jpg">Download as image</a>
 
 										
 										
@@ -1547,19 +1553,23 @@
 											<div class="card-data-content__field width--auto">
 												<label for="">Ссылка</label>
 												<input 
-												v-model="choosedSight.title"
+												v-model="choosedSight.url"
 												placeholder="Введите название услуги" 
 												 type="text">
 											</div>
 										</div>
 										<div class="gallery-list--center-row row">
 											<div 
+											@click="qrCodeGenerate"
 											style="margin-right: 2rem;" 
 											class="gallery-list--center-row__btn btn black nofill withicon hover width--auto">
 												<IconMusemgid class="black small"></IconMusemgid> Сгенерировать QR-код
 											</div>
-											<div class="gallery-list--center-row__btn btn black nofill withicon hover width--auto">
-												<IconMusemgid class="black small"></IconMusemgid>Скачать QR-код
+											<div 
+											@click='qrCodeDownrload'
+											class="gallery-list--center-row__btn btn black nofill withicon hover width--auto">
+												<IconMusemgid 
+												class="black small"></IconMusemgid>Скачать QR-код
 											</div>
 										</div>
 									</div>
@@ -1606,16 +1616,13 @@
 									
 
 									<div class="card-data-content__field textarea">
-										<label for="">Описание</label> 
-										<textarea v-model="choosedSight.description" 
-										class="input-textarea" 
-										name="" 
-										id="" 
-										cols="30" 
-										placeholder="Введите описание" 
-										rows="10">
-										
-										</textarea>
+										<label class="label-default" for="">Описание (Русский язык)</label>
+
+										<VueEditor
+										v-if="langCard === 'rus'"
+										:editor-toolbar="customToolbar"
+										v-model="choosedSight.description"
+										/>
 										
 									</div>
 								</div>
@@ -1630,12 +1637,12 @@
 									
 
 									<div class="card-data-content__field textarea">
-										<label for="">Описание</label> 
-										<textarea v-model="choosedSight.descriptionEn" placeholder="Enter description of serivce" class="input-textarea" name="
-										
-										" id="" cols="30" rows="10">
-										
-										</textarea>
+										<label class="label-default" for="">Описание (Английский язык)</label>
+										<VueEditor
+										v-if="langCard === 'eng'"
+										:editor-toolbar="customToolbar"
+										v-model="choosedSight.descriptionEn"
+										/>
 									</div>
 								</div>
 							</div>
@@ -1669,18 +1676,22 @@
 </style>
 
 <script>
-
+	import { VueEditor } from "vue2-editor";
 	import VueLoadImage from 'vue-load-image'
 	import ClickOutside from 'vue-click-outside'
 	import { mapGetters } from 'vuex'
+	
 
 	import DatePicker from 'vue2-datepicker';
   	import 'vue2-datepicker/index.css';
+	import QrcodeVue from 'qrcode.vue'
 
 	export default {
 		components: {
 		    'vue-load-image': VueLoadImage,
-		    DatePicker
+		    DatePicker,
+			QrcodeVue,
+			VueEditor
 		},
 		props: {
 			card: [],
@@ -1756,7 +1767,15 @@
 						value: 'PUBLISHED', 
 					},
 				],	
-				langCard: 'rus'
+				langCard: 'rus',
+				customToolbar: [
+			      ["bold", "italic", "underline"],
+			      [{ list: "ordered" }, { list: "bullet" }],
+			      ["image", "code-block"],
+			      [{ align: "" }, { align: "center" }, { align: "right"}, { align: "justify"}],
+			      [{ color: [] }]
+			    ],
+				qrCodeUrl: ''
 			}
 		},
 		computed: {
@@ -1850,16 +1869,15 @@
 				console.log(val)
 				this.choosedSight.status = val.value
 			},
+
 			sendService(params) {
 				let formData = new FormData();
 				let obj = this.choosedSight
 				let paramsQuery = {}
 				const json = JSON.stringify(obj);
-
 				
 				console.log(paramsQuery)
 				if ( this.method === 'add' ) {
-
 					formData.append('place', new Blob([json], {
 					  type: 'application/json',
 					}));
@@ -1871,7 +1889,6 @@
 						params: params,
 						data: formData
 					}
-
 					this.$store.commit('showLoading')
 					this.$store.dispatch('service/send', paramsQuery )
 					.then((res) => {
@@ -1883,7 +1900,6 @@
 					})
 				}
 				else if ( this.method === 'change' ) {
-
 					formData.append('place', new Blob([json], {
 					  type: 'application/json',
 					}));
@@ -1896,7 +1912,6 @@
 						data: formData
 					}
 					
-
 					this.$store.commit('showLoading')
 					this.$store.dispatch('service/put', paramsQuery )
 					.then((res) => {
@@ -1910,6 +1925,67 @@
 				
 			},
 
+			sendServiceJson(params) {
+				let formData = new FormData();
+				let obj = this.choosedSight
+				let paramsQuery = {}
+
+				
+				console.log(paramsQuery)
+				if ( this.method === 'add' ) {
+
+					paramsQuery = {
+						params: params,
+						data: this.choosedSight
+					}
+
+					this.$store.commit('showLoading')
+					console.log(paramsQuery)
+					this.$store.dispatch('service/sendJson', paramsQuery )
+					.then((res) => {
+					this.$store.commit('hideLoading')
+					console.log(res)
+					})
+					.catch((err) => {	
+						console.log(err)
+					})
+				}
+				else if ( this.method === 'change' ) {
+
+					paramsQuery = {
+						params: params,
+						data: this.choosedSight
+					}
+					
+
+					this.$store.commit('showLoading')
+					this.$store.dispatch('service/putJson', paramsQuery )
+					.then((res) => {
+					this.$store.commit('hideLoading')
+					console.log(res)
+					})
+					.catch((err) => {	
+						console.log(err)
+					})
+				}
+				
+			},
+			qrCodeGenerate() {
+				this.choosedSight.url = this.qrCodeUrl
+			},
+			qrCodeDownrload() {
+				if (this.type === 'museumGuide') {
+					console.log('museumGuide')
+					let qrcodeBlock = document.querySelector('.gallery-list.qr')
+					let qrcode = qrcodeBlock.getElementsByTagName('canvas')[0]
+					let qrcodeBase64 = qrcode.toDataURL("image/png");
+					let downloadLnk = document.getElementById('downloadQrcode')
+					downloadLnk.href = qrcodeBase64
+					downloadLnk.click()
+					console.log(downloadLnk.href)
+				}
+			}
+
 		},
 		directives: {
 			ClickOutside
@@ -1917,6 +1993,8 @@
 		mounted() {
 			
 			this.viewingItem = this.$el
+
+			
 		}
 	}
 </script>

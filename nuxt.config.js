@@ -54,7 +54,7 @@ export default {
     '@nuxtjs/axios'
   ],
   router: {
-    base: './',
+    // base: './',
   },
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
@@ -64,7 +64,7 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     router: {
-    base: './',
+    // base: './',
   }
   }
 }

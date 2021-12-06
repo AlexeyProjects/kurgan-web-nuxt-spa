@@ -41,6 +41,39 @@ export const actions = {
       })
     })
   },
+
+  sendJson({commit}, params){
+    return new Promise((resolve, reject) => {
+      console.log(params)
+      console.log(params.data)
+      axios(    
+          `${this.$axios.defaults.baseURL}${params.params}`,
+        {  
+          data: params.data,
+          method: 'POST',
+          Accept: 'application/json',
+          headers: {
+            'X-Auth-Token': localStorage.getItem('token'),
+            'Content-Type': 'application/json'
+          }, 
+          
+        }
+        )
+      .then(resp => {
+        resolve(resp)
+
+        console.log(resp)
+
+
+
+      })
+      .catch(err => {
+        reject(err)
+        console.log(err)
+      })
+    })
+  },
+
   put({commit}, params){
     return new Promise((resolve, reject) => {
       console.log(params)
@@ -72,6 +105,39 @@ export const actions = {
       })
     })
   },
+
+  putJson({commit}, params){
+    return new Promise((resolve, reject) => {
+      console.log(params)
+      console.log(params.data)
+      axios(    
+          `${this.$axios.defaults.baseURL}${params.params}`,
+        {  
+          data: params.data,
+          method: 'PUT',
+          headers: {
+            'accept': 'application/json',
+            'X-Auth-Token': localStorage.getItem('token'),
+            'Content-Type': 'application/json'
+          }, 
+          
+        }
+        )
+      .then(resp => {
+        resolve(resp)
+
+        console.log(resp)
+
+
+
+      })
+      .catch(err => {
+        reject(err)
+        console.log(err)
+      })
+    })
+  },
+
   getData({commit}, params){
     return new Promise((resolve, reject) => {
       console.log(params)
