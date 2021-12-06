@@ -1745,7 +1745,7 @@
 					},
 					{
 						title: 'Опубликован',
-						value: 'PUBLISH', 
+						value: 'PUBLISHED', 
 					},
 					{
 						title: 'Удаленный',
@@ -1753,7 +1753,7 @@
 					},
 					{
 						title: 'Опубликован',
-						value: 'PUBLISH', 
+						value: 'PUBLISHED', 
 					},
 				],	
 				langCard: 'rus'

@@ -230,7 +230,7 @@
 					case 'MODERATION' :
 						statusTitle = 'На модерации'
 						break;
-					case 'PUBLISH' :
+					case 'PUBLISHED' :
 						statusTitle = 'Опубликован'
 						break;
 					case 'REMOVED' :
