@@ -218,6 +218,7 @@
 		layout: 'admin',
 		data() {
 			return {
+				processEnv:process.env.NODE_ENV,
 				cover: {
 					images: [],
 				},
@@ -292,69 +293,15 @@
 				showPopup: false,
 				previewShowing: false,
 				langCard: 'rus',
-				choosedSight: {
-					"id": null,
+				choosedSightNull: {
 				  	"title": "",
 				  	"titleEn": "",
 				 	"description": "",
 				  	"descriptionEn": "",
 				  	"status": "MODERATION",
-				  	"cover": "",
-				  	"address": {
-				    	"id": null,
-				    	"address": "",
-				    	"latitude": null,
-				    	"longitude": null
-				  	},
-				  	"availabilities": [
-					  	{
-							"id": 1,
-							"enable": true,
-							"day": 0,
-							"start": "00:00:00",
-							"end": "00:00:00"
-						}, {
-							"id": 2,
-							"enable": true,
-							"day": 1,
-							"start": "00:00:00",
-							"end": "00:00:00"
-						}, {
-							"id": 3,
-							"enable": true,
-							"day": 2,
-							"start": "00:00:00",
-							"end": "00:00:00"
-						}, {
-							"id": 4,
-							"enable": true,
-							"day": 3,
-							"start": "00:00:00",
-							"end": "00:00:00"
-						}, {
-							"id": 5,
-							"enable": true,
-							"day": 4,
-							"start": "00:00:00",
-							"end": "00:00:00"
-						}, {
-							"id": 6,
-							"enable": false,
-							"day": 5,
-							"start": "00:00:00",
-							"end": "00:00:00"
-						}, {
-							"id": 7,
-							"enable": false,
-							"day": 6,
-							"start": "00:00:00",
-							"end": "00:00:00"
-						}
-					],
-				  	"medias": [
-				    
-				  	]
+					"url": ""
 				},
+				choosedSight: {},
 				currentPage: 1,
 				qtyPage: 0,
 				pageList: [],
@@ -476,7 +423,7 @@
 			},
 			addSight() {
 				console.log('show')
-				
+				this.choosedSight = this.choosedSightNull
 				this.method = 'add'
 				this.previewShow()
 			},
@@ -497,7 +444,7 @@
 			changeItem(id) {
 				console.log(id)
 				let params = {}
-				params.params = `service/${id}`
+				params.params = `museumGuide/${id}`
 				this.queryData(params)
 				.then((res) => {
 					this.choosedSight = res.data.data

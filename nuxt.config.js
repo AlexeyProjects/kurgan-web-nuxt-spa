@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+dotenv.config();
+const env = require("dotenv").config()
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
@@ -46,6 +49,7 @@ export default {
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
+    '@nuxtjs/dotenv'
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -54,17 +58,17 @@ export default {
     '@nuxtjs/axios'
   ],
   router: {
-    base: './',
+    base: process.env.NODE_ENV === 'production' ? './' : ''
   },
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     baseURL: 'http://ovz1.j04830129.meo8n.vps.myjino.ru/api/',
   },
-
+  env: env.parsed,
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     router: {
-    base: './',
+      base: process.env.NODE_ENV === 'production' ? './' : ''
   }
   }
 }
