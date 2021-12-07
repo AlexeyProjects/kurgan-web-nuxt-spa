@@ -218,6 +218,7 @@
 		layout: 'admin',
 		data() {
 			return {
+				processEnv:process.env.NODE_ENV,
 				cover: {
 					images: [],
 				},

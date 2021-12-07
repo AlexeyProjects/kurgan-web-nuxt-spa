@@ -1534,11 +1534,10 @@
 									id="qrcode"
 									class="gallery-list__item"
 									render-as='canvas'
-									
+									:size="155"
 									:value="choosedSight.url"  
 									level="H" />
-									<div 
-									>
+									<div>
 									<a  
 									v-show="false"
 									id="downloadQrcode" download="qrcode.jpg">Download as image</a>
@@ -1553,7 +1552,7 @@
 											<div class="card-data-content__field width--auto">
 												<label for="">Ссылка</label>
 												<input 
-												v-model="choosedSight.url"
+												v-model="qrCodeUrl"
 												placeholder="Введите название услуги" 
 												 type="text">
 											</div>
@@ -1676,6 +1675,7 @@
 </style>
 
 <script>
+	import Vue from 'vue'
 	import { VueEditor } from "vue2-editor";
 	import VueLoadImage from 'vue-load-image'
 	import ClickOutside from 'vue-click-outside'
@@ -1705,15 +1705,20 @@
 		},
 		watch: {
 			show(val) {
-				console.log(val)
+
 				if ( val === false ) {
 					setTimeout(() => {
 					  this.$refs.viewing.style.display = 'none'
 					}, 200)
 					
 				}
+
 				else if ( val === true ) {
 					this.$refs.viewing.style.display = 'block'
+				}
+
+				if ( this.type === 'museumGuide' && val === true) {
+					this.qrCodeGetImage()
 				}
 			}
 		},
@@ -1957,7 +1962,7 @@
 						data: this.choosedSight
 					}
 					
-
+					console.log(this.choosedSight)
 					this.$store.commit('showLoading')
 					this.$store.dispatch('service/putJson', paramsQuery )
 					.then((res) => {
@@ -1972,6 +1977,7 @@
 			},
 			qrCodeGenerate() {
 				this.choosedSight.url = this.qrCodeUrl
+				Vue.set(this.choosedSight, 'url', this.qrCodeUrl)
 			},
 			qrCodeDownrload() {
 				if (this.type === 'museumGuide') {
@@ -1984,17 +1990,32 @@
 					downloadLnk.click()
 					console.log(downloadLnk.href)
 				}
+			},
+			qrCodeGetImage() {
+				console.log('mounted_comp')
+				if ( this.method === 'change' ) {
+					this.qrCodeUrl = this.choosedSight.url
+				}
+				else if ( this.method === 'add' ) {
+					this.qrCodeUrl = ''
+				}
+			},
+			qrCodeSetSize() {
+				let qrcodeBlock = document.querySelector('.gallery-list.qr')
+				console.log(qrcodeBlock)
+				// let qrcode = qrcodeBlock.getElementsByTagName('canvas')[0]
+				// qrcode.style.width = '100%'
+				// qrcode.style.height = '100%'
 			}
 
 		},
 		directives: {
 			ClickOutside
 		},
-		mounted() {
-			
+		mounted() {	
 			this.viewingItem = this.$el
-
-			
+	
 		}
+		
 	}
 </script>
