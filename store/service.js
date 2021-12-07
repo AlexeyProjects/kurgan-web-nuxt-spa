@@ -14,7 +14,7 @@ export const actions = {
     return new Promise((resolve, reject) => {
       console.log(data)
       axios(    
-          'http://ovz1.j04830129.meo8n.vps.myjino.ru:49174/api/service/1',
+          `${this.$axios.defaults.baseURL}service/1`,
         {  
           data: data,
           method: 'POST',
@@ -45,7 +45,7 @@ export const actions = {
       console.log(data)
       axios(
         {
-          url: 'http://ovz1.j04830129.meo8n.vps.myjino.ru:49174/api/service/3',
+          url: `${this.$axios.defaults.baseURL}service/3`,
           method: 'GET'
         }
         )
