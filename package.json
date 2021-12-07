@@ -11,6 +11,7 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/dotenv": "^1.4.1",
+    "@nuxtjs/now-builder": "^0.17.3",
     "core-js": "^3.15.1",
     "md5": "^2.3.0",
     "nuxt": "^2.15.7",
@@ -20,8 +21,8 @@
     "vue-select": "^3.13.0",
     "vue-slide-toggle": "^1.1.1",
     "vue2-datepicker": "^3.10.1",
-    "vue3-slide-up-down": "^1.2.3",
-    "vue2-editor": "2.10.3"
+    "vue2-editor": "2.10.3",
+    "vue3-slide-up-down": "^1.2.3"
   },
   "devDependencies": {
     "fibers": "^5.0.0",

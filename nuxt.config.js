@@ -58,7 +58,7 @@ export default {
     '@nuxtjs/axios'
   ],
   router: {
-    base: process.env.NODE_ENV === 'production' ? './' : ''
+    // base: process.env.NODE_ENV === 'production' ? './' : ''
   },
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
