@@ -31,7 +31,7 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
-      
+
       '@/assets/scss/main.scss',
       '@/assets/scss/editor.css',
       '@/assets/scss/media.scss',
@@ -62,7 +62,7 @@ export default {
   },
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: `${process.env.URL_HOST}/api`,
+    baseURL: `${process.env.URL_HOST}/api/`,
   },
   env: env.parsed,
   // Build Configuration: https://go.nuxtjs.dev/config-build
