@@ -28,7 +28,7 @@ export const actions = {
     return new Promise((resolve, reject) => {
       commit('auth_request')
       console.log(user)
-      axios({url: 'http://ovz1.j04830129.meo8n.vps.myjino.ru/api/auth/login', data: user, method: 'POST' })
+      axios({url: `${this.$axios.defaults.baseURL}auth/login`, data: user, method: 'POST' })
       .then(resp => {
         console.log(resp.headers)
         resolve(resp)

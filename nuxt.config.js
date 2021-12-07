@@ -62,7 +62,7 @@ export default {
   },
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: 'http://ovz1.j04830129.meo8n.vps.myjino.ru/api/',
+    baseURL: process.env.URL_HOST,
   },
   env: env.parsed,
   // Build Configuration: https://go.nuxtjs.dev/config-build
