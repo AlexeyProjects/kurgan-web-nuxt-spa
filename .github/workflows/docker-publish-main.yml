@@ -1,0 +1,21 @@
+name: Build & Push Snapshot Docker Image
+on:
+  push:
+    branches:
+      - 'main'
+    tags-ignore:
+      - '*'
+jobs:
+  docker:
+    name: Publish Docker Image
+    runs-on: ubuntu-latest
+    env:
+      REPO: eeexdocker/kurgan-app-web
+    steps:
+      - uses: actions/checkout@v1
+      - name: Docker Hub Sign-in
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
+      - name: Building Docker Image
+        run: docker build -t $REPO:main.${{ github.run_number }} .
+      - name: Publish Docker Image
+        run: docker push $REPO:main.${{ github.run_number }}
