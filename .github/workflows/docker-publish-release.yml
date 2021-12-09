@@ -1,8 +1,8 @@
-name: Master Branch
+name: Build & Push Release Docker Image
 on:
   push:
-    branches:
-      - 'main'
+    tags:
+      - '*'
 jobs:
   docker:
     name: Publish Docker Image
@@ -14,6 +14,6 @@ jobs:
       - name: Docker Hub Sign-in
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
       - name: Building Docker Image
-        run: docker build -t $REPO:main.${{ github.run_number }} .
+        run: docker build -t $REPO:${{ github.ref_name }} .
       - name: Publish Docker Image
-        run: docker push $REPO:main.${{ github.run_number }}
+        run: docker push $REPO:${{ github.ref_name }}
