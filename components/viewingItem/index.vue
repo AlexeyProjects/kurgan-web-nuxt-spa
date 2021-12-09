@@ -1905,89 +1905,78 @@
 					})
 				}
 				else if ( this.method === 'change' ) {
-					formData.append('place', new Blob([json], {
-					  type: 'application/json',
-					}));
+					
 
-					// function dataURLtoFile(dataurl, filename) {
-					// 	var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
-					// 	bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
-					// 	while(n--){
-					// 		u8arr[n] = bstr.charCodeAt(n);
-					// 	}
-					// 	return new File([u8arr], filename, {type:mime});
-					// }
+					
 					console.log('IMAGE TO FILE');
-					let exampleImage = this.choosedSight.medias[0].url
-					function toDataURL(url, callback) {
-						var xhr = new XMLHttpRequest();
-						xhr.onload = function() {
-							var reader = new FileReader();
-							reader.onloadend = function() {
-							callback(reader.result);
+
+					let examplePhoto = this.choosedSight.medias[0].url
+					let gallery = this.choosedSight.medias
+					let arrForGallery = []
+
+					async function saveImageFile() {
+							for ( let item of gallery ) {
+								await fetch(item.url)
+								.then((res) => res.blob())
+								.then((myBlob) => {
+									console.log(myBlob);
+									const myFile = new File([myBlob], "image.jpeg", {
+										type: myBlob.type,
+									});
+									console.log(myFile)
+									arrForGallery.push(myFile)
+								});
 							}
-							reader.readAsDataURL(xhr.response);
-						};
-						xhr.open('GET', url);
-						xhr.responseType = 'blob';
-						xhr.send();
-					}
-
-					toDataURL(exampleImage, function(dataUrl,name) {
-						var file = dataURLtoFile(dataUrl,name);
-						return file
-						console.log(file);
-					})
-
-					let testArr = []
-					let n = 0
-					this.choosedSight.medias.forEach(async (item) => {
-						n++
-						await toDataURL(exampleImage, function(dataUrl) {
 							
-							console.log(testArr)
+						
+						
+						console.log(arrForGallery)
+						
+					}
+					saveImageFile()
+					.then(() => {
+						formData.append('place', new Blob([json], {
+							type: 'application/json',
+						}));
+
+						arrForGallery.forEach((item) => {
+							formData.append("medias", item);
 						})
-						
 
-						
-					})
-					console.log(testArr)
-					 function dataURLtoFile(dataurl, filename) {
- 
-						var arr = dataurl.split(','),
-							mime = arr[0].match(/:(.*?);/)[1],
-							bstr = atob(arr[1]), 
-							n = bstr.length, 
-							u8arr = new Uint8Array(n);
-							
-						while(n--){
-							u8arr[n] = bstr.charCodeAt(n);
+						formData.append("cover", this.choosedSight.cover);
+						paramsQuery = {
+							params: params,
+							data: formData
 						}
-						
-						return new File([u8arr], filename, {type:mime});
-					}
+
+						this.$store.commit('showLoading')
+						this.$store.dispatch('service/put', paramsQuery )
+						.then((res) => {
+							console.log(res.data.data)
+							Vue.set(this.choosedSight, 'cover', res.data.data.cover )
+							Vue.set(this.choosedSight, 'medias', res.data.data.medias )
+							this.choosedSight = res.data.data
+							console.log(this.choosedSight)
+							this.$store.commit('hideLoading')
+							
+						})
+						.catch((err) => {	
+							console.log(err)
+						})
+					})
 					
-					//Usage example:
+					
+					
 					
 
-					this.choosedSight.medias.forEach((item) => {
-					  	formData.append("medias", item.url);
-					})
-					formData.append("cover", this.choosedSight.cover);
-					paramsQuery = {
-						params: params,
-						data: formData
-					}
+
+
 					
-					this.$store.commit('showLoading')
-					this.$store.dispatch('service/put', paramsQuery )
-					.then((res) => {
-					this.$store.commit('hideLoading')
-					console.log(res)
-					})
-					.catch((err) => {	
-						console.log(err)
-					})
+
+
+					
+					
+					
 				}
 				
 			},
