@@ -188,7 +188,7 @@
 			<ViewingItem 
 			@previewHide="previewHide"
 			:show="previewShowing"
-			:type="'sight'"
+			:type="'place'"
 			:method="method"
 			:choosedSight="choosedSight"
 			>
@@ -304,7 +304,10 @@
 				  "titleEn": "",
 				  "description": "",
 				  "descriptionEn": "",
-				  "status": "MODERATION",
+				  "status": {
+						title: 'Новый',
+						value: 'NEW', 
+					},
 				  "cover": "",
 				  "address": {
 				    "id": null,
@@ -438,22 +441,25 @@
 			addSight() {
 				console.log('show')
 				this.choosedSight = {
-				"id": null,
-				  "title": "",
-				  "titleEn": "",
-				  "description": "",
-				  "descriptionEn": "",
-				  "status": "",
-				  "cover": "",
-				  "address": {
-				    "id": null,
-				    "address": "",
-				    "latitude": 50,
-				    "longitude": 70
-				  },
-				  "medias": [
+					"id": null,
+				  	"title": "",
+				  	"titleEn": "",
+				  	"description": "",
+				  	"descriptionEn": "",
+				  	"status": {
+						title: 'Новый',
+						value: 'NEW', 
+					},
+				  	"cover": "",
+				  	"address": {
+				    	"id": null,
+				    	"address": "",
+				    	"latitude": 50,
+				    	"longitude": 70
+				  	},
+				  	"medias": [
 				    
-				  ]
+				  	]
 				},
 				this.method = 'add'
 				this.previewShow()

@@ -82,6 +82,14 @@
 			titleEn: '',
 			multiple: false
 		},
+		watch: {
+			title: function(val) {
+				if ( val === '' ) {
+					this.choosed = this.items[0]
+				}
+			}
+		},
+		
 		data() {
 			return {
 				opened: false,

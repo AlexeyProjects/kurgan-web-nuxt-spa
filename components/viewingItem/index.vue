@@ -238,7 +238,7 @@
 					</div>
 
 					<div 
-					v-if="type === 'sight'"
+					v-if="type === 'place'"
 					:class="{ loading: globalLoading }"
 					class="viewing-body-wrap">
 						<div class="viewing-body-header">
@@ -588,7 +588,7 @@
 								</div>
 								<div 
 								v-if="method === 'add'"
-								@click="sendService('place/1')"
+								@click="sendService('event/1')"
 								class="viewing-body-header__btn btn widthauto withicon act ">
 									<IconSave></IconSave>
 									{{ methodsTitle }}
@@ -596,7 +596,7 @@
 
 								<div 
 								v-if="method === 'change'"
-								@click="sendService(`place/${choosedSight.id}`)"
+								@click="sendService(`event/${choosedSight.id}`)"
 								class="viewing-body-header__btn btn widthauto withicon act ">
 									<IconSave></IconSave>
 									{{ methodsTitle }}
@@ -911,6 +911,7 @@
 										<div class="card-time-list__item__input card-data-content__field start">
 											<label for="">C</label>
 											<input 
+											v-model="choosedSight.startTime"
 											type="time" 
 											
 											
@@ -928,6 +929,7 @@
 										<div class="card-time-list__item__input card-data-content__field end">
 											<label for="">До</label>
 											<input 
+											v-model="choosedSight.endTime"
 											type="time" 
 											
 								       		min="08:00" 
@@ -978,7 +980,7 @@
 								</div>
 								<div 
 								v-if="method === 'add'"
-								@click="sendService('place/1')"
+								@click="sendService('service/1')"
 								class="viewing-body-header__btn btn widthauto withicon act ">
 									<IconSave></IconSave>
 									{{ methodsTitle }}
@@ -986,7 +988,7 @@
 
 								<div 
 								v-if="method === 'change'"
-								@click="sendService(`place/${choosedSight.id}`)"
+								@click="sendService(`service/${choosedSight.id}`)"
 								class="viewing-body-header__btn btn widthauto withicon act ">
 									<IconSave></IconSave>
 									{{ methodsTitle }}
@@ -1326,7 +1328,7 @@
 								</div>
 								<div 
 								v-if="method === 'add'"
-								@click="sendService('place/1')"
+								@click="sendService('audioGuide/1')"
 								class="viewing-body-header__btn btn widthauto withicon act ">
 									<IconSave></IconSave>
 									{{ methodsTitle }}
@@ -1334,7 +1336,7 @@
 
 								<div 
 								v-if="method === 'change'"
-								@click="sendService(`place/${choosedSight.id}`)"
+								@click="sendService(`audioGuide/${choosedSight.id}`)"
 								class="viewing-body-header__btn btn widthauto withicon act ">
 									<IconSave></IconSave>
 									{{ methodsTitle }}
@@ -1768,8 +1770,8 @@
 						value: 'REMOVED', 
 					},
 					{
-						title: 'Опубликован',
-						value: 'PUBLISHED', 
+						title: 'Новый',
+						value: 'NEW', 
 					},
 				],	
 				langCard: 'rus',
@@ -1780,7 +1782,8 @@
 			      [{ align: "" }, { align: "center" }, { align: "right"}, { align: "justify"}],
 			      [{ color: [] }]
 			    ],
-				qrCodeUrl: ''
+				qrCodeUrl: '',
+				newCover: ''
 			}
 		},
 		computed: {
@@ -1883,7 +1886,8 @@
 				
 				console.log(paramsQuery)
 				if ( this.method === 'add' ) {
-					formData.append('place', new Blob([json], {
+					
+					formData.append(this.type, new Blob([json], {
 					  type: 'application/json',
 					}));
 					this.choosedSight.medias.forEach((item) => {
@@ -1905,51 +1909,67 @@
 					})
 				}
 				else if ( this.method === 'change' ) {
-					
-
-					
+					this.$store.commit('showLoading')
 					console.log('IMAGE TO FILE');
-
+					console.log(params)
 					let examplePhoto = this.choosedSight.medias[0].url
 					let gallery = this.choosedSight.medias
+					let cover = this.choosedSight.cover
 					let arrForGallery = []
-
+					let fileCover = []
 					async function saveImageFile() {
-							for ( let item of gallery ) {
-								await fetch(item.url)
-								.then((res) => res.blob())
-								.then((myBlob) => {
-									console.log(myBlob);
-									const myFile = new File([myBlob], "image.jpeg", {
-										type: myBlob.type,
-									});
-									console.log(myFile)
-									arrForGallery.push(myFile)
+						for ( let item of gallery ) {
+							await fetch(item.url)
+							.then((res) => res.blob())
+							.then((myBlob) => {
+								console.log(myBlob);
+								const myFile = new File([myBlob], "image.jpeg", {
+									type: myBlob.type,
 								});
-							}
+								console.log(myFile)
+								arrForGallery.push(myFile)
+							})	
 							
-						
-						
-						console.log(arrForGallery)
-						
+						}
+						await fetch(cover)
+						.then((res) => res.blob())
+						.then((myBlob) => {
+							console.log(myBlob);
+							const myFile = new File([myBlob], "image.jpeg", {
+								type: myBlob.type,
+							});
+							fileCover = myFile
+
+						});
+
 					}
+
+					
+					
+					
 					saveImageFile()
 					.then(() => {
-						formData.append('place', new Blob([json], {
+						
+						formData.append(this.type, new Blob([json], {
 							type: 'application/json',
 						}));
 
 						arrForGallery.forEach((item) => {
 							formData.append("medias", item);
 						})
+						
 
-						formData.append("cover", this.choosedSight.cover);
+						formData.append("cover", fileCover);
+
+						
 						paramsQuery = {
 							params: params,
 							data: formData
 						}
-
-						this.$store.commit('showLoading')
+						for (var pair of formData.entries()) {
+							console.log(pair); 
+						}
+						
 						this.$store.dispatch('service/put', paramsQuery )
 						.then((res) => {
 							console.log(res.data.data)
