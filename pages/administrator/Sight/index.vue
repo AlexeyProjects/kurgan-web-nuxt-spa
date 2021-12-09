@@ -225,6 +225,7 @@
 	import VueLoadImage from 'vue-load-image'
 
 	export default {
+		name: 'sight',
 		components: {
 		    'vue-load-image': VueLoadImage
 		},
