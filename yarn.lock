@@ -4171,6 +4171,11 @@ ignore@^5.1.4, ignore@^5.1.8:
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-5.1.9.tgz#9ec1a5cbe8e1446ec60d4420060d43aa6e7382fb"
   integrity sha512-2zeMQpbKz5dhZ9IwL0gbxSW5w0NK/MSAMtNuhgIHEPmaU3vPdKPL0UdvUCXs5SS4JAwsBxysK5sFMW8ocFiVjQ==
 
+image-to-file-converter@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/image-to-file-converter/-/image-to-file-converter-1.0.6.tgz#eb1adc6bb6cd7e080338b31ad9446ee769781641"
+  integrity sha512-CokQCAEtUHGOmc537r9yZHCi4UTxOnpUQ7JPcIGRjOntTEVlT7uNpmP1YuhUT/53ufEsxk9C+ReU23zhO/b+6Q==
+
 immutable@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/immutable/-/immutable-4.0.0.tgz#b86f78de6adef3608395efb269a91462797e2c23"

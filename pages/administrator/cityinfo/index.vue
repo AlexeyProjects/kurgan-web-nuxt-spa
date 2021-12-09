@@ -150,16 +150,6 @@
 		components: { 
 			VueEditor
 		},
-		watch: {
-			cityInfo: {
-		      handler: function(val, oldVal) {
-		        console.log(oldVal, val);
-
-		        localStorage.cityInfoEditor =  JSON.stringify(val) 
-		      },
-		      deep: true
-		    }
-		},
 		data() {
 			return {
 				langCard: 'rus',
@@ -214,29 +204,20 @@
 				})
 			},
 			getData() {		
-				if ( localStorage.getItem('cityInfoEditor') ) {
-	  					this.$store.commit('hideLoading');
-	  					return
-	  			}
-	  			else {
-	  				this.$store.commit('showLoading');
-	  				this.getCityInfo()
-			  		.then((res) => {
-			  			let data = {}
-			  			Object.assign(data, res.data.data)
-			  			console.log(data)
-			  			this.cityInfo = data
-			  			this.$store.commit('hideLoading');	
-			  		})
-	  			}
+				this.$store.commit('showLoading');
+				this.getCityInfo()
+				.then((res) => {
+					let data = {}
+					Object.assign(data, res.data.data)
+					console.log(data)
+					this.cityInfo = data
+					this.$store.commit('hideLoading');	
+				})
 				
 			}
 	  	},
 	  	mounted() {
-
 	  		this.getData()
-	  		this.cityInfo = JSON.parse(localStorage.getItem('cityInfoEditor'))
-	  		console.log(this.globalLoading)
 	  	}
 	}
 </script>

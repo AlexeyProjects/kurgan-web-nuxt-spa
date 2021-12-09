@@ -1680,7 +1680,7 @@
 	import VueLoadImage from 'vue-load-image'
 	import ClickOutside from 'vue-click-outside'
 	import { mapGetters } from 'vuex'
-	
+	import { pathToFile } from 'image-to-file-converter'
 
 	import DatePicker from 'vue2-datepicker';
   	import 'vue2-datepicker/index.css';
@@ -1908,6 +1908,68 @@
 					formData.append('place', new Blob([json], {
 					  type: 'application/json',
 					}));
+
+					// function dataURLtoFile(dataurl, filename) {
+					// 	var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+					// 	bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+					// 	while(n--){
+					// 		u8arr[n] = bstr.charCodeAt(n);
+					// 	}
+					// 	return new File([u8arr], filename, {type:mime});
+					// }
+					console.log('IMAGE TO FILE');
+					let exampleImage = this.choosedSight.medias[0].url
+					function toDataURL(url, callback) {
+						var xhr = new XMLHttpRequest();
+						xhr.onload = function() {
+							var reader = new FileReader();
+							reader.onloadend = function() {
+							callback(reader.result);
+							}
+							reader.readAsDataURL(xhr.response);
+						};
+						xhr.open('GET', url);
+						xhr.responseType = 'blob';
+						xhr.send();
+					}
+
+					toDataURL(exampleImage, function(dataUrl,name) {
+						var file = dataURLtoFile(dataUrl,name);
+						return file
+						console.log(file);
+					})
+
+					let testArr = []
+					let n = 0
+					this.choosedSight.medias.forEach(async (item) => {
+						n++
+						await toDataURL(exampleImage, function(dataUrl) {
+							
+							console.log(testArr)
+						})
+						
+
+						
+					})
+					console.log(testArr)
+					 function dataURLtoFile(dataurl, filename) {
+ 
+						var arr = dataurl.split(','),
+							mime = arr[0].match(/:(.*?);/)[1],
+							bstr = atob(arr[1]), 
+							n = bstr.length, 
+							u8arr = new Uint8Array(n);
+							
+						while(n--){
+							u8arr[n] = bstr.charCodeAt(n);
+						}
+						
+						return new File([u8arr], filename, {type:mime});
+					}
+					
+					//Usage example:
+					
+
 					this.choosedSight.medias.forEach((item) => {
 					  	formData.append("medias", item.url);
 					})
