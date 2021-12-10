@@ -135,8 +135,8 @@
 
 <script>
 	import { mapGetters, mapActions } from 'vuex'
-	import tableMixin from '@/mixins.js/table';
-	import paginationMixin from '@/mixins.js/pagination';
+	import tableMixin from '@/mixins/table';
+	import paginationMixin from '@/mixins/pagination';
 
 	export default {
 		mixins: [
