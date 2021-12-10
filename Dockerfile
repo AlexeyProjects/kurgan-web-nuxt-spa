@@ -7,7 +7,7 @@ COPY assets /build/assets/
 COPY components /build/components/
 COPY layouts /build/layouts/
 COPY middleware /build/middleware/
-COPY mixins.js /build/mixins.js/
+COPY mixins /build/mixins.js/
 COPY pages /build/pages/
 COPY static /build/static/
 COPY store /build/store/
