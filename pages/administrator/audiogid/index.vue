@@ -176,6 +176,7 @@
 			:type="'audioGuide'"
 			:method="method"
 			:choosedSight="choosedSight"
+			@refreshTable="refreshTable"
 			>
 				
 			
@@ -503,6 +504,10 @@
 					this.previewShow()
 					console.log(res)
 				})
+			},
+			refreshTable() {
+				this.getData()
+				console.log('refresh')
 			}
 			// openSettings(id) {
 			// 	this.settingsShow = !this.settingsShow

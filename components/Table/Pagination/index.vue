@@ -1,6 +1,6 @@
 <template>
 	<div 
-	v-if=""
+	v-if="responseData && responseData.total > 10"
 	class="table-footer__pagination">
 		<div class="table-footer__pagination-arrows">
 			<div 
@@ -72,7 +72,10 @@
 	export default {
 		props: {
 			responseData: [],
-			currentPage: 1
+			currentPage: {
+				type: Number,
+				default: 1
+			}
 		},
 		data() {
 			return {
@@ -88,22 +91,18 @@
 		methods: {
 			getPageQty() {
 				const rowsize = 20
-				console.log(this.responseData)
 				let total = this.responseData.total
 
-				console.log(total)
+
 				let partQty = Math.round(total / rowsize) * rowsize
-				console.log(partQty)
-				console.log('partQty')
+
 				if ( total > partQty  ) {
 					partQty += rowsize
 				}
-				console.log(partQty)
 
 				let qtyPage = partQty/rowsize
 				this.qtyPage = qtyPage
 				this.$emit('getQtyPage', qtyPage)
-				console.log(qtyPage)
 				let pageList = []
 				let pageListNew = []
 				
@@ -114,7 +113,6 @@
 					let lastItterate = this.qtyPage - 1
 
 					if ( i == 0 ) {
-						console.log(`Иттерация ${i}`)
 						object.pageQty = i
 						object.start = 1;
 						object.end = rowsize
@@ -147,9 +145,7 @@
 			sortListInPaginate(offset, itemPage) {
 				if ( this.choosedPageList != itemPage ) {
 					let currentPage = itemPage.pageQty + 1
-					console.log(currentPage)
 					this.currentPage = currentPage
-					console.log(this.currentPage)
 					this.choosedPageList = itemPage
 					this.$emit('sortListInPaginate', offset, currentPage)
 				}
@@ -194,13 +190,11 @@
 				}
 			},
 			paginationEnd() {
-				console.log('end')
 				if ( this.currentPage != this.qtyPage ) {
 					let offset = 0
 					offset = this.pageList[this.pageList.length - 1].start - 1
 					this.$emit('paginationEnd', offset)
 					this.currentPage = this.qtyPage
-					console.log(this.currentPage)
 				}
 				else {
 					return
