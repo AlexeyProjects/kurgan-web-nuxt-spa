@@ -21,6 +21,5 @@ COPY --from=build /build/dist /opt/web
 RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx/nginx.conf /etc/nginx/
 COPY nginx/conf.d/ /etc/nginx/conf.d/
-COPY nginx/ssl/ /etc/nginx/ssl/
-EXPOSE 80 443
+EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
