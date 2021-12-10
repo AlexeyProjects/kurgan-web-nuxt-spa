@@ -135,10 +135,14 @@
 
 <script>
 	import { mapGetters, mapActions } from 'vuex'
+	import tableMixin from '@/mixins/table';
+	import paginationMixin from '@/mixins/pagination';
 
 	export default {
-		
-		
+		mixins: [
+			tableMixin,
+			paginationMixin
+		],
 		data() {
 			return {
 				headers: [
@@ -168,83 +172,19 @@
 						sort: false,
 					}
 				],
-				rows: [
-					{
-						"email": 'email@email.ru',
-						"service": "Аврора",
-						"status": 'PUBLISHED'
-			
-					},
-					{
-						"email": 'email@email.ru',
-						"service": "Аврора",
-						"status": 'PUBLISHED'
-			
-					},
-					{
-						"email": 'email@email.ru',
-						"service": "Аврора",
-						"status": 'PUBLISHED'
-			
-					},
-					{
-						"email": 'email@email.ru',
-						"service": "Аврора",
-						"status": 'PUBLISHED'
-			
-					},
-					{
-						"email": 'email@email.ru',
-						"service": "Аврора",
-						"status": 'PUBLISHED'
-			
-					}
-				],
 				cardInfo: [],
-				currentPage: 1,
-				qtyPage: 0,
-				pageList: [],
-				choosedPageList: [],
-				paginationShow: false,
-				responseData: {},
-				searchInput: '',
-				searching: false,
 				forQuery: {
 					role: 'USER',
 					offset: 0,
 					limit: 20
 				},
-				previewShowing: false
 			}
 		},
 		layout: 'admin',
 		computed: {	
 			...mapGetters({
 				getUsers: 'admin/users/getUsers',
-				getAllServices:	'admin/service/getAllService',
-				globalLoading: 'globalLoading'
 			}),
-			getStatus() {
-				let statusTitle = ''
-				switch(this.item.status) {
-					case 'MODERATION' :
-						statusTitle = 'На модерации'
-						break;
-					case 'PUBLISHED' :
-						statusTitle = 'Опубликован'
-						break;
-					case 'REMOVED' :
-						statusTitle = 'Удаленный'
-						break;
-					case 'REJECTED' :
-						statusTitle = 'Отклонён'
-						break;
-					case 'NEW' :
-						statusTitle = 'Новый'
-						break;
-				}
-				return statusTitle
-			},
 			getParamsForQuery() { 
 				return `admin/users?role=${this.forQuery.role}&offset=${this.forQuery.offset}&limit=${this.forQuery.limit}&search=${this.searchInput}`
 			}
@@ -253,59 +193,6 @@
 			...mapActions({
 				queryData: 'service/getData'
 			}),
-			showPaginationPages() {
-				this.paginationShow = !this.paginationShow
-			},
-			// Не работает проверка + присвоения класса ( Игнорирует наличие item в this.choosedPageList )
-			sortListInPaginate(offset, currentPage) {
-					this.forQuery.offset = offset
-					this.currentPage = currentPage
-					console.log(currentPage)
-					this.getData()
-				
-			},
-			paginationNext(offset) {
-					this.forQuery.offset = offset
-					this.getData()
-					this.currentPage += 1
-				
-				
-			},
-			paginationPrev(offset) {
-					this.forQuery.offset = offset
-					this.getData()
-					this.currentPage -= 1
-				
-			},
-			paginationStart() {
-				if ( this.currentPage != 1 ) {
-					this.forQuery.offset = 0
-					this.getData()
-					this.currentPage = 1
-				}
-				else {
-					return
-				}
-			},
-			paginationEnd(offset) {
-				this.forQuery.offset = offset
-				this.getData()
-				this.currentPage = this.qtyPage
-			},
-			getQtyPage(value) {
-				this.qtyPage = value
-			},
-			searchTable() {
-				this.forQuery.offset = 0
-				this.currentPage = 1
-				this.searching = true
-				this.getData()
-			},
-			clearSearch() {
-				this.searchInput = ''
-				this.searching = false
-				this.getData()
-			},
 			getData() {
 				this.$store.commit('showLoading')
 				let params = {}
@@ -319,13 +206,6 @@
 
 					this.$store.commit('hideLoading')
 				})
-			},
-			// ------ Use Table settings //
-			previewShow() {
-				this.previewShowing = true
-			},
-			previewHide() {
-				this.previewShowing = false
 			},
 			checkUser(item) {
 				this.previewShow()

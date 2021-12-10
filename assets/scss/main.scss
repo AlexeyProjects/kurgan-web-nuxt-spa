@@ -1686,12 +1686,18 @@ label {
 						&.new {
 
 						}
+						&:hover {
+							cursor: help;
+						}
 					}
 					&.cover {
 						img {
 							width: 8.6rem;
 							height: 4.8rem;
 							border-radius: 8px;
+						}
+						&:hover {
+							cursor: pointer;
 						}
 					}
 				}

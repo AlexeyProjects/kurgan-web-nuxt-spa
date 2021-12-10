@@ -15,11 +15,17 @@
 		class="table-settings-list"
 		:style="position"
 		>
-			<div class="table-settings-list__item">
+			<div
+			@click="changeStatusItem(item, 'REJECTED')"
+			v-if="item.status === 'PUBLISHED'"
+			class="table-settings-list__item">
 				<IconReturn></IconReturn>
 				Снять с публикации
 			</div>
-			<div class="table-settings-list__item">
+			<div 
+			@click="changeStatusItem(item, 'PUBLISHED')"
+			v-if="item.status != 'PUBLISHED'"
+			class="table-settings-list__item">
 				<IconEnter
 				v-click-outside="hideSettings"
 				></IconEnter>
@@ -35,7 +41,10 @@
 				<IconEdit></IconEdit>
 				Изменить
 			</div>
-			<div class="table-settings-list__item">
+			<div 
+			v-if="item.status != 'REMOVED'"
+			@click="changeStatusItem(item, 'REMOVED')"
+			class="table-settings-list__item">
 				<IconDelete></IconDelete>
 				Удалить
 			</div>
@@ -99,6 +108,10 @@
 			// Default Table //
 			changeItem(item) {
 				this.$emit('changeItem',item.id)
+				this.hideSettings()
+			},
+			changeStatusItem(item, newStatus) {
+				this.$emit('changeStatusItem',item, newStatus)
 				this.hideSettings()
 			},
 			// User //

@@ -1917,6 +1917,7 @@
 					let cover = this.choosedSight.cover
 					let arrForGallery = []
 					let fileCover = []
+
 					async function saveImageFile() {
 						for ( let item of gallery ) {
 							await fetch(item.url)
@@ -1939,14 +1940,9 @@
 								type: myBlob.type,
 							});
 							fileCover = myFile
-
 						});
-
 					}
 
-					
-					
-					
 					saveImageFile()
 					.then(() => {
 						
@@ -1972,31 +1968,16 @@
 						
 						this.$store.dispatch('service/put', paramsQuery )
 						.then((res) => {
-							console.log(res.data.data)
-							Vue.set(this.choosedSight, 'cover', res.data.data.cover )
-							Vue.set(this.choosedSight, 'medias', res.data.data.medias )
-							this.choosedSight = res.data.data
-							console.log(this.choosedSight)
-							this.$store.commit('hideLoading')
-							
+							console.log(res.data.data);
+							Vue.set(this.choosedSight, 'cover', res.data.data.cover );
+							Vue.set(this.choosedSight, 'medias', res.data.data.medias );
+							this.$store.commit('hideLoading');
+							this.$emit('refreshTable');
 						})
 						.catch((err) => {	
 							console.log(err)
 						})
-					})
-					
-					
-					
-					
-
-
-
-					
-
-
-					
-					
-					
+					})	
 				}
 				
 			},
@@ -2037,8 +2018,9 @@
 					this.$store.commit('showLoading')
 					this.$store.dispatch('service/putJson', paramsQuery )
 					.then((res) => {
-					this.$store.commit('hideLoading')
-					console.log(res)
+						this.$store.commit('hideLoading')
+						console.log(res)
+						this.$emit('refreshTable');
 					})
 					.catch((err) => {	
 						console.log(err)

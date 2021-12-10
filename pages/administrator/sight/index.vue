@@ -60,6 +60,7 @@
 					  	<tr>
 					   		<td 
 					   		v-for="(item,key,index) in headers"
+							:key="key"
 					   		> 
 					   			{{ item.title }}
 					   		</td>
@@ -73,6 +74,7 @@
 					 	> -->
 					 	<tr 
 					 	v-for="(item,key,index) in responseData.rows"
+						:key="key"
 					 	>
 					 		<td
 					 			
@@ -103,52 +105,11 @@
 					 		</td>
 					 		<td>
 					 			<div 
-					 			v-if="item.status === 'PUBLISHED'"
 					 			:class="item.status.toLowerCase()"
 					 			class="status">
-					 	
-					 					
-					 				Опубликован
+					 				{{ getStatusTitle(item.status) }}
 					 			</div>
 
-					 			<div 
-					 			v-if="item.status === 'REMOVED'"
-					 			:class="item.status.toLowerCase()"
-					 			class="status">
-					 	
-					 					
-					 				Удаленный
-					 			</div>
-
-					 			<div 
-					 			v-if="item.status === 'REJECTED'"
-					 			:class="item.status.toLowerCase()"
-					 			class="status">
-					 	
-					 					
-					 				Отклонён
-					 			</div>
-
-					 			<div 
-					 			v-if="item.status === 'NEW'"
-					 			:class="item.status.toLowerCase()"
-					 			class="status">
-					 	
-					 					
-					 				Новый
-					 			</div>
-
-					 			<div 
-					 			v-if="item.status === 'MODERATION'"
-					 			:class="item.status.toLowerCase()"
-					 			class="status">
-					 	
-					 					
-					 				На модерации
-					 			</div>
-					 			
-
-					 			
 					 		</td>
 
 					 		<td >
@@ -156,6 +117,7 @@
 					 			:item="item"
 					 			:status="item.status"
 					 			@changeItem="changeItem"
+								@changeStatusItem="changeStatusItem"
 					 			>
 					 				
 					 			</TableSettings>
@@ -191,6 +153,7 @@
 			:type="'place'"
 			:method="method"
 			:choosedSight="choosedSight"
+			@refreshTable="refreshTable"
 			>
 				
 			
@@ -222,22 +185,18 @@
 
 <script>
 	import { mapGetters, mapActions } from 'vuex'
-	import VueLoadImage from 'vue-load-image'
+	import tableMixin from '@/mixins/table';
+	import paginationMixin from '@/mixins/pagination';
 
 	export default {
-		components: {
-		    'vue-load-image': VueLoadImage
-		},
+		mixins: [
+			tableMixin,
+			paginationMixin
+		],
 		layout: 'admin',
 		data() {
 			return {
-				cover: {
-					images: [],
-				},
-				gallery: {
-					images: [],
-					showMoreGallery: false
-				},
+				type: 'place',
 				headers: [
 					{
 						title: 'ID',
@@ -263,40 +222,6 @@
 						sort: false,
 					}
 				],
-				rows: [
-					{
-						"title": 'Церковь',
-						"titleEn": 'Aurora',
-						"status": 'NEW',
-						"cover": 'https://imgur.com/ZPKQTQW.png'
-					},
-					{
-						"title": 'Аврора',
-						"titleEn": 'Aurora',
-						"status": 'REMOVED',
-						"cover": 'https://imgur.com/RTMAHH5.png'
-					},
-					{
-						"title": 'Аврора',
-						"titleEn": 'Aurora',
-						"status": 'MODERATION',
-						"cover": 'https://imgur.com/WRkSqVd.png'
-					},
-					{
-						"title": 'Аврора',
-						"titleEn": 'Aurora',
-						"status": 'REJECTED',
-						"cover": 'https://imgur.com/tYs1Tzd.png'
-					},
-					{
-						"title": 'Аврора',
-						"titleEn": 'Aurora',
-						"status": 'PUBLISHED',
-						"cover": 'https://imgur.com/eoIiORL.png'
-					},
-				],
-				showPopup: false,
-				previewShowing: false,
 				langCard: 'rus',
 				choosedSight: {
 				"id": null,
@@ -319,108 +244,26 @@
 				    
 				  ]
 				},
-				currentPage: 1,
-				qtyPage: 0,
-				pageList: [],
-				choosedPageList: [],
-				paginationShow: false,
-				responseData: {},
-				searchInput: '',
-				searching: false,
 				forQuery: {
 					role: 'USER',
 					offset: 0,
 					limit: 20
 				},
 				previewShowing: false,
-				popupImageSrc: '',
-				method: ''
 
 			}
 		},
 		computed: {
-			...mapGetters({
-				globalLoading: 'globalLoading'
-			}),
-			getStatus() {
-				let statusTitle = ''
-				switch(this.choosedSight.status) {
-					case 'MODERATION' :
-						statusTitle = 'На модерации'
-						break;
-					case 'PUBLISHED' :
-						statusTitle = 'Опубликован'
-						break;
-					case 'REMOVED' :
-						statusTitle = 'Удаленный'
-						break;
-					case 'REJECTED' :
-						statusTitle = 'Отклонён'
-						break;
-					case 'NEW' :
-						statusTitle = 'Новый'
-						break;
-				}
-				return statusTitle
-			},
 			getParamsForQuery() { 
-				return `place?cityId=1&offset=${this.forQuery.offset}&limit=${this.forQuery.limit}&search=${this.searchInput}`
+				return `${this.type}?cityId=1&offset=${this.forQuery.offset}&limit=${this.forQuery.limit}&search=${this.searchInput}`
 			}
 		},
 		methods: {
 			...mapActions({
 				queryData: 'service/getData'
 			}),
-			showPaginationPages() {
-				this.paginationShow = !this.paginationShow
-			},
-			// Не работает проверка + присвоения класса ( Игнорирует наличие item в this.choosedPageList )
-			sortListInPaginate(offset, currentPage) {
-					this.forQuery.offset = offset
-					this.currentPage = currentPage
-					console.log(currentPage)
-					this.getData()
-				
-			},
-			paginationNext(offset) {
-					this.forQuery.offset = offset
-					this.getData()
-					this.currentPage += 1
-				
-				
-			},
-			paginationPrev(offset) {
-					this.forQuery.offset = offset
-					this.getData()
-					this.currentPage -= 1
-				
-			},
-			paginationStart() {
-				if ( this.currentPage != 1 ) {
-					this.forQuery.offset = 0
-					this.getData()
-					this.currentPage = 1
-				}
-				else {
-					return
-				}
-			},
-			paginationEnd(offset) {
-				this.forQuery.offset = offset
-				this.getData()
-				this.currentPage = this.qtyPage
-			},
-			searchTable() {
-				this.forQuery.offset = 0
-				this.currentPage = 1
-				this.searching = true
-				this.getData()
-			},
-			clearSearch() {
-				this.searchInput = ''
-				this.searching = false
-				this.getData()
-			},
+			
+			
 			getData() {
 				this.$store.commit('showLoading')
 				let params = {}
@@ -435,11 +278,8 @@
 					this.$store.commit('hideLoading')
 				})
 			},
-			getQtyPage(value) {
-				this.qtyPage = value
-			},
+			
 			addSight() {
-				console.log('show')
 				this.choosedSight = {
 					"id": null,
 				  	"title": "",
@@ -464,35 +304,6 @@
 				this.method = 'add'
 				this.previewShow()
 			},
-			previewShow() {
-				this.previewShowing = true
-			},
-			previewHide() {
-				this.previewShowing = false
-			},
-			showPhoto(src) {
-				this.showPopup = true
-				this.popupImageSrc = src
-			},
-			hidePopup() {
-				this.showPopup = false
-			},
-			// Table settings methods //
-			changeItem(id) {
-				console.log(id)
-				let params = {}
-				params.params = `place/${id}`
-				this.queryData(params)
-				.then((res) => {
-					this.choosedSight = res.data.data
-					this.method = 'change'
-					this.previewShow()
-					console.log(res)
-				})
-			}
-			// openSettings(id) {
-			// 	this.settingsShow = !this.settingsShow
-			// }
 		},
 		mounted() {
 			this.getData()

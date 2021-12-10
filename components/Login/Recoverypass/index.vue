@@ -10,7 +10,12 @@
 			<label  class="col login-form-inputs__label" for="email">E-mail
 				
 			</label>
-			<input placeholder="E-mail" class="input login-form-inputs__item" name="email" type="text">
+			<input 
+			placeholder="E-mail" 
+			class="input login-form-inputs__item" 
+			name="email" type="text"
+			v-model="emailForRecovery"
+			>
 			<NuxtLink to="/login/register" class="login-forgotPass">
 				Зарегистрироваться
 			</NuxtLink>
@@ -18,9 +23,11 @@
 			
 		</div>
 		<div class="login-form-buttons row">
-			<NuxtLink to="/login/recoverypass/accept" class="login-form-buttons__item auth btn">
+			<div 
+			@click = recoveryPassWithEmail()
+			class="login-form-buttons__item auth btn">
 				Сбросить пароль
-			</NuxtLink>
+			</div>
 			<NuxtLink to="/login" class="login-form-buttons__item register btn">
 				Назад ко входу
 			</NuxtLink>
@@ -33,9 +40,11 @@
 </style>
 
 <script>
+	import { mapGetters, mapActions } from 'vuex';
 	export default {
 		data() {
 			return {
+				emailForRecovery: '',
 				firstPassVal: '',
 				secondPassVal: '',
 				noRememberShow: false,
@@ -93,11 +102,17 @@
 			}
 		},
 		methods: {
+			...mapActions({
+            	sendEmailForRecovery: 'login/recovery/recoveryPasswordEmail'
+        	}),
 			firstPass: function(e) {
 				this.firstPassVal = e
 			},
 			secondPass: function(e) {
 				this.secondPassVal = e
+			},
+			recoveryPassWithEmail() {
+				this.sendEmailForRecovery(this.emailForRecovery)
 			}
 		}
 	}

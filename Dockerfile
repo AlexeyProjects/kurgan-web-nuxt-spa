@@ -1,4 +1,4 @@
-FROM node:15.14.0 as build
+FROM node:14.16.1 as build
 WORKDIR /build
 ENV PATH /build/node_modules/.bin:$PATH
 ENV URL_HOST ${URL_HOST}
@@ -7,6 +7,7 @@ COPY assets /build/assets/
 COPY components /build/components/
 COPY layouts /build/layouts/
 COPY middleware /build/middleware/
+COPY mixins /build/mixins/
 COPY pages /build/pages/
 COPY static /build/static/
 COPY store /build/store/
