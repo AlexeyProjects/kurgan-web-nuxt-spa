@@ -7,7 +7,7 @@
                 <input
                 @input="getAddressList()"
                 placeholder="Введите местоположение" 
-                v-model="address" type="text">
+                v-model="address.address" type="text">
             </div>
         </div>
         <div 
@@ -34,12 +34,14 @@
     import { mapActions } from 'vuex'
     export default {
         props: {
-            
+            address: {
+                type: Object,
+                default: () => {}
+            }
         },
 
         data() {
             return {
-                address: '',
                 droped: false,
                 responseItems: []
             }
@@ -50,7 +52,7 @@
             }),
 
             getAddressList() {
-				let keyword = this.address
+				let keyword = this.address.address
 				console.log(keyword)
 				this.getGeocodeList(keyword)
                 .then((res) => {

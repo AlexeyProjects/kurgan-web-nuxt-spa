@@ -508,6 +508,7 @@
 										 type="text">
 									</div>
 									<InputGeocode
+									:address="this.choosedSight.address"
 									@choosingGeocodeAddress="choosingGeocodeAddress"
 									/>
 									
@@ -534,6 +535,7 @@
 										v-model="choosedSight.titleEn" type="text">
 									</div>
 									<InputGeocode
+									:address="this.choosedSight.address"
 									@choosingGeocodeAddress="choosingGeocodeAddress"
 									/>
 									
@@ -827,6 +829,7 @@
 										 type="text">
 									</div>
 									<InputGeocode
+									:address="this.choosedSight.address"
 									@choosingGeocodeAddress="choosingGeocodeAddress"
 									/>
 									
@@ -853,6 +856,7 @@
 										v-model="choosedSight.titleEn" type="text">
 									</div>
 									<InputGeocode
+									:address="this.choosedSight.address"
 									@choosingGeocodeAddress="choosingGeocodeAddress"
 									/>
 									
@@ -1206,6 +1210,7 @@
 										 type="text">
 									</div>
 									<InputGeocode
+									:address="this.choosedSight.address"
 									@choosingGeocodeAddress="choosingGeocodeAddress"
 									/>
 									
@@ -1232,6 +1237,7 @@
 										v-model="choosedSight.titleEn" type="text">
 									</div>
 									<InputGeocode
+									:address="this.choosedSight.address"
 									@choosingGeocodeAddress="choosingGeocodeAddress"
 									/>
 									
@@ -1407,6 +1413,7 @@
 									</div>
 
 									<InputGeocode
+									:address="this.choosedSight.address"
 									@choosingGeocodeAddress="choosingGeocodeAddress"
 									/>
 
