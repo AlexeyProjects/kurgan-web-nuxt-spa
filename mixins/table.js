@@ -108,7 +108,8 @@ export default {
 
     computed: {
         ...mapGetters({
-            globalLoading: 'globalLoading'
+            globalLoading: 'globalLoading',
+            cityId: 'admin/cityinfo/cityId'
         })
     }
 

@@ -61,9 +61,9 @@
 			}
 		},
 		methods: {
-			...mapActions([
-				'login/auth'
-			]),
+			...mapActions({
+				getCityInfo: 'admin/cityinfo/getCityInfo'
+			}),
 			onEnterClick: function() {
 			     alert('Enter was pressed');
 			},
@@ -75,22 +75,8 @@
 				.then((res) => {
 					console.log(res)
 					console.log(res.headers["x-auth-token"])
-					if ( this.USER ) {
-						this.$router.push({ path: `/` })	
-					}
-					for(let entry of res.headers.entries()) {
-					    console.log(entry);
-					}
-					// if ( this.USER.role === "BUSINESS" ) {
-					// 	this.$router.push({ path: `/business` })	
-					// }
-					// else if ( this.USER.role === "MODERATOR" ) {
-					// 	this.$router.push({ path: `/moderator` })
-					// }
-					
-					// else if ( this.USER.role === "ADMINISTRATOR" ) {	
-					// 	this.$router.push({ path: `/admin` })
-					// }
+					this.getCityInfo()		
+					this.$router.push({ path: `/` })	
 
 					console.log('METHOD ACCEPT')
 				})

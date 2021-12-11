@@ -302,7 +302,7 @@
 		},
 		computed: {
 			getParamsForQuery() { 
-				return `${this.type}?cityId=1&offset=${this.forQuery.offset}&limit=${this.forQuery.limit}&search=${this.searchInput}`
+				return `${this.type}?cityId=${this.cityId}&offset=${this.forQuery.offset}&limit=${this.forQuery.limit}&search=${this.searchInput}`
 			}
 		},
 		methods: {

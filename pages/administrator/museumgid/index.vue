@@ -231,7 +231,7 @@
 		},
 		computed: {
 			getParamsForQuery() { 
-				return `museumGuide?cityId=1&offset=${this.forQuery.offset}&limit=${this.forQuery.limit}&search=${this.searchInput}`
+				return `museumGuide?cityId=${this.cityId}&offset=${this.forQuery.offset}&limit=${this.forQuery.limit}&search=${this.searchInput}`
 			}
 		},
 		methods: {

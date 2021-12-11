@@ -173,7 +173,7 @@
 	  	computed: {	
 	  		...mapGetters({
 	  			getCityInfoData: 'admin/cityinfo/cityInfo',
-	  			globalLoading: 'globalLoading'
+	  			globalLoading: 'globalLoading',
 	  		}),
 
 	  	},
@@ -207,11 +207,13 @@
 				this.$store.commit('showLoading');
 				this.getCityInfo()
 				.then((res) => {
-					let data = {}
-					Object.assign(data, res.data.data)
-					console.log(data)
+					let data = {}				
+					Object.assign(data, this.getCityInfoData)
 					this.cityInfo = data
-					this.$store.commit('hideLoading');	
+					this.$store.commit('hideLoading');
+				})
+				.catch((err) => {
+					this.$store.commit('hideLoading');
 				})
 				
 			}

@@ -2,21 +2,23 @@ import Vuex from 'vuex'
 import axios from 'axios'
 
 export const state = () => ({
-  cityInfo: {}
+  cityInfo: {},
+  cityId: JSON.parse(localStorage.getItem('cityInfo')).id
 })
 
 export const mutations = {
   putCityInfo(state,data) {
     state.cityInfo = data
+    localStorage.setItem('cityInfo', JSON.stringify(data))
+    
   }
 }
 
 export const actions = {
-  getCityInfo({commit}, data) {
+  getCityInfo({commit}) {
     return new Promise((resolve, reject) => {
-      console.log(data)
       axios(    
-          `${this.$axios.defaults.baseURL}city/1`,
+          `${this.$axios.defaults.baseURL}city`,
         {  
           method: 'GET',
           headers: {
@@ -28,10 +30,10 @@ export const actions = {
         }
         )
       .then(resp => {
-        
         resolve(resp)
         console.log(resp)
-        commit('putCityInfo', resp.data.data)
+        console.log(resp.data[0])
+        commit('putCityInfo', resp.data[0])
       })
       .catch(err => {
         reject(err)
@@ -41,9 +43,8 @@ export const actions = {
   },
   sendCityinfo({commit}, data){
     return new Promise((resolve, reject) => {
-      console.log(data)
       axios(    
-          `${this.$axios.defaults.baseURL}city/1`,
+          `${this.$axios.defaults.baseURL}city/${this.state.admin.cityinfo.cityId}`,
         {  
           data: data,
           method: 'PUT',
@@ -78,5 +79,9 @@ export const actions = {
 export const getters = {
   cityInfo(state) {
     return state.cityInfo
+  },
+
+  cityId(state) {
+    return state.cityId
   }
 }

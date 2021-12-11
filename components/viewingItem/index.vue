@@ -507,16 +507,9 @@
 										placeholder="Введите название услуги" 
 										 type="text">
 									</div>
-									<div class="card-data-content__field geo">
-										<label for="">Введите местоположение</label>
-										<div class="input-icon">
-											<IconGeo></IconGeo>
-											<input 
-											placeholder="Введите местоположение" 
-											v-model="choosedSight.address.address" type="text">
-										</div>
-										
-									</div>
+									<InputGeocode
+									@choosingGeocodeAddress="choosingGeocodeAddress"
+									/>
 									
 
 									<div class="card-data-content__field textarea">
@@ -540,14 +533,9 @@
 										placeholder="Enter name of service" 
 										v-model="choosedSight.titleEn" type="text">
 									</div>
-									<div class="card-data-content__field geo">
-										<label for="">Введите местоположение</label>
-										<div class="input-icon">
-											<IconGeo></IconGeo>
-											<input v-model="choosedSight.address.address" placeholder="Enter address" type="text">
-										</div>
-										
-									</div>
+									<InputGeocode
+									@choosingGeocodeAddress="choosingGeocodeAddress"
+									/>
 									
 
 									<div class="card-data-content__field textarea">
@@ -838,16 +826,9 @@
 										placeholder="Введите название услуги" 
 										 type="text">
 									</div>
-									<div class="card-data-content__field geo">
-										<label for="">Введите местоположение</label>
-										<div class="input-icon">
-											<IconGeo></IconGeo>
-											<input 
-											placeholder="Введите местоположение" 
-											v-model="choosedSight.address.address" type="text">
-										</div>
-										
-									</div>
+									<InputGeocode
+									@choosingGeocodeAddress="choosingGeocodeAddress"
+									/>
 									
 
 									<div class="card-data-content__field textarea">
@@ -871,14 +852,9 @@
 										placeholder="Enter name of service" 
 										v-model="choosedSight.titleEn" type="text">
 									</div>
-									<div class="card-data-content__field geo">
-										<label for="">Введите местоположение</label>
-										<div class="input-icon">
-											<IconGeo></IconGeo>
-											<input v-model="choosedSight.address.address" placeholder="Enter address" type="text">
-										</div>
-										
-									</div>
+									<InputGeocode
+									@choosingGeocodeAddress="choosingGeocodeAddress"
+									/>
 									
 
 									<div class="card-data-content__field textarea">
@@ -1229,16 +1205,9 @@
 										placeholder="Введите название услуги" 
 										 type="text">
 									</div>
-									<div class="card-data-content__field geo">
-										<label for="">Введите местоположение</label>
-										<div class="input-icon">
-											<IconGeo></IconGeo>
-											<input 
-											placeholder="Введите местоположение" 
-											v-model="choosedSight.address.address" type="text">
-										</div>
-										
-									</div>
+									<InputGeocode
+									@choosingGeocodeAddress="choosingGeocodeAddress"
+									/>
 									
 
 									<div class="card-data-content__field textarea">
@@ -1262,14 +1231,9 @@
 										placeholder="Enter name of service" 
 										v-model="choosedSight.titleEn" type="text">
 									</div>
-									<div class="card-data-content__field geo">
-										<label for="">Введите местоположение</label>
-										<div class="input-icon">
-											<IconGeo></IconGeo>
-											<input v-model="choosedSight.address.address" placeholder="Enter address" type="text">
-										</div>
-										
-									</div>
+									<InputGeocode
+									@choosingGeocodeAddress="choosingGeocodeAddress"
+									/>
 									
 
 									<div class="card-data-content__field textarea">
@@ -1442,16 +1406,9 @@
 										
 									</div>
 
-									<div class="card-data-content__field row geo">
-										<label for="">Введите местоположение</label>
-										<div class="input-icon">
-											<IconGeo></IconGeo>
-											<input 
-											placeholder="Введите местоположение" 
-											 type="text">
-										</div>
-										
-									</div>
+									<InputGeocode
+									@choosingGeocodeAddress="choosingGeocodeAddress"
+									/>
 
 									<div class="card-data-content__field__btn btn black nofill">
 										Выбрать на карте
@@ -2059,7 +2016,11 @@
 				// let qrcode = qrcodeBlock.getElementsByTagName('canvas')[0]
 				// qrcode.style.width = '100%'
 				// qrcode.style.height = '100%'
+			},
+			choosingGeocodeAddress(item) {
+				this.choosedSight.address = item
 			}
+			
 
 		},
 		directives: {

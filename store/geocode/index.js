@@ -6,33 +6,28 @@ export const state = () => ({
 })
 
 export const mutations = {
-  
+  putCityInfo(state,data) {
+
+  }
 }
 
 export const actions = {
-  send({commit}, data){
+  getGeoFromAddress({commit}, keyword) {
     return new Promise((resolve, reject) => {
-      console.log(data)
       axios(    
-          `${this.$axios.defaults.baseURL}service/1`,
+          `${this.$axios.defaults.baseURL}geocoding?keyword=${keyword}`,
         {  
-          data: data,
-          method: 'POST',
-          Accept: 'application/json',
+          method: 'GET',
           headers: {
+            "Accept": "application/json",
             'X-Auth-Token': localStorage.getItem('token'),
-            'Content-Type': `multipart/form-data; boundary=WebAppBoundary`
           }, 
           
         }
         )
       .then(resp => {
         resolve(resp)
-
         console.log(resp)
-
-
-
       })
       .catch(err => {
         reject(err)
@@ -40,22 +35,30 @@ export const actions = {
       })
     })
   },
-  getCity({commit}, data){
+  sendCityinfo({commit}, data){
     return new Promise((resolve, reject) => {
-      console.log(data)
-      axios(
-        {
-          url: `${this.$axios.defaults.baseURL}service/3`,
-          method: 'GET'
+      axios(    
+          `${this.$axios.defaults.baseURL}city/${this.state.admin.cityinfo.cityId}`,
+        {  
+          data: data,
+          method: 'PUT',
+          
+
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            'X-Auth-Token': localStorage.getItem('token'),
+          }, 
+          
         }
         )
       .then(resp => {
+        
         resolve(resp)
-
+        console.log('get service')
         console.log(resp)
 
 
-        axios.defaults.headers.common['X-Auth-Token'] = token
 
       })
       .catch(err => {
@@ -63,10 +66,12 @@ export const actions = {
         console.log(err)
       })
     })
-  },
+  }
 }
 
 
 export const getters = {
-  
+  cityInfo(state) {
+    return state.cityInfo
+  }
 }

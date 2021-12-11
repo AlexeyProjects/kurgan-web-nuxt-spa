@@ -10,13 +10,12 @@ export const mutations = {
     state.loading = true
     console.log('loading show')
   },
+
   hideLoading(state) {
     state.loading = false
-  }
-}
+  },
 
-export const actions = {
-  
+
 }
 
 

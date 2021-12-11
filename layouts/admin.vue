@@ -251,10 +251,11 @@
 			})
 		},
 		methods: {
-			...mapActions([
+			...mapActions({
+				getCityInfo: 'admin/cityinfo/getCityInfo'
 				// 'admin/service/getServices',
 				// 'admin/users/getServices'
-			]),
+			}),
 			showRightBurger(event) {
 				if ( !this.showBurgerIcon ) {
 					this.showBurgerIcon = true

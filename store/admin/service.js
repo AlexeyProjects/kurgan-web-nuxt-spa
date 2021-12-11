@@ -16,7 +16,7 @@ export const actions = {
     return new Promise((resolve, reject) => {
       console.log(resolve)
       axios(    
-          `${this.$axios.defaults.baseURL}service?cityId=1`,
+          `${this.$axios.defaults.baseURL}service?cityId=${this.state.admin.cityinfo.cityInfo.id}`,
         {  
           // data: data,
           method: 'GET',
