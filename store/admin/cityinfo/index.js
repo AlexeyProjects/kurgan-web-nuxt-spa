@@ -3,14 +3,13 @@ import axios from 'axios'
 
 export const state = () => ({
   cityInfo: {},
-  cityId: JSON.parse(localStorage.getItem('cityInfo')).id
+  cityId: 1
 })
 
 export const mutations = {
   putCityInfo(state,data) {
     state.cityInfo = data
-    localStorage.setItem('cityInfo', JSON.stringify(data))
-    
+    state.cityId = state.cityInfo.id
   }
 }
 

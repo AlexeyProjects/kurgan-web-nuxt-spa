@@ -272,6 +272,7 @@
 			}
 		},
 		mounted() {
+			this.$store.dispatch('admin/cityinfo/getCityInfo')
 			// this.$store.dispatch('admin/service/getServices')
 			console.log(this.globalLoading)		
 		}

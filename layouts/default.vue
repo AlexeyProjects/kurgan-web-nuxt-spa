@@ -17,12 +17,10 @@
 			}
 		},
 		methods: {
-			...mapActions([
-				'nav/GET_NAV'
-			])
+			
 		},
 		mounted() {
-			this.$store.dispatch('nav/GET_NAV')
+			
 		}
 	}
 </script>
