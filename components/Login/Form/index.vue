@@ -75,7 +75,7 @@
 				.then((res) => {
 					console.log(res)
 					console.log(res.headers["x-auth-token"])
-					this.getCityInfo()		
+					this.getCityInfo()
 					this.$router.push({ path: `/` })	
 
 					console.log('METHOD ACCEPT')

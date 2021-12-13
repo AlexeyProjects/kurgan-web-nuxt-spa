@@ -229,10 +229,7 @@
 				  "titleEn": "",
 				  "description": "",
 				  "descriptionEn": "",
-				  "status": {
-						title: 'Новый',
-						value: 'NEW', 
-					},
+				  "status": "NEW",
 				  "cover": "",
 				  "address": {
 				    "id": null,
@@ -287,10 +284,7 @@
 				  	"titleEn": "",
 				  	"description": "",
 				  	"descriptionEn": "",
-				  	"status": {
-						title: 'Новый',
-						value: 'NEW', 
-					},
+				  	"status": "NEW",
 				  	"cover": "",
 				  	"address": {
 				    	"id": null,
@@ -304,7 +298,7 @@
 				},
 				this.method = 'add'
 				this.previewShow()
-			},
+			}
 		},
 		mounted() {
 			this.getData()

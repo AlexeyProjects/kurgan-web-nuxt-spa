@@ -184,6 +184,7 @@
 </template>
 
 <script>
+	import Vue from 'vue'
 	import { mapGetters, mapActions } from 'vuex';
 	import tableMixin from '@/mixins/table';
 	import paginationMixin from '@/mixins/pagination';
@@ -236,57 +237,57 @@
 				  	"titleEn": "",
 				 	"description": "",
 				  	"descriptionEn": "",
-				  	"status": "MODERATION",
+				  	"status": "NEW",
 				  	"cover": "",
 				  	"address": {
 				    	"id": null,
 				    	"address": "",
-				    	"latitude": null,
-				    	"longitude": null
+				    	"latitude": 50,
+				    	"longitude": 20
 				  	},
 				  	"availabilities": [
 					  	{
 							"id": 1,
 							"enable": true,
 							"day": 0,
-							"start": "00:00:00",
-							"end": "00:00:00"
+							"start": "00:00",
+							"end": "00:00"
 						}, {
 							"id": 2,
 							"enable": true,
 							"day": 1,
-							"start": "00:00:00",
-							"end": "00:00:00"
+							"start": "00:00",
+							"end": "00:00"
 						}, {
 							"id": 3,
 							"enable": true,
 							"day": 2,
-							"start": "00:00:00",
-							"end": "00:00:00"
+							"start": "00:00",
+							"end": "00:00"
 						}, {
 							"id": 4,
 							"enable": true,
 							"day": 3,
-							"start": "00:00:00",
-							"end": "00:00:00"
+							"start": "00:00",
+							"end": "00:00"
 						}, {
 							"id": 5,
 							"enable": true,
 							"day": 4,
-							"start": "00:00:00",
-							"end": "00:00:00"
+							"start": "00:00",
+							"end": "00:00"
 						}, {
 							"id": 6,
 							"enable": false,
 							"day": 5,
-							"start": "00:00:00",
-							"end": "00:00:00"
+							"start": "00:00",
+							"end": "00:00"
 						}, {
 							"id": 7,
 							"enable": false,
 							"day": 6,
-							"start": "00:00:00",
-							"end": "00:00:00"
+							"start": "00:00",
+							"end": "00:00"
 						}
 					],
 				  	"medias": [
@@ -326,9 +327,86 @@
 			addSight() {
 				console.log('show')
 				
-				this.method = 'add'
-				this.previewShow()
+				this.method = 'add';
+				this.choosedSight = {
+					"id": null,
+				  	"title": "",
+				  	"titleEn": "",
+				 	"description": "",
+				  	"descriptionEn": "",
+				  	"status": "NEW",
+					"category": {
+						"title": ''
+					},
+				  	"cover": "",
+				  	"address": {
+				    	"id": null,
+				    	"address": "",
+				    	"latitude": 50,
+				    	"longitude": 20
+				  	},
+				  	"availabilities": [
+					  	{
+							"id": 1,
+							"enable": true,
+							"day": 0,
+							"start": "00:00",
+							"end": "00:00"
+						}, {
+							"id": 2,
+							"enable": true,
+							"day": 1,
+							"start": "00:00",
+							"end": "00:00"
+						}, {
+							"id": 3,
+							"enable": true,
+							"day": 2,
+							"start": "00:00",
+							"end": "00:00"
+						}, {
+							"id": 4,
+							"enable": true,
+							"day": 3,
+							"start": "00:00",
+							"end": "00:00"
+						}, {
+							"id": 5,
+							"enable": true,
+							"day": 4,
+							"start": "00:00",
+							"end": "00:00"
+						}, {
+							"id": 6,
+							"enable": false,
+							"day": 5,
+							"start": "00:00",
+							"end": "00:00"
+						}, {
+							"id": 7,
+							"enable": false,
+							"day": 6,
+							"start": "00:00",
+							"end": "00:00"
+						}
+					],
+				  	"medias": [
+				    
+				  	]
+				}
+				let params = {}
+				params.params = `category/${this.cityId}`
+				this.$store.dispatch('service/getData',params)
+				.then((res) => {
+					console.log(res)
+					this.responseCategory = res.data.data
+					Vue.set(this.choosedSight, 'category', res.data.data)
+					console.log(this.choosedSight.category)
+					this.previewShow()
+				})
+				
 			},
+			
 		},
 		mounted() {
 			this.getData()

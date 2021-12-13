@@ -163,7 +163,8 @@
 			    ],
 			    
 			    cityInfo: '',
-			    previewShowing: false
+			    previewShowing: false,
+				method: ''
 			    
 			}
 		},
@@ -173,14 +174,16 @@
 	  	computed: {	
 	  		...mapGetters({
 	  			getCityInfoData: 'admin/cityinfo/cityInfo',
-	  			globalLoading: 'globalLoading',
+	  			globalLoading: 'globalLoading'
+				
 	  		}),
 
 	  	},
 	  	methods: {
 	  		...mapActions({
 	  			sendCityInfo: 'admin/cityinfo/sendCityinfo',
-	  			getCityInfo: 'admin/cityinfo/getCityInfo'
+	  			getCityInfo: 'admin/cityinfo/getCityInfo',
+				createCityinfo: 'admin/cityinfo/createCityinfo'
 	  		}),
 	  		changeCardLang: function(lang) {
 				if ( lang === 'rus' ) {
@@ -198,10 +201,19 @@
 			},
 			sendData() {
 				this.$store.commit('showLoading');
-				this.sendCityInfo(this.cityInfo)
-				.then((res) => {
-					this.$store.commit('hideLoading');
-				})
+				if ( this.method === 'add' ) {
+					this.createCityinfo(this.cityInfo)
+					.then((res) => {
+						this.$store.commit('hideLoading');
+					})
+				}
+				else {
+					this.sendCityInfo(this.cityInfo)
+					.then((res) => {
+						this.$store.commit('hideLoading');
+					})
+				}
+				
 			},
 			getData() {		
 				this.$store.commit('showLoading');
@@ -220,6 +232,13 @@
 	  	},
 	  	mounted() {
 	  		this.getData()
+			this.getCityInfo()
+			.then((res) => {
+				console.log(res.data)
+				if ( !res.data.length ) {
+					this.method = 'add'
+				}
+			})
 	  	}
 	}
 </script>

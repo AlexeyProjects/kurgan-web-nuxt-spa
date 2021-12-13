@@ -1209,6 +1209,21 @@
 										placeholder="Введите название услуги" 
 										 type="text">
 									</div>
+									<div class="card-data-content__field">
+										<label for="">Вид услуги</label>
+										<input 
+										readonly
+										v-model="choosedSight.category.title"
+										placeholder="Введите название услуги" 
+										 type="text">
+										<!-- <InputSelect
+										:title="choosedSight.category.title"
+										:multiple="false"
+										:items="status"
+
+										@chooseSelect="chooseCategory"
+										></InputSelect> -->
+									</div>
 									<InputGeocode
 									:address="this.choosedSight.address"
 									@choosingGeocodeAddress="choosingGeocodeAddress"
@@ -1747,13 +1762,14 @@
 			      [{ color: [] }]
 			    ],
 				qrCodeUrl: '',
-				newCover: ''
+				newCover: '',
+				responseCategory: {}
 			}
 		},
 		computed: {
 			...mapGetters({
 				globalLoading: 'globalLoading',
-
+				cityId: 'admin/cityinfo/cityId'
 			}),
 			getStatus() {
 				let statusTitle = ''
@@ -1848,7 +1864,7 @@
 				let paramsQuery = {}
 				const json = JSON.stringify(obj);
 				
-				console.log(paramsQuery)
+				console.log(obj)
 				if ( this.method === 'add' ) {
 					
 					formData.append(this.type, new Blob([json], {
@@ -2035,7 +2051,6 @@
 		},
 		mounted() {	
 			this.viewingItem = this.$el
-	
 		}
 		
 	}

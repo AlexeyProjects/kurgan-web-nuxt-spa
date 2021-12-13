@@ -30,6 +30,7 @@ export const actions = {
         }
         )
       .then(resp => {
+        
         resolve(resp)
         console.log(resp)
         console.log(resp.data[0])
@@ -41,6 +42,7 @@ export const actions = {
       })
     })
   },
+
   sendCityinfo({commit}, data){
     return new Promise((resolve, reject) => {
       axios(    
@@ -48,6 +50,39 @@ export const actions = {
         {  
           data: data,
           method: 'PUT',
+          
+
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            'X-Auth-Token': localStorage.getItem('token'),
+          }, 
+          
+        }
+        )
+      .then(resp => {
+        
+        resolve(resp)
+        console.log('get service')
+        console.log(resp)
+
+
+
+      })
+      .catch(err => {
+        reject(err)
+        console.log(err)
+      })
+    })
+  },
+
+  createCityinfo({commit}, data){
+    return new Promise((resolve, reject) => {
+      axios(    
+          `${this.$axios.defaults.baseURL}city`,
+        {  
+          data: data,
+          method: 'POST',
           
 
           headers: {

@@ -219,7 +219,7 @@
 				  	"titleEn": "",
 				 	"description": "",
 				  	"descriptionEn": "",
-				  	"status": "MODERATION",
+				  	"status": "NEW",
 					"url": ""
 				},
 				forQuery: {
@@ -248,7 +248,6 @@
 
 					this.responseData = res.data
 					console.log(res.data)
-
 					this.$store.commit('hideLoading')
 				})
 			},
