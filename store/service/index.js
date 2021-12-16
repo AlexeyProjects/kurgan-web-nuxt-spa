@@ -21,7 +21,6 @@ export const actions = {
           method: 'POST',
           Accept: 'application/json',
           headers: {
-            'X-Auth-Token': localStorage.getItem('token'),
             'Content-Type': `multipart/form-data; boundary=WebAppBoundary`
           }, 
           
@@ -53,7 +52,6 @@ export const actions = {
           method: 'POST',
           Accept: 'application/json',
           headers: {
-            'X-Auth-Token': localStorage.getItem('token'),
             'Content-Type': 'application/json'
           }, 
           
@@ -85,7 +83,6 @@ export const actions = {
           method: 'PUT',
           headers: {
             'accept': 'application/json',
-            'X-Auth-Token': localStorage.getItem('token'),
             'Content-Type': `multipart/form-data; boundary=WebAppBoundary`
           }, 
           
@@ -117,7 +114,6 @@ export const actions = {
           method: 'PUT',
           headers: {
             'accept': 'application/json',
-            'X-Auth-Token': localStorage.getItem('token'),
             'Content-Type': 'application/json'
           }, 
           
@@ -149,7 +145,6 @@ export const actions = {
           method: 'PATCH',
           headers: {
             'accept': 'application/json',
-            'X-Auth-Token': localStorage.getItem('token'),
             'Content-Type': 'application/json'
           }, 
           
@@ -178,22 +173,18 @@ export const actions = {
           url: `${this.$axios.defaults.baseURL}${params.params}`,
           method: 'GET',
           headers: {
-            'X-Auth-Token': localStorage.getItem('token'),
-          }, 
+            'X-Auth-Token': localStorage.getItem('token')
+          }
         }
         )
       .then(resp => {
         resolve(resp)
 
         console.log(resp)
-
-
         
-
       })
-      .catch(err => {
+      .catch((err) => {
         reject(err)
-        console.log(err)
       })
     })
   },

@@ -53,7 +53,8 @@
 					<thead>
 					  	<tr>
 					   		<td 
-					   		v-for="(item,key,index) in headers"
+					   		v-for="(item,key) in headers"
+							:key="key"
 					   		> 
 					   			{{ item.title }}
 					   		</td>
@@ -63,7 +64,8 @@
 
 					<tbody>
 					 	<tr 
-					 	v-for="(item,key,index) in responseData.rows"
+					 	v-for="(item,key) in responseData.rows"
+						:key="key"
 					 	>
 					 		<td
 					 			
@@ -72,9 +74,17 @@
 					 		</td>
 					 		
 					 		<td>
-					 			Права 
+					 			{{ item.name }}
 					 		</td>
 					 		
+							<td>
+								 <div 
+								 :class="getUserStatusStyle(item.blocked)"
+								 class="status">
+									 {{ getUserStatus(item.blocked) }} 
+								 </div>
+					 			
+					 		</td>
 					 		
 
 					 		<td >
@@ -84,6 +94,7 @@
 					 			:status="item.status"
 					 			:item="item"
 					 			@checkUser="checkUser(item)"
+								@changeUserStatus="changeUserStatus(item)"
 					 			>
 					 				
 					 			</TableSettings>
@@ -120,6 +131,7 @@
 				:card="cardInfo"
 				:type="'user'"
 				:show="previewShowing"
+				@changeUserStatus="changeUserStatus"
 				>
 				
 				</ViewingItem>
@@ -186,23 +198,6 @@
 			}
 		},
 		methods: {
-			...mapActions({
-				queryData: 'service/getData'
-			}),
-			getData() {
-				this.$store.commit('showLoading')
-				let params = {}
-				// this.$store.dispatch('admin/users/getUsers', this.getParamsForQuery)
-				params.params = this.getParamsForQuery
-				this.queryData(params)
-				.then((res) => {
-
-					this.responseData = res.data
-					console.log(res.data)
-
-					this.$store.commit('hideLoading')
-				})
-			},
 			checkUser(item) {
 				this.previewShow()
 				this.cardInfo = item

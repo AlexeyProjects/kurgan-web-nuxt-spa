@@ -90,7 +90,8 @@
 
 				<NavItem 
 				slot="nav-item" 
-				
+				:navlink="false"
+				:navurl="'/administrator/access'" 
 				class="nav-item__title" 
 				:drop="false" 
 				:navTitle="true"
@@ -235,6 +236,8 @@
 
 <script>
 	import { mapActions, mapGetters } from 'vuex'
+	import axios from 'axios'
+
 	export default {
 		name: 'admin',
 		layout: 'admin',
@@ -269,10 +272,16 @@
 					this.showBurgerIcon = false
 				}
 				console.log('hide')
+			},
+			saveToken() {
+				let token = localStorage.getItem('token')
+				axios.defaults.headers.common['X-Auth-Token'] = token
+				console.log('saved')
 			}
 		},
 		mounted() {
-			this.$store.dispatch('admin/cityinfo/getCityInfo')
+			this.saveToken()
+			this.$store.dispatch('admin/cityinfo/getCityInfo')	
 			// this.$store.dispatch('admin/service/getServices')
 			console.log(this.globalLoading)		
 		}

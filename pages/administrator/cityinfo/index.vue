@@ -226,6 +226,12 @@
 				})
 				.catch((err) => {
 					this.$store.commit('hideLoading');
+					if ( error.response.data.errors[0].code === 1001 || error.response.data.errors[0].code === 1002 ) {
+						this.$router.push({ path: `/login` })
+						localStorage.setItem('isLogged', false)
+						localStorage.removeItem('user')
+						localStorage.removeItem('token')
+					} 
 				})
 				
 			}

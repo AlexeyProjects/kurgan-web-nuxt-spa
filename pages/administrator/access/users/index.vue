@@ -65,18 +65,25 @@
 					 	<tr 
 					 	v-for="(item,key,index) in responseData.rows"
 					 	>
-					 		<td
-					 			
-					 		>
+					 		<td>
 					 			{{ item.email }}
 					 		</td>
-					 		
-					 		<td>
-					 			Права 
+							 <td>
+					 			{{ item.name }}
 					 		</td>
+					 		
 					 		
 					 		<td>
 					 			Телефон 
+					 		</td>
+							 
+							<td>
+								 <div 
+								 :class="getUserStatusStyle(item.blocked)"
+								 class="status">
+									 {{ getUserStatus(item.blocked) }} 
+								 </div>
+					 			
 					 		</td>
 					 		
 
@@ -87,6 +94,7 @@
 					 			:status="item.status"
 					 			:item="item"
 					 			@checkUser="checkUser(item)"
+								@changeUserStatus="changeUserStatus(item)"
 					 			>
 					 				
 					 			</TableSettings>
@@ -123,6 +131,7 @@
 				:card="cardInfo"
 				:type="'user'"
 				:show="previewShowing"
+				@changeUserStatus="changeUserStatus"
 				>
 				
 				</ViewingItem>
@@ -193,20 +202,7 @@
 			...mapActions({
 				queryData: 'service/getData'
 			}),
-			getData() {
-				this.$store.commit('showLoading')
-				let params = {}
-				// this.$store.dispatch('admin/users/getUsers', this.getParamsForQuery)
-				params.params = this.getParamsForQuery
-				this.queryData(params)
-				.then((res) => {
 
-					this.responseData = res.data
-					console.log(res.data)
-
-					this.$store.commit('hideLoading')
-				})
-			},
 			checkUser(item) {
 				this.previewShow()
 				this.cardInfo = item

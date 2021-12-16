@@ -90,6 +90,34 @@ export default {
             }
             return statusTitle
         },
+
+        getUserStatus(item) {
+            let statusTitle = ''
+            switch(item) {
+                case true :
+                    statusTitle = 'Заблокирован'
+                    break;
+                case false :
+                    statusTitle = 'Активный'
+                    break;
+            }
+            return statusTitle
+        },
+
+        getUserStatusStyle(item) {
+            let statusTitle = ''
+            switch(item) {
+                case true :
+                    statusTitle = 'rejected'
+                    break;
+                case false :
+                    statusTitle = 'published'
+                    break;
+            }
+            return statusTitle
+        },
+
+
         changeStatusItem(item, newStatus) {
             console.log(item)
             let params = {}
@@ -102,6 +130,39 @@ export default {
                 this.getData()
             })
             
+        },
+
+        getData() {
+            this.$store.commit('showLoading')
+            let params = {}
+            params.params = this.getParamsForQuery
+            this.queryData(params)
+            .then((res) => {
+                console.log('Этот метод')
+                this.responseData = res.data
+                console.log(res.data)
+
+                this.$store.commit('hideLoading')
+            })
+            .catch((error) => {
+                if ( error.response.data.errors[0].code === 1001 || error.response.data.errors[0].code === 1002 ) {
+                    this.$router.push({ path: `/login` })
+                    localStorage.setItem('isLogged', false)
+                    localStorage.removeItem('user')
+                    localStorage.removeItem('token')
+                }              
+            })
+        },
+
+        changeUserStatus(item) {
+            console.log(item)
+            
+            let params = {}
+            params.params = `admin/block/${item.id}/?block=${!item.blocked}`
+            this.$store.dispatch('service/patch', params )
+            .then((res) => {
+                this.getData()
+            })
         }
         
     },
