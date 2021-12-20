@@ -91,6 +91,7 @@
 					 			:status="item.status"
 					 			:item="item"
 					 			@checkUser="checkUser(item)"
+								 @changeUserStatus="changeUserStatus(item)"
 					 			>
 					 				
 					 			</TableSettings>

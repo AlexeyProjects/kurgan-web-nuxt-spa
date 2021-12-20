@@ -36,51 +36,62 @@
 					</div>
 				</div>
 				
-				<div class="card-data-content__editors">
-				<!-- Русский Editor -->
-					<label 
-					v-if="langCard == 'rus'"
-					class="label-default" for="">Описание (Русский язык)</label>
-					<VueEditor
-					v-if="langCard === 'rus'"
-					:editor-toolbar="customToolbar"
-					v-model="choosedSight.descrp"
-					/>
+				<div 
+				v-if="!globalLoading"
+				class="">
+					<div class="card-data-content__editors">
+					<!-- Русский Editor -->
+						<label 
+						v-if="langCard == 'rus'"
+						class="label-default" for="">Описание (Русский язык)</label>
+						<VueEditor
+						v-if="langCard === 'rus'"
+						:editor-toolbar="customToolbar"
+						v-model="richData.policy"
+						/>
 
-				<!-- English Editor -->
-					<label 
-					v-if="langCard == 'eng'"
-					class="label-default" for="">Описание (Английский язык)</label>
-					<VueEditor
-					v-if="langCard === 'eng'"
-					:editor-toolbar="customToolbar"
-					v-model="choosedSight.descrpEn"
-					/>
-				</div>
-				
-				<div class="card-buttons row">
-					<div class="card-buttons__item btn act">
-						Сохранить
+					<!-- English Editor -->
+						<label 
+						v-if="langCard == 'eng'"
+						class="label-default" for="">Описание (Английский язык)</label>
+						<VueEditor
+						v-if="langCard === 'eng'"
+						:editor-toolbar="customToolbar"
+						v-model="richData.policyEn"
+						/>
 					</div>
-					<div class="card-buttons__item btn black nofill withicon">
-						<IconEye class="large"></IconEye>
-						Предпросмотр
+					
+					<div class="card-buttons row">
+						<div 
+						@click="saveRich"
+						class="card-buttons__item btn act">
+							Сохранить
+						</div>
+						<div 
+						@click="previewShow"
+						class="card-buttons__item btn black nofill withicon">
+							<IconEye class="large"></IconEye>
+							Предпросмотр
+						</div>
 					</div>
 				</div>
 				
 			</div>
 			
 			
-			<ViewingItem 
+			<ViewingItemAdditionally
 			@previewHide="previewHide"
 			:show="previewShowing"
-			:type="'event'"
+			:type="'editor'"
 			:method="method"
 			:choosedSight="choosedSight"
-			>
-				
-			
-			</ViewingItem>
+			:data="richData"
+			/>
+
+			<Loader
+			v-if="globalLoading"
+			/>
+
 		</div>
 	</div>
 </template>
@@ -89,7 +100,12 @@
 	import { mapGetters } from 'vuex'
 	import { VueEditor } from "vue2-editor";
 
+	import editorRich from '@/mixins/editor';
+
 	export default {
+		mixins: [
+			editorRich
+		],
 		components: { 
 			VueEditor
 		},
@@ -101,19 +117,13 @@
 		},
 		data() {
 			return {
-				customToolbar: [
-			      ["bold", "italic", "underline"],
-			      [{ list: "ordered" }, { list: "bullet" }],
-			      ["image", "code-block"],
-			      [{ align: "" }, { align: "center" }, { align: "right"}, { align: "justify"}],
-			      [{ color: [] }]
-			    ],
 				previewShowing: false,
-				choosedSight: {
-					descrp: '',
-					descrpEn: ''
+				langCard: 'rus',
+				richData: {
+					policy: '',
+					policyEn: ''
 				},
-				langCard: 'rus'
+				queryParams: 'privacyPolicy'
 			}
 		},
 		layout: 'admin',

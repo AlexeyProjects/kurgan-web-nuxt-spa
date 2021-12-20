@@ -21,7 +21,8 @@ export const actions = {
           method: 'POST',
           Accept: 'application/json',
           headers: {
-            'Content-Type': `multipart/form-data; boundary=WebAppBoundary`
+            'Content-Type': `multipart/form-data; boundary=WebAppBoundary`,
+            'X-Auth-Token': localStorage.getItem('token')
           }, 
           
         }
@@ -52,7 +53,8 @@ export const actions = {
           method: 'POST',
           Accept: 'application/json',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'X-Auth-Token': localStorage.getItem('token')
           }, 
           
         }
@@ -75,7 +77,6 @@ export const actions = {
   put({commit}, params){
     return new Promise((resolve, reject) => {
       console.log(params)
-      console.log(params.data)
       axios(    
           `${this.$axios.defaults.baseURL}${params.params}`,
         {  
@@ -83,7 +84,8 @@ export const actions = {
           method: 'PUT',
           headers: {
             'accept': 'application/json',
-            'Content-Type': `multipart/form-data; boundary=WebAppBoundary`
+            'Content-Type': `multipart/form-data; boundary=WebAppBoundary`,
+            'X-Auth-Token': localStorage.getItem('token')
           }, 
           
         }
@@ -114,7 +116,8 @@ export const actions = {
           method: 'PUT',
           headers: {
             'accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'X-Auth-Token': localStorage.getItem('token')
           }, 
           
         }
@@ -138,6 +141,7 @@ export const actions = {
     return new Promise((resolve, reject) => {
       console.log(params)
       console.log(params.data)
+      console.log('patch')
       axios(    
           `${this.$axios.defaults.baseURL}${params.params}`,
         {  
@@ -145,7 +149,8 @@ export const actions = {
           method: 'PATCH',
           headers: {
             'accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'X-Auth-Token': localStorage.getItem('token')
           }, 
           
         }
