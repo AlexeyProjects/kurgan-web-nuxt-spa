@@ -210,7 +210,14 @@
 	import { mapGetters, mapActions } from 'vuex'
 	import VueLoadImage from 'vue-load-image'
 
+	import tableMixin from '@/mixins/table';
+	import paginationMixin from '@/mixins/pagination';
+
 	export default {
+		mixins: [
+			tableMixin,
+			paginationMixin
+		],
 		components: {
 		    'vue-load-image': VueLoadImage
 		},
@@ -256,40 +263,6 @@
 						sort: false,
 					}
 				],
-				rows: [
-					{
-						"title": 'Церковь',
-						"titleEn": 'Aurora',
-						"status": 'NEW',
-						"cover": 'https://imgur.com/ZPKQTQW.png'
-					},
-					{
-						"title": 'Аврора',
-						"titleEn": 'Aurora',
-						"status": 'REMOVED',
-						"cover": 'https://imgur.com/RTMAHH5.png'
-					},
-					{
-						"title": 'Аврора',
-						"titleEn": 'Aurora',
-						"status": 'MODERATION',
-						"cover": 'https://imgur.com/WRkSqVd.png'
-					},
-					{
-						"title": 'Аврора',
-						"titleEn": 'Aurora',
-						"status": 'REJECTED',
-						"cover": 'https://imgur.com/tYs1Tzd.png'
-					},
-					{
-						"title": 'Аврора',
-						"titleEn": 'Aurora',
-						"status": 'PUBLISHED',
-						"cover": 'https://imgur.com/eoIiORL.png'
-					},
-				],
-				showPopup: false,
-				previewShowing: false,
 				langCard: 'rus',
 				choosedSight: {
 					"id": null,
@@ -299,105 +272,42 @@
 				  	"descriptionEn": "",
 				  	"status": "MODERATION",
 				  	"cover": "",
-				  	"address": {
-				    	"id": null,
-				    	"address": "",
-				    	"latitude": null,
-				    	"longitude": null
-				  	},
-				  	"availabilities": [
-					  	{
-							"id": 1,
-							"enable": true,
-							"day": 0,
-							"start": "00:00:00",
-							"end": "00:00:00"
-						}, {
-							"id": 2,
-							"enable": true,
-							"day": 1,
-							"start": "00:00:00",
-							"end": "00:00:00"
-						}, {
-							"id": 3,
-							"enable": true,
-							"day": 2,
-							"start": "00:00:00",
-							"end": "00:00:00"
-						}, {
-							"id": 4,
-							"enable": true,
-							"day": 3,
-							"start": "00:00:00",
-							"end": "00:00:00"
-						}, {
-							"id": 5,
-							"enable": true,
-							"day": 4,
-							"start": "00:00:00",
-							"end": "00:00:00"
-						}, {
-							"id": 6,
-							"enable": false,
-							"day": 5,
-							"start": "00:00:00",
-							"end": "00:00:00"
-						}, {
-							"id": 7,
-							"enable": false,
-							"day": 6,
-							"start": "00:00:00",
-							"end": "00:00:00"
+					"polygon": [
+						
+						{
+							"lat": 37.413742,
+							"lon": -122.10038
+						},
+						{
+							"lat": 37.435236,
+							"lon": -122.100895
+						},
+						{
+							"lat": 37.430719,
+							"lon": -122.060039
+						},
+						{
+							"lat": 37.412099,
+							"lon": -122.054031
+						},
+						{
+							"lat": 37.413742,
+							"lon": -122.10038
 						}
+					
 					],
 				  	"medias": [
 				    
 				  	]
-				},
-				currentPage: 1,
-				qtyPage: 0,
-				pageList: [],
-				choosedPageList: [],
-				paginationShow: false,
-				responseData: {},
-				searchInput: '',
-				searching: false,
-				forQuery: {
+				},		
+				forQuery: { 
 					role: 'USER',
 					offset: 0,
 					limit: 20
 				},
-				previewShowing: false,
-				popupImageSrc: '',
-				method: ''
-
 			}
 		},
 		computed: {
-			...mapGetters({
-				globalLoading: 'globalLoading'
-			}),
-			getStatus() {
-				let statusTitle = ''
-				switch(this.choosedSight.status) {
-					case 'MODERATION' :
-						statusTitle = 'На модерации'
-						break;
-					case 'PUBLISHED' :
-						statusTitle = 'Опубликован'
-						break;
-					case 'REMOVED' :
-						statusTitle = 'Удаленный'
-						break;
-					case 'REJECTED' :
-						statusTitle = 'Отклонён'
-						break;
-					case 'NEW' :
-						statusTitle = 'Новый'
-						break;
-				}
-				return statusTitle
-			},
 			getParamsForQuery() { 
 				return `audioGuide?cityId=1&offset=${this.forQuery.offset}&limit=${this.forQuery.limit}&search=${this.searchInput}`
 			}
@@ -406,91 +316,13 @@
 			...mapActions({
 				queryData: 'service/getData'
 			}),
-			showPaginationPages() {
-				this.paginationShow = !this.paginationShow
-			},
-			// Не работает проверка + присвоения класса ( Игнорирует наличие item в this.choosedPageList )
-			sortListInPaginate(offset, currentPage) {
-					this.forQuery.offset = offset
-					this.currentPage = currentPage
-					console.log(currentPage)
-					this.getData()
-				
-			},
-			paginationNext(offset) {
-					this.forQuery.offset = offset
-					this.getData()
-					this.currentPage += 1
-				
-				
-			},
-			paginationPrev(offset) {
-					this.forQuery.offset = offset
-					this.getData()
-					this.currentPage -= 1
-				
-			},
-			paginationStart() {
-				if ( this.currentPage != 1 ) {
-					this.forQuery.offset = 0
-					this.getData()
-					this.currentPage = 1
-				}
-				else {
-					return
-				}
-			},
-			paginationEnd(offset) {
-				this.forQuery.offset = offset
-				this.getData()
-				this.currentPage = this.qtyPage
-			},
-			searchTable() {
-				this.forQuery.offset = 0
-				this.currentPage = 1
-				this.searching = true
-				this.getData()
-			},
-			clearSearch() {
-				this.searchInput = ''
-				this.searching = false
-				this.getData()
-			},
-			getData() {
-				this.$store.commit('showLoading')
-				let params = {}
-				// this.$store.dispatch('admin/users/getUsers', this.getParamsForQuery)
-				params.params = this.getParamsForQuery
-				this.queryData(params)
-				.then((res) => {
-
-					this.responseData = res.data
-					console.log(res.data)
-
-					this.$store.commit('hideLoading')
-				})
-			},
-			getQtyPage(value) {
-				this.qtyPage = value
-			},
+			
 			addSight() {
+				
 				console.log('show')
 				
 				this.method = 'add'
 				this.previewShow()
-			},
-			previewShow() {
-				this.previewShowing = true
-			},
-			previewHide() {
-				this.previewShowing = false
-			},
-			showPhoto(src) {
-				this.showPopup = true
-				this.popupImageSrc = src
-			},
-			hidePopup() {
-				this.showPopup = false
 			},
 			// Table settings methods //
 			changeItem(id) {
@@ -504,14 +336,7 @@
 					this.previewShow()
 					console.log(res)
 				})
-			},
-			refreshTable() {
-				this.getData()
-				console.log('refresh')
 			}
-			// openSettings(id) {
-			// 	this.settingsShow = !this.settingsShow
-			// }
 		},
 		mounted() {
 			this.getData()

@@ -278,21 +278,6 @@
 				queryData: 'service/getData'
 			}),
 			
-			getData() {
-				this.$store.commit('showLoading')
-				let params = {}
-				// this.$store.dispatch('admin/users/getUsers', this.getParamsForQuery)
-				params.params = this.getParamsForQuery
-				this.queryData(params)
-				.then((res) => {
-
-					this.responseData = res.data
-					console.log(res.data)
-
-					this.$store.commit('hideLoading')
-				})
-			},
-			
 			addSight() {
 				this.choosedSight = {
 				"id": null,

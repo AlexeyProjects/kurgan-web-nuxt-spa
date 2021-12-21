@@ -14,7 +14,7 @@ export const mutations = {
   auth_success(state, token, user){
     state.status = 'success'
     state.user = JSON.parse(localStorage.getItem('user'))
-    state.token = localStorage.getItem('token')
+    // state.token = localStorage.getItem('token')
   },
   auth_logout(state){
     state.status = ''
@@ -43,7 +43,6 @@ export const actions = {
         localStorage.setItem('token', token)
 
         axios.defaults.headers.common['X-Auth-Token'] = token
-
         commit('auth_success', user, token)
         resolve(resp)
       })
@@ -70,13 +69,9 @@ export const actions = {
       })
       .then(resp => {
         resolve(resp)
-        const token = resp.headers["x-auth-token"]
-        console.log(token)
         localStorage.setItem('isLogged', false)
         localStorage.removeItem('user')
         localStorage.removeItem('token')
-
-        // axios.defaults.headers.common['Authorization'] = token
           commit('auth_logout')
         resolve(resp)
       })

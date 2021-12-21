@@ -60,11 +60,21 @@
 				<IconEye></IconEye>
 				Посмотреть
 			</div>
-			<div 
-			@click="blockUser"
+
+			<div
+			v-if="!item.blocked"
+			@click="changeUserStatus(item)"
 			class="table-settings-list__item">
 				<IconDelete></IconDelete>
 				Заблокировать
+			</div>
+
+			<div
+			v-if="item.blocked"
+			@click="changeUserStatus(item)"
+			class="table-settings-list__item">
+				<IconDelete></IconDelete>
+				Разблокировать
 			</div>
 		</div>
 	</div>
@@ -118,8 +128,8 @@
 			checkUser() {
 				this.$emit('checkUser')
 			},
-			blockUser() {
-				this.$emit('blockUser')
+			changeUserStatus(item) {
+				this.$emit('changeUserStatus',item)
 			},
 			myEventHandler(e) {
 				let widthscreen = window.innerWidth

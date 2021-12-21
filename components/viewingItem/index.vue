@@ -162,9 +162,21 @@
 								<div 
 								:class=" { noData: card.name }"
 								class="viewing-body-content-wrap-row panel">
-									<div class="viewing-body-content-wrap-row__btn btn red">
+									
+									<div 
+									v-if="!card.blocked"
+									@click="changeUserStatus(card)"
+									class="viewing-body-content-wrap-row__btn btn red">
 										Заблокировать
 									</div>
+
+									<div 
+									v-if="card.blocked"
+									@click="changeUserStatus(card)"
+									class="viewing-body-content-wrap-row__btn btn black nofill">
+										Разблокировать
+									</div>
+
 									<div 
 									@click="previewHide"
 									class="viewing-body-content-wrap-row__btn btn act">
@@ -1366,7 +1378,7 @@
 										
 
 									</div>
-									<Photoload 
+									<AudioLoad 
 									
 									@unloadPhoto="loadPreviewCover" 
 									:title="'Загрузить аудио'"
@@ -1377,7 +1389,7 @@
 									>
 										<IconAudioload slot="icon"></IconAudioload>
 
-									</Photoload>
+									</AudioLoad>
 
 									<div 
 									v-if=""
@@ -1406,7 +1418,7 @@
 								
 								<div v-if="langCard == 'rus'" class="card-data-content rus">
 									<div class="card-data-content__field">
-										<label for="">Название объекта</label>
+										<label for="">Заголовок</label>
 										<input 
 										v-model="choosedSight.title"
 										placeholder="Введите название услуги" 
@@ -1414,13 +1426,13 @@
 									</div>
 
 									<div class="card-data-content__field">
-										<label for="">Название объекта</label>
+										<label for="">Заголовок (на английском языке)</label>
 										<input 
 										placeholder="Enter name of service" 
 										v-model="choosedSight.titleEn" type="text">
 									</div>
 
-									<div class="card-data-header">
+									<!-- <div class="card-data-header">
 										<div class="card-data-header__title">
 											Расположение метки
 										</div>
@@ -1428,13 +1440,13 @@
 									</div>
 
 									<InputGeocode
-									:address="this.choosedSight.address"
+									:address="this.choosedSight.polygon[0][0]"
 									@choosingGeocodeAddress="choosingGeocodeAddress"
 									/>
 
 									<div class="card-data-content__field__btn btn black nofill">
 										Выбрать на карте
-									</div>
+									</div> -->
 									
 
 									
@@ -1873,7 +1885,13 @@
 					this.choosedSight.medias.forEach((item) => {
 					  	formData.append("medias", item);
 					})
-					formData.append("cover", this.cover.images[0]);
+					if ( this.type === 'audioGuide' ) {
+						formData.append("audio", this.cover.images[0]);
+					}
+					else {
+						formData.append("cover", this.cover.images[0]);
+					}
+					
 					paramsQuery = {
 						params: params,
 						data: formData
@@ -2042,6 +2060,11 @@
 			},
 			choosingGeocodeAddress(item) {
 				this.choosedSight.address = item
+			},
+			changeUserStatus(item) {
+
+				this.$emit('changeUserStatus',item)
+				this.card.blocked = !this.card.blocked
 			}
 			
 

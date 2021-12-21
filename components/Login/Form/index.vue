@@ -73,8 +73,7 @@
 			loginAuth: function() {
 				this.$store.dispatch('login/auth', this.userData)
 				.then((res) => {
-					console.log(res)
-					console.log(res.headers["x-auth-token"])
+
 					this.getCityInfo()
 					this.$router.push({ path: `/` })	
 
