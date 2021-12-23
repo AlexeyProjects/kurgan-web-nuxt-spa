@@ -1741,6 +1741,32 @@
 					this.qrCodeGetImage()
 				}
 			},
+
+			'choosedSight.startDate'(newVal){
+				//to work with changes in "myArray"
+				
+				// let splited = newVal.splice(0, -1)
+				var date = new Date(newVal);
+				date.setDate(date.getDate() + 1);
+
+				function formatDate(date) {
+					var d = new Date(date),
+						month = '' + (d.getMonth() + 1),
+						day = '' + d.getDate(),
+						year = d.getFullYear();
+
+					if (month.length < 2) 
+						month = '0' + month;
+					if (day.length < 2) 
+						day = '0' + day;
+
+					return [year, month, day].join('-');
+				}
+				
+				
+
+				this.choosedSight.endDate = formatDate(date)
+			},
 			
 		},
 		data() {
@@ -1920,8 +1946,9 @@
 
 			sendService(params) {
 				let formData = new FormData();
-				this.choosedSight.endDate = this.choosedSight.startDate
+
 				let obj = this.choosedSight
+
 				let paramsQuery = {}
 				const json = JSON.stringify(obj);
 				
