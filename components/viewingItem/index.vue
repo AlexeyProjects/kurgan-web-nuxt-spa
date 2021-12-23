@@ -271,6 +271,9 @@
 								<div 
 								v-if="method === 'add'"
 								@click="sendService('place/1')"
+								:class="{
+									'dissable' : !canSendPlace
+								}"
 								class="viewing-body-header__btn btn widthauto withicon act ">
 									<IconSave></IconSave>
 									{{ methodsTitle }}
@@ -344,7 +347,7 @@
 
 									</div>
 									<Photoload 
-									
+									:class="{ 'photo-load--error': !choosedSight.cover }"
 									@unloadPhoto="loadPreviewCover" 
 									:title="'Загрузить фото'"
 									:multiple="false"
@@ -512,12 +515,17 @@
 								</div>
 								
 								<div v-if="langCard == 'rus'" class="card-data-content rus">
-									<div class="card-data-content__field">
+									<div 
+									:class="{ 'card-data-content__field--error': choosedSight.title.length < 3 }"
+									class="card-data-content__field">
 										<label for="">Название объекта</label>
 										<input 
 										v-model="choosedSight.title"
 										placeholder="Введите название услуги" 
 										 type="text">
+										<span 
+										v-if="choosedSight.title.length < 3"
+										class="card-data-content__field__message">Введите поле</span>
 									</div>
 									<InputGeocode
 									:address="this.choosedSight.address"
@@ -527,7 +535,8 @@
 
 									<div class="card-data-content__field textarea">
 										<label for="">Описание</label> 
-										<textarea v-model="choosedSight.description" 
+										<textarea 
+										v-model="choosedSight.description" 
 										class="input-textarea" 
 										name="" 
 										id="" 
@@ -591,6 +600,9 @@
 								<div 
 								v-if="method === 'add'"
 								@click="sendService('event/1')"
+								:class="{
+									'dissable' : !canSendPlace
+								}"
 								class="viewing-body-header__btn btn widthauto withicon act ">
 									<IconSave></IconSave>
 									{{ methodsTitle }}
@@ -664,7 +676,7 @@
 
 									</div>
 									<Photoload 
-									
+									:class="{ 'photo-load--error': !choosedSight.cover }"
 									@unloadPhoto="loadPreviewCover" 
 									:title="'Загрузить фото'"
 									:multiple="false"
@@ -833,12 +845,17 @@
 								</div>
 								
 								<div v-if="langCard == 'rus'" class="card-data-content rus">
-									<div class="card-data-content__field">
+									<div 
+									:class="{ 'card-data-content__field--error': choosedSight.title.length < 3 }"
+									class="card-data-content__field">
 										<label for="">Название объекта</label>
 										<input 
 										v-model="choosedSight.title"
 										placeholder="Введите название услуги" 
 										 type="text">
+										 <span 
+										v-if="choosedSight.title.length < 3"
+										class="card-data-content__field__message">Введите поле</span>
 									</div>
 									<InputGeocode
 									:address="this.choosedSight.address"
@@ -1223,11 +1240,20 @@
 									</div>
 									<div class="card-data-content__field">
 										<label for="">Вид услуги</label>
-										<input 
+										<!-- <input 
 										readonly
 										v-model="choosedSight.category.title"
 										placeholder="Введите название услуги" 
 										 type="text">
+										  -->
+										<InputSelect
+
+										:title="'Выберите услугу'"
+										:multiple="false"
+										:items="responseCategory"
+
+										@chooseSelect="chooseCategoryService"
+										></InputSelect>
 										<!-- <InputSelect
 										:title="choosedSight.category.title"
 										:multiple="false"
@@ -1672,8 +1698,9 @@
 	import { VueEditor } from "vue2-editor";
 	import VueLoadImage from 'vue-load-image'
 	import ClickOutside from 'vue-click-outside'
-	import { mapGetters } from 'vuex'
+	import { mapGetters, mapActions } from 'vuex'
 	import { pathToFile } from 'image-to-file-converter'
+	import inputvalidate from '~/directives/inputvalidate'
 
 	import DatePicker from 'vue2-datepicker';
   	import 'vue2-datepicker/index.css';
@@ -1713,7 +1740,8 @@
 				if ( this.type === 'museumGuide' && val === true) {
 					this.qrCodeGetImage()
 				}
-			}
+			},
+			
 		},
 		data() {
 			return {
@@ -1776,6 +1804,7 @@
 				qrCodeUrl: '',
 				newCover: '',
 				responseCategory: {}
+				
 			}
 		},
 		computed: {
@@ -1783,6 +1812,17 @@
 				globalLoading: 'globalLoading',
 				cityId: 'admin/cityinfo/cityId'
 			}),
+
+			canSendPlace() {
+				if ( this.choosedSight.cover && this.choosedSight.title.length > 2 && this.choosedSight.address.latitude ) {
+					return  true
+				}
+				else {
+					return false
+				}
+				
+			},
+			
 			getStatus() {
 				let statusTitle = ''
 				switch(this.choosedSight.status) {
@@ -1818,6 +1858,10 @@
 			}
 		},
 		methods: {
+			...mapActions({
+				getData: 'service/getData'
+			}),
+
 			previewHide: function() {
 				this.$emit('previewHide')
 			},
@@ -1852,19 +1896,23 @@
 			   	console.log(Array.isArray(this.gallery.images))
 			   	
 			},
+
 			deleteImage(key, arr) {
 
 				arr.splice(key, 1);
 			},
+
 			deleteCover() {
 				this.choosedSight.cover = ''
 			},
 			refreshPhotos() {
 				this.refreshGallery = !this.refreshGallery 
 			},
+
 			showAllGallery() {
 				this.gallery.showMoreGallery = !this.gallery.showMoreGallery
 			},
+
 			chooseCategory(val) {
 				console.log(val)
 				this.choosedSight.status = val.value
@@ -1872,6 +1920,7 @@
 
 			sendService(params) {
 				let formData = new FormData();
+				this.choosedSight.endDate = this.choosedSight.startDate
 				let obj = this.choosedSight
 				let paramsQuery = {}
 				const json = JSON.stringify(obj);
@@ -1910,7 +1959,10 @@
 					this.$store.commit('showLoading')
 					console.log('IMAGE TO FILE');
 					console.log(params)
-					let examplePhoto = this.choosedSight.medias[0].url
+					if ( this.choosedSight.medias[0]) {
+						let examplePhoto = this.choosedSight.medias[0].url
+					}
+					
 					let gallery = this.choosedSight.medias
 					let cover = this.choosedSight.cover
 					let arrForGallery = []
@@ -2065,15 +2117,35 @@
 
 				this.$emit('changeUserStatus',item)
 				this.card.blocked = !this.card.blocked
+			},
+
+			getCategoryList() {
+				let params = {}
+				params.params = `category/?cityId=${this.cityId}`
+				this.$store.dispatch('service/getData',params)
+				.then((res) => {
+					let response = res.data.rows
+					this.responseCategory = response
+				})
+			},
+
+			chooseCategoryService(item) {
+				console.log(item)
+				this.choosedSight.category = item
 			}
+
 			
 
 		},
 		directives: {
-			ClickOutside
-		},
+        	inputvalidate: inputvalidate
+    	},
+		
 		mounted() {	
 			this.viewingItem = this.$el
+			if ( this.type === 'service' ) {
+				this.getCategoryList()
+			}
 		}
 		
 	}

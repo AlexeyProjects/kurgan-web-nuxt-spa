@@ -1,5 +1,7 @@
 <template>
-    <div class="card-data-content__field geo field-wrap">
+    <div 
+    :class="{ 'card-data-content__field--error': !address.latitude }"
+    class="card-data-content__field geo field-wrap">
         <div class="">
             <label for="">Введите местоположение</label>
             <div class="input-icon">
@@ -8,6 +10,9 @@
                 @input="getAddressList()"
                 placeholder="Введите местоположение" 
                 v-model="address.address" type="text">
+                <span 
+                v-if="address.address.length < 3"
+                class="card-data-content__field__message">Введите адрес</span>
             </div>
         </div>
         <div 
@@ -58,7 +63,15 @@
                 .then((res) => {
                     this.responseItems = res.data
                     this.droped = true
-                })			
+                })
+                .catch((error) => {
+                    if ( error.response.data.errors[0].code === 1001 || error.response.data.errors[0].code === 1002 ) {
+                        this.$router.push({ path: `/login` })
+                        localStorage.setItem('isLogged', false)
+                        localStorage.removeItem('user')
+                        localStorage.removeItem('token')
+                    }              
+                })
 			},
 
             chooseAddress(item) {
@@ -84,6 +97,7 @@
             top: 6.7rem;
             border: 1px solid #000;
             border-radius: .8rem;
+            z-index: 10;
             &__item {
                 margin-bottom: .5rem;
                 padding: .5rem;

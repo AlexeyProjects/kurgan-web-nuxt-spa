@@ -285,13 +285,13 @@
 				  "titleEn": "",
 				  "description": "",
 				  "descriptionEn": "",
-				  "status": "",
+				  "status": "NEW",
 				  "cover": "",
 				  "address": {
 				    "id": null,
 				    "address": "",
-				    "latitude": 50,
-				    "longitude": 70
+				    "latitude": null,
+				    "longitude": null
 				  },
 				  "medias": [
 				    

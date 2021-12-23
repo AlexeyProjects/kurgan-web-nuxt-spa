@@ -94,3 +94,12 @@
 		}
 	}
 </script>
+
+<style lang="scss" scoped>
+	.photo-load {
+		&--error {
+			border: 1px solid #FF5247;
+			border-radius: 8px;
+		}
+	}
+</style>

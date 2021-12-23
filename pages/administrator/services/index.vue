@@ -380,17 +380,17 @@
 				    
 				  	]
 				}
-				let params = {}
-				params.params = `category/${this.cityId}`
-				this.$store.dispatch('service/getData',params)
-				.then((res) => {
-					console.log(res)
-					this.responseCategory = res.data.data
-					Vue.set(this.choosedSight, 'category', res.data.data)
-					console.log(this.choosedSight.category)
-					this.previewShow()
-				})
-				
+				// let params = {}
+				// params.params = `category/${this.cityId}`
+				// this.$store.dispatch('service/getData',params)
+				// .then((res) => {
+				// 	console.log(res)
+				// 	this.responseCategory = res.data.data
+				// 	Vue.set(this.choosedSight, 'category', res.data.data)
+				// 	console.log(this.choosedSight.category)
+				// 	this.previewShow()
+				// })
+				this.previewShow()
 			},
 			
 		},

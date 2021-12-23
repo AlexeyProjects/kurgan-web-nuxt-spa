@@ -180,6 +180,7 @@ body {
 		border-color: #F5F5F5;
 	}
 	&.dissable {
+		pointer-events: none;
 		border-color: #E3E5E5;
 		background-color: #E3E5E5;
 		color: #979C9E;
@@ -193,7 +194,7 @@ body {
 }
 .input {
 	padding: 1.2rem 1.6rem;
-	border: #D6D6D6 1px solid;
+	border: #D6D6D6 2px solid;
 	height: 4rem;
 	outline: none;
 	border-radius: 8px;
@@ -1213,6 +1214,8 @@ label {
 				display: flex;
 				flex-direction: column;
 				margin-bottom: 2rem;
+				position: relative;
+				
 				label {
 					margin-bottom: .8rem;
 					margin-left: 1.6rem;
@@ -1249,6 +1252,23 @@ label {
 						}
 					}
 
+				}
+				&__message {
+					display: none;
+					position: absolute;
+					bottom: -2rem;
+    				left: 1rem;
+					font-size: 1.4rem;
+					color: #FF5247;
+				}
+				&--error {
+					
+					input, textarea {
+						border-color: #FF5247;
+					}
+					.card-data-content__field__message {
+						display: block;
+					}
 				}
 			}
 			&__editors {
