@@ -26,7 +26,8 @@
     "vue2-datepicker": "^3.10.1",
     "vue2-editor": "2.10.3",
     "vue2-leaflet": "^2.7.1",
-    "vue3-slide-up-down": "^1.2.3"
+    "vue3-slide-up-down": "^1.2.3",
+    "vuelayers": "^0.11.37"
   },
   "devDependencies": {
     "fibers": "^5.0.0",

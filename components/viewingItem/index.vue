@@ -1458,21 +1458,59 @@
 										v-model="choosedSight.titleEn" type="text">
 									</div>
 
-									<!-- <div class="card-data-header">
+									<div class="card-data-header">
 										<div class="card-data-header__title">
 											Расположение метки
 										</div>
 										
 									</div>
 
-									<InputGeocode
-									:address="this.choosedSight.polygon[0][0]"
-									@choosingGeocodeAddress="choosingGeocodeAddress"
-									/>
+									
+									
+									<div class="card-data-content__field">
+										<label for="">Координаты</label>
+										<input 
+										placeholder="Enter name of service" 
+										v-model="choosedSight.polygon[0].lat" type="text">
+									</div>
 
-									<div class="card-data-content__field__btn btn black nofill">
+									<div 
+									v-if="false"
+									class="card-data-content__field__btn btn black nofill">
 										Выбрать на карте
-									</div> -->
+									</div>
+									<div class="lmap-container">
+										<vl-map data-projection="EPSG:4326" style="height: 400px">
+											<vl-view :min-zoom="10" :zoom.sync="zoom" :center.sync="centerСord" :rotation.sync="rotation"></vl-view>
+
+											<vl-layer-tile>
+											<vl-source-osm></vl-source-osm>
+											</vl-layer-tile>
+
+											<vl-feature>
+												<vl-geom-polygon :coordinates="formatedPolygon"></vl-geom-polygon>
+											</vl-feature>
+
+											<vl-layer-vector z-index="1">
+												<vl-source-vector :features.sync="drawnFeatures" ident="the-source"></vl-source-vector>
+
+												<vl-style-box>
+													<vl-style-stroke color="green"></vl-style-stroke>
+													<vl-style-fill color="rgba(255,255,255,0.5)"></vl-style-fill>
+												</vl-style-box>
+											</vl-layer-vector>
+											
+											<vl-interaction-draw 
+											@drawend="drawEnd"
+											@drawstart="drawReset"
+											type="Polygon" source="the-source">
+												<vl-style-box>
+													<vl-style-stroke color="blue"></vl-style-stroke>
+													<vl-style-fill color="rgba(255,255,255,0.5)"></vl-style-fill>
+												</vl-style-box>
+											</vl-interaction-draw>
+										</vl-map>
+									</div>
 									
 
 									
@@ -1676,7 +1714,6 @@
 
 
 					
-					
 				</div>
 
 				<div 
@@ -1706,12 +1743,16 @@
   	import 'vue2-datepicker/index.css';
 	import QrcodeVue from 'qrcode.vue'
 
+
+	import 'vuelayers/lib/style.css' // needs css-loader
+
 	export default {
 		components: {
 		    'vue-load-image': VueLoadImage,
 		    DatePicker,
 			QrcodeVue,
 			VueEditor
+			
 		},
 		props: {
 			card: [],
@@ -1829,7 +1870,14 @@
 			    ],
 				qrCodeUrl: '',
 				newCover: '',
-				responseCategory: {}
+				responseCategory: {},
+				useUrlFunction: true,
+                zoom: 6,
+				center: [-122.10038,37.413742],
+				rotation: 0,
+                geolocPosition: undefined,
+                reloading: false,
+				drawnFeatures: []
 				
 			}
 		},
@@ -1881,6 +1929,24 @@
 						break;
 				}
 				return title
+			},
+
+			formatedPolygon() {
+				let newArr = []
+				let polygonItems = this.choosedSight.polygon
+				polygonItems.forEach((item) => {
+					let newItem = []
+					newItem.push(item.lon)
+					newItem.push(item.lat)
+					newArr.push(newItem)
+				})
+				return [newArr]
+			},
+
+			centerСord() {
+				let lat = this.choosedSight.polygon[0].lat
+				let lon = this.choosedSight.polygon[0].lon
+				return [lon,lat]
 			}
 		},
 		methods: {
@@ -1986,16 +2052,16 @@
 					this.$store.commit('showLoading')
 					console.log('IMAGE TO FILE');
 					console.log(params)
-					if ( this.choosedSight.medias[0]) {
-						let examplePhoto = this.choosedSight.medias[0].url
-					}
+
 					
 					let gallery = this.choosedSight.medias
 					let cover = this.choosedSight.cover
 					let arrForGallery = []
 					let fileCover = []
 
-					async function saveImageFile() {
+
+					if (this.choosedSight.medias) {
+						async function saveImageFile() {
 						for ( let item of gallery ) {
 							await fetch(item.url)
 							.then((res) => res.blob())
@@ -2054,7 +2120,38 @@
 						.catch((err) => {	
 							console.log(err)
 						})
-					})	
+					})
+					}
+					
+					if ( this.type === 'audioGuide' ) {
+						
+
+						formData.append(this.type, new Blob([json], {
+							type: 'application/json',
+						}));
+
+						formData.append("audio", this.cover.images[0]);
+						console.log(this.cover.images)
+						console.log(this.cover.images[0])
+						paramsQuery.params = params
+						paramsQuery.data = formData
+
+						
+
+						this.$store.dispatch('service/put', paramsQuery )
+						.then((res) => {
+							console.log(res.data.data);
+							Vue.set(this.choosedSight, 'cover', res.data.data.cover );
+							Vue.set(this.choosedSight, 'medias', res.data.data.medias );
+							this.$store.commit('hideLoading');
+							this.$emit('refreshTable');
+						})
+						.catch((err) => {	
+							console.log(err)
+						})
+					}
+					
+					
 				}
 				
 			},
@@ -2159,6 +2256,42 @@
 			chooseCategoryService(item) {
 				console.log(item)
 				this.choosedSight.category = item
+			},
+
+			changeMap() {
+                this.useUrlFunction = !this.useUrlFunction
+                this.reloading = true
+                this.$nextTick(() => {
+                    this.reloading = false
+                })
+            },
+            urlFunction(extent, resolution, projection) {
+                return 'https://ahocevar.com/geoserver/wfs?service=WFS&' +
+                    'version=1.1.0&request=GetFeature&typename=osm:water_areas&' +
+                    'outputFormat=application/json&srsname=' + projection + '&maxFeatures=50' + '&' +
+                    'bbox=' + extent.join(',') + ',' + projection
+            },
+            loadingStrategyFactory() {
+                return this.$loadingBBox()
+            },
+			drawEnd() {
+				console.log('DRAWED')
+				console.log(this.drawnFeatures)
+				let newPolygon = []
+				let drawedPolugon = this.drawnFeatures[0].geometry.coordinates[0]
+				drawedPolugon.forEach((item) => {
+					let newObj = {
+						lon: item[0],
+						lat: item[1]
+					}
+					newPolygon.push(newObj)
+				})
+				this.choosedSight.polygon = newPolygon
+				console.log()
+				console.log(this.choosedSight.polygon)
+			},
+			drawReset() {
+				this.drawnFeatures = []
 			}
 
 			
@@ -2177,3 +2310,10 @@
 		
 	}
 </script>
+
+<style lang="scss" scoped>
+	.lmap-container {
+		width: 100%;
+		height: 40rem;
+	}
+</style>
