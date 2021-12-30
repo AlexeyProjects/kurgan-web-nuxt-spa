@@ -9,7 +9,9 @@ COPY directives /build/directives/
 COPY layouts /build/layouts/
 COPY middleware /build/middleware/
 COPY mixins /build/mixins/
+COPY modules /build/modules/
 COPY pages /build/pages/
+COPY plugins /build/plugins/
 COPY static /build/static/
 COPY store /build/store/
 RUN yarn add update-notifier
