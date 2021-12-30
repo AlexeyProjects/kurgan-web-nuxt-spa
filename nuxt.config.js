@@ -58,7 +58,7 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    '~/modules/vueLayers',
+    '~/modules/vuelayers',
   ],
   router: {
     // base: process.env.NODE_ENV === 'production' ? './' : ''
