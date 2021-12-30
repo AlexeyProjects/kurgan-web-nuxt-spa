@@ -5,6 +5,7 @@ ENV URL_HOST ${URL_HOST}
 COPY nuxt.config.js package.json /build/
 COPY assets /build/assets/
 COPY components /build/components/
+COPY directives /build/directives/
 COPY layouts /build/layouts/
 COPY middleware /build/middleware/
 COPY mixins /build/mixins/
