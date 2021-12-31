@@ -105,6 +105,36 @@ export const actions = {
     })
   },
 
+  delete({commit}, params){
+    return new Promise((resolve, reject) => {
+      console.log(params)
+      axios(    
+          `${this.$axios.defaults.baseURL}${params.params}`,
+        {  
+          data: params.data,
+          method: 'DELETE',
+          headers: {
+            'accept': 'application/json',
+            'X-Auth-Token': localStorage.getItem('token')
+          }, 
+          
+        }
+        )
+      .then(resp => {
+        resolve(resp)
+
+        console.log(resp)
+
+
+
+      })
+      .catch(err => {
+        reject(err)
+        console.log(err)
+      })
+    })
+  },
+
   putJson({commit}, params){
     return new Promise((resolve, reject) => {
       console.log(params)

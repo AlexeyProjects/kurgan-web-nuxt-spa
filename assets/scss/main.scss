@@ -867,6 +867,14 @@ label {
 			&__item {
 				padding: 1rem;
 				// border: 1px solid #000;
+				&--child {
+					display: flex;
+					font-weight: 500;
+					&.nuxt-link-active {
+						background-color: #fff;
+						color: $main-color;
+					}
+				}
 			}
 		}
 		&__title {
@@ -1708,6 +1716,25 @@ label {
 						}
 						&:hover {
 							cursor: help;
+						}
+						&--main {
+							color: $main-color;
+							&:hover {
+								border-color: $main-color;
+							}
+						}
+						&--red {
+							color: #FF5247;
+							&:hover {
+								border-color: #FF5247;
+							}
+							
+						}
+						&--btn {
+							margin-right: 1rem;
+							&:hover {
+								cursor: pointer;
+							}
 						}
 					}
 					&.cover {

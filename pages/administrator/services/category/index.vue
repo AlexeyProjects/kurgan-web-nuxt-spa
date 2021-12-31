@@ -1,7 +1,7 @@
 <template>
 	<div class="main">
 		<Topbar
-		:title="'Аудио гид'"
+		:title="'Категории'"
 		:history="true"
 		>
 			<div slot="history" class="">
@@ -50,7 +50,7 @@
 					@click="addSight"
 					class="table-header__btn btn withicon act">
 						<IconPlusWhite></IconPlusWhite>
-						Добавить метку
+						Добавить категорию
 					</div>
 				</div>
 				<table >
@@ -78,76 +78,53 @@
 					 		<td
 					 			
 					 		>
-					 			{{ item.id }}
-					 		</td>
-					 		<td>
 					 			{{ item.title }}
 					 		</td>
-					 		<td>
-					 			Адрес
-					 		</td>
-					 		<td>
-					 			<div 
-					 			v-if="item.status === 'PUBLISHED'"
-					 			:class="item.status.toLowerCase()"
-					 			class="status">
-					 	
-					 					
-					 				Опубликован
-					 			</div>
+					 		<td class="cover">
 
-					 			<div 
-					 			v-if="item.status === 'REMOVED'"
-					 			:class="item.status.toLowerCase()"
-					 			class="status">
-					 	
-					 					
-					 				Удаленный
-					 			</div>
-
-					 			<div 
-					 			v-if="item.status === 'REJECTED'"
-					 			:class="item.status.toLowerCase()"
-					 			class="status">
-					 	
-					 					
-					 				Отклонён
-					 			</div>
-
-					 			<div 
-					 			v-if="item.status === 'NEW'"
-					 			:class="item.status.toLowerCase()"
-					 			class="status">
-					 	
-					 					
-					 				Новый
-					 			</div>
-
-					 			<div 
-					 			v-if="item.status === 'MODERATION'"
-					 			:class="item.status.toLowerCase()"
-					 			class="status">
-					 	
-					 					
-					 				На модерации
-					 			</div>
-					 			
-
+					 			<vue-load-image>
+							      <img 
+							      	@click="showPhoto(item.cover)" 
+						 			:src="item.cover" 
+						 			alt=""
+							      	slot="image"/>
+							      <IconImageloader slot="preloader"></IconImageloader>
+							     
+							      <div slot="error"></div>
+							    </vue-load-image>
 					 			
 					 		</td>
-
-					 		<td >
-					 			<TableSettings
-					 			:item="item"
-					 			:status="item.status"
-					 			@changeItem="changeItem"
-								@changeStatusItem="changeStatusItem"
-								 
-					 			>
-					 				
-					 			</TableSettings>
+					 		<td class="cover">
+					 			<vue-load-image>
+							      <img 
+							      	@click="showPhoto(item.icon)" 
+						 			:src="item.icon" 
+						 			alt=""
+							      	slot="image"/>
+							      <IconImageloader slot="preloader"></IconImageloader>
+							     
+							      <div slot="error"></div>
+							    </vue-load-image>
 
 					 		</td>
+					 		<td>
+                                 <div class="row">
+                                     <div 
+                                     @click="changeItem(item.id)"
+                                     class="status status--btn status--withicon status--red">
+                                        Изменить
+                                    </div>
+                                    <div 
+                                    @click="deleteCategory(item.id)"
+                                    class="status status--btn status--withicon status--main">
+                                        Удалить
+                                    </div>
+                                 </div>
+                                 
+					 		</td>
+					 		
+
+					 		
 					 	</tr>
 					 </tbody>
 				</table>
@@ -175,7 +152,7 @@
 			<ViewingItem 
 			@previewHide="previewHide"
 			:show="previewShowing"
-			:type="'audioGuide'"
+			:type="'category'"
 			:method="method"
 			:choosedSight="choosedSight"
 			@refreshTable="refreshTable"
@@ -210,8 +187,6 @@
 
 <script>
 	import { mapGetters, mapActions } from 'vuex'
-	import VueLoadImage from 'vue-load-image'
-
 	import tableMixin from '@/mixins/table';
 	import paginationMixin from '@/mixins/pagination';
 
@@ -220,105 +195,62 @@
 			tableMixin,
 			paginationMixin
 		],
-		components: {
-		    'vue-load-image': VueLoadImage
-		},
 		layout: 'admin',
 		data() {
 			return {
-				type: 'audioGuide',
-				cover: {
-					images: [],
-				},
-				gallery: {
-					images: [],
-					showMoreGallery: false
-				},
-				headers: [
+				type: 'category',
+				headers: [					
 					{
-						title: 'ID',
-						name: 'id',
-						width: '30',
-						sort: false,
-
-					},
-					{
-						title: 'Название',
-						name: 'Название',
-						width: '300',
-						sort: false,
-					},
-					
-					{
-						title: 'Местоположение',
-						sort: false,
-						width: '270'
-					},
-					{
-						title: 'Статус',
-						width: '60',
+						title: 'Название категории',
+						name: 'covers',
 						sort: false,
 					},
 					{
 						title: '',
-						name: 'settings',
-						width: '40',
+                        name: 'icons',
+						sort: false,
+					},
+					{
+						title: '',
+                        name: 'cover',
+						sort: false
+					},
+					{
+						title: 'Редактирование',
 						sort: false,
 					}
-				],
+				],	
 				langCard: 'rus',
 				choosedSight: {
-					"id": null,
-				  	"title": "",
-				  	"titleEn": "",
-				 	"description": "",
-				  	"descriptionEn": "",
-				  	"status": "MODERATION",
-				  	"cover": "",
-					"polygon": [
-						{
-							"lat": 55.43614774412981,
-							"lon": 65.32098412513733
-						},
-						{
-							"lat": 55.4354660245281,
-							"lon": 65.32053351402283
-						},
-						{
-							"lat": 55.43466255416806,
-							"lon": 65.32119870185852
-						},
-						{
-							"lat": 55.43547819819565,
-							"lon": 65.3235375881195
-						},
-						{
-							"lat": 55.435916447727465,
-							"lon": 65.3240954875946
-						},
-						{
-							"lat": 55.436610332868554,
-							"lon": 65.32323718070984
-						},
-						{
-							"lat": 55.43614774412981,
-							"lon": 65.32098412513733
-						}
-					],
-				  	"medias": [
+				"id": null,
+				  "title": "",
+				  "titleEn": "",
+				  "description": "",
+				  "descriptionEn": "",
+				  "status": "MODERATION",
+				  "cover": "",
+				  "address": {
+				    "id": null,
+				    "address": "",
+				    "latitude": null,
+				    "longitude": null
+				  },
+				  "medias": [
 				    
-				  	]
-				},		
-				forQuery: { 
+				  ]
+				},
+				forQuery: {
 					role: 'USER',
 					offset: 0,
 					limit: 20
 				},
+				
+
 			}
 		},
-		computed: {
+		computed: {		
 			getParamsForQuery() { 
-				return `audioGuide?cityId=1&offset=${this.forQuery.offset}&limit=${this.forQuery.limit}&search=${this.searchInput}`
+				return `${this.type}?cityId=${this.cityId}&offset=${this.forQuery.offset}&limit=${this.forQuery.limit}&search=${this.searchInput}`
 			}
 		},
 		methods: {
@@ -327,25 +259,30 @@
 			}),
 			
 			addSight() {
-				
-				console.log('show')
-				
+				this.choosedSight = {
+                    "id": null,
+                    "title": "",
+                    "titleEn": "",
+                    "icon": "",
+                    "cover": "",
+
+				},
 				this.method = 'add'
 				this.previewShow()
 			},
-			// Table settings methods //
-			changeItem(id) {
-				console.log(id)
-				let params = {}
-				params.params = `audioGuide/${id}`
-				this.queryData(params)
-				.then((res) => {
-					this.choosedSight = res.data.data
-					this.method = 'change'
-					this.previewShow()
-					console.log(res)
-				})
-			}
+
+            deleteCategory(id) {
+                let paramsQuery = {}
+                paramsQuery.params = `category/${id}`
+                this.$store.commit('showLoading')
+                this.$store.dispatch('service/delete', paramsQuery)
+                .then(() => {
+                    this.getData()
+                    
+                    
+                    
+                })
+            }
 		},
 		mounted() {
 			this.getData()

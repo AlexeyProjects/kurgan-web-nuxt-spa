@@ -83,12 +83,12 @@
 			title: '',
 			navlink: false,
 			drop: false,
+			droped: false,
 			navurl: '',
 			navTitle: false
 		},
 		data() {
 			return {
-				droped: false,
 				choosedItem: []
 
 			}
@@ -97,13 +97,13 @@
 			openDrop: function(el) {
 				console.log(el)
 				this.choosedItem = el
-				// if ( !this.drop ) {
-				// 	return
-				// }
-				// else {
-					this.drop = !this.drop
-					// this.droped = !this.droped
-				// }
+				if ( !this.drop ) {
+					return
+				}
+				else {
+					// this.drop = !this.drop
+					this.droped = !this.droped
+				}
 				
 			}
 		}

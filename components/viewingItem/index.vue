@@ -1709,6 +1709,300 @@
 						></Loader>
 					</div>
 
+					<div 
+					v-if="type === 'category'"
+					:class="{ loading: globalLoading }"
+					class="viewing-body-wrap">
+						<div class="viewing-body-header">
+							<div class="viewing-body-header-wrap">
+								<div class="viewing-body-header__title ">
+									Режим редактора
+								</div>
+								
+								<div 
+								v-if="method === 'add'"
+								@click="sendService('category/1')"
+								:class="{
+									'dissable' : !canSendPlace
+								}"
+								class="viewing-body-header__btn btn widthauto withicon act ">
+									<IconSave></IconSave>
+									{{ methodsTitle }}
+								</div>
+
+								<div 
+								v-if="method === 'change'"
+								@click="sendService(`category/${choosedSight.id}`)"
+								class="viewing-body-header__btn btn widthauto withicon act ">
+									<IconSave></IconSave>
+									{{ methodsTitle }}
+								</div>
+							</div>
+							
+						</div>
+						<div 
+						v-if="!globalLoading"
+						class="viewing-body-content">
+							<div class="viewing-body-content__title title">
+								
+							</div>
+
+							<div class="gallery">
+								<div class="gallery-header">
+									<div class="gallery-header__title">
+										Обложка категории
+									</div>
+									
+								</div>
+								<div 
+								class="gallery-list cover">
+									<!-- :class="{ error: itemCover.errors.size === true || itemCover.errors.format === true }" -->
+									<!-- <GalleryPhoto 
+									v-for="(itemCover,key,index) in cover.images"
+									:item="itemCover"
+									:arr="cover.images"
+									:keyArr="key"
+									@deleteImage="deleteImage"
+									>
+									
+									</GalleryPhoto> -->
+									<div 
+									
+									
+									class="gallery-list__item"
+									v-if="choosedSight.cover"
+									>
+
+										<vue-load-image
+										
+										>
+									      <img 
+									      	slot="image"
+								 			:src="choosedSight.cover" 
+								 			alt=""
+									      	/>
+									      <IconImageloader 
+									      class="popup-body__content__preloader"
+									      slot="preloader">
+									      	
+									      </IconImageloader>
+									     
+									      <div slot="error"></div>
+									    </vue-load-image>
+										<div 
+										@click="deleteCover()"
+										class="gallery-list__item__delete">
+											<IconDeleteimage></IconDeleteimage>
+										</div>
+										
+
+									</div>
+									<Photoload 
+									:class="{ 'photo-load--error': !choosedSight.cover }"
+									@unloadPhoto="loadPreviewCover" 
+									:title="'Загрузить фото'"
+									:multiple="false"
+									:name="'cover'"
+									@refreshPhoto="refreshPhotos"
+									>
+										<IconPhotoload slot="icon"></IconPhotoload>	
+									</Photoload>
+									<div 
+									v-if="choosedSight.cover <= 0"
+									class="photo-requirements">
+											<div class="">• Расширение: png, jpg</div>
+											<div class="">• Размер: не более 5 мб</div>
+											<div class="">• Формат: 16:9, 1:1, 4:3</div>		
+									</div>
+								</div>
+
+
+							</div>
+
+							<div class="gallery">
+								<div class="gallery-header">
+									<div class="gallery-header__title">
+										Иконка категории
+									</div>
+									<div 
+									v-if="gallery.images.length != 0"
+									class="gallery-header__qty">
+										Загружено {{ gallery.images.length }} из 14 фото
+									</div>
+								</div>
+								
+								<div 
+								:class="{ show : gallery.showMoreGallery } "
+								class="gallery-list hidden">
+									<!-- <GalleryPhoto
+									v-for="(itemGallery,key,index) in gallery.images"
+									
+									:item="itemGallery"
+									:errors="itemGallery.errors"
+									:arr="gallery.images"
+									:keyArr="key"
+									@deleteImage="deleteImage"
+									>
+									
+									</GalleryPhoto> -->
+									<!-- :class="{ error: itemGallery.error_format }" -->
+									<div 
+
+									
+									
+									v-if="choosedSight.icon"
+									class="gallery-list__item viewing-photo">
+										
+										<vue-load-image
+										
+										>
+									      <img 
+									      	slot="image"
+								 			:src="choosedSight.icon" 
+								 			alt=""
+									      	/>
+									      <IconImageloader 
+									      class="preloader__gallery-item"
+									      slot="preloader">
+									      	
+									      </IconImageloader>
+									     
+									      <div slot="error">ошибка</div>
+									    </vue-load-image>
+
+										<!-- <img 
+										:src = "itemGallery.url"
+										 alt=""> -->
+										<div 
+										@click="deleteIcon()"
+										class="gallery-list__item__delete">
+											<IconDeleteimage></IconDeleteimage>
+										</div>
+
+
+										<!-- Проверка на валидность фотографии  -->
+
+
+										<!-- <div
+										v-if="itemGallery.error_size || itemGallery.error_format"
+										class="gallery-list__item-errors">
+											<div class="gallery-list__item-errors__icon">
+												<IconErrorImage></IconErrorImage> 
+											</div>
+											<div class="gallery-list__item-errors__text">
+												<div 
+												v-if="itemGallery.error_size"
+												class="gallery-list__item-errors__text--size">
+													Неверный размер
+												</div>
+												<div 
+												v-if="itemGallery.error_format"
+												class="gallery-list__item-errors__text--format">
+													Неверный формат
+												</div>
+											</div>
+										</div> -->
+									</div>
+
+									<Photoload 
+									
+									class="gallery-list__item__load" 
+									:title="'Загрузить иконку'"
+									@unloadPhoto="loadIcon" 
+									:multiple="true"
+									
+									:name="'medias'"
+									>
+										
+									</Photoload>
+									<div 
+									v-if="!choosedSight.icon"
+									class="photo-requirements gallery-list__item__requirements">
+											<div class="">• Расширение: png, jpg</div>
+											<div class="">• Размер: не более 5 мб</div>
+											<div class="">• Формат: 16:9, 1:1, 4:3</div>		
+									</div>
+								</div>
+								<div 
+								@click="showAllGallery"
+								
+								class="gallery-list__more">
+									<div 
+									v-if="!gallery.showMoreGallery"
+									class="">
+										Показать остальные фото
+									</div>
+									<div 
+									v-if="gallery.showMoreGallery"
+									class="">
+										Скрыть остальные фото
+									</div>
+								</div>
+
+								
+							</div>
+
+							
+
+							<div class="card-data">
+								<div class="card-data-header">
+									<div class="card-data-header__title">
+										Данные категории
+									</div>
+									<div class="card-data-header__translate">
+										<div 
+										@click="changeCardLang('rus')"
+										:class="{ active: langCard == 'rus' }"
+										class="card-data-header__translate__item rus">
+											Русская версия
+										</div>
+										<div 
+										@click="changeCardLang('eng')"
+										:class="{ active: langCard == 'eng' }"
+										class="card-data-header__translate__item eng">
+											Английская версия
+										</div>
+									</div>
+								</div>
+								
+								<div v-if="langCard == 'rus'" class="card-data-content rus">
+									<div 
+									:class="{ 'card-data-content__field--error': choosedSight.title.length < 3 }"
+									class="card-data-content__field">
+										<label for="">Название категории</label>
+										<input 
+										v-model="choosedSight.title"
+										placeholder="Введите название услуги" 
+										 type="text">
+										<span 
+										v-if="choosedSight.title.length < 3"
+										class="card-data-content__field__message">Введите поле</span>
+									</div>
+									
+									
+
+									
+								</div>
+								<div v-if="langCard == 'eng'" class="card-data-content eng">
+									<div class="card-data-content__field">
+										<label for="">Название категории</label>
+										<input 
+										placeholder="Enter name of service" 
+										v-model="choosedSight.titleEn" type="text">
+									</div>
+									
+									
+
+									
+								</div>
+							</div>
+							
+						</div>
+						<Loader
+						v-if="globalLoading"
+						></Loader>
+					</div>
+
 
 					
 
@@ -1888,9 +2182,18 @@
 			}),
 
 			canSendPlace() {
-				if ( this.choosedSight.cover && this.choosedSight.title.length > 2 && this.choosedSight.address.latitude ) {
+				if ( this.type === 'category' ) {
+					if ( this.choosedSight.cover && this.choosedSight.title.length > 2 && this.choosedSight.icon ) {
+						return  true
+					}
+					else {
+						return false
+					}
+				}
+				else if ( this.choosedSight.cover && this.choosedSight.title.length > 2 && this.choosedSight.address.latitude ) {
 					return  true
 				}
+				
 				else {
 					return false
 				}
@@ -2024,9 +2327,14 @@
 					formData.append(this.type, new Blob([json], {
 					  type: 'application/json',
 					}));
-					this.choosedSight.medias.forEach((item) => {
-					  	formData.append("medias", item);
-					})
+					if ( this.type != 'category' ) {
+						this.choosedSight.medias.forEach((item) => {
+							formData.append("medias", item);
+						})
+					}
+					else {
+						formData.append("icon", this.icon);
+					}
 					if ( this.type === 'audioGuide' ) {
 						formData.append("audio", this.cover.images[0]);
 					}
@@ -2058,12 +2366,78 @@
 					let cover = this.choosedSight.cover
 					let arrForGallery = []
 					let fileCover = []
-
+					let iconSrc = this.choosedSight.icon
+					let icon = []
 
 					if (this.choosedSight.medias) {
 						async function saveImageFile() {
-						for ( let item of gallery ) {
-							await fetch(item.url)
+							for ( let item of gallery ) {
+								await fetch(item.url)
+								.then((res) => res.blob())
+								.then((myBlob) => {
+									console.log(myBlob);
+									const myFile = new File([myBlob], "image.jpeg", {
+										type: myBlob.type,
+									});
+									console.log(myFile)
+									arrForGallery.push(myFile)
+								})	
+								
+							}
+
+							await fetch(cover)
+							.then((res) => res.blob())
+							.then((myBlob) => {
+								console.log(myBlob);
+								const myFile = new File([myBlob], "image.jpeg", {
+									type: myBlob.type,
+								});
+								fileCover = myFile
+							});
+						}
+
+						saveImageFile()
+						.then(() => {
+							
+							formData.append(this.type, new Blob([json], {
+								type: 'application/json',
+							}));
+							
+							arrForGallery.forEach((item) => {
+								formData.append("medias", item);
+							})
+							
+
+							formData.append("cover", fileCover);
+
+							
+							paramsQuery = {
+								params: params,
+								data: formData
+							}
+							for (var pair of formData.entries()) {
+								console.log(pair); 
+							}
+							
+							this.$store.dispatch('service/put', paramsQuery )
+							.then((res) => {
+								console.log(res.data.data);
+								Vue.set(this.choosedSight, 'cover', res.data.data.cover );
+								Vue.set(this.choosedSight, 'medias', res.data.data.medias );
+								this.$store.commit('hideLoading');
+								this.$emit('refreshTable');
+							})
+							.catch((err) => {	
+								console.log(err)
+							})
+						})
+					}
+
+					if ( this.type === 'category' ) {
+						console.log('category CHANGE')
+						async function saveImageFile() {
+						
+							await fetch(iconSrc)
 							.then((res) => res.blob())
 							.then((myBlob) => {
 								console.log(myBlob);
@@ -2071,57 +2445,56 @@
 									type: myBlob.type,
 								});
 								console.log(myFile)
-								arrForGallery.push(myFile)
+								icon = myFile
 							})	
 							
-						}
-						await fetch(cover)
-						.then((res) => res.blob())
-						.then((myBlob) => {
-							console.log(myBlob);
-							const myFile = new File([myBlob], "image.jpeg", {
-								type: myBlob.type,
+						
+							await fetch(cover)
+							.then((res) => res.blob())
+							.then((myBlob) => {
+								console.log(myBlob);
+								const myFile = new File([myBlob], "image.jpeg", {
+									type: myBlob.type,
+								});
+								fileCover = myFile
 							});
-							fileCover = myFile
-						});
-					}
-
-					saveImageFile()
-					.then(() => {
-						
-						formData.append(this.type, new Blob([json], {
-							type: 'application/json',
-						}));
-
-						arrForGallery.forEach((item) => {
-							formData.append("medias", item);
-						})
-						
-
-						formData.append("cover", fileCover);
-
-						
-						paramsQuery = {
-							params: params,
-							data: formData
 						}
-						for (var pair of formData.entries()) {
-							console.log(pair); 
-						}
-						
-						this.$store.dispatch('service/put', paramsQuery )
-						.then((res) => {
-							console.log(res.data.data);
-							Vue.set(this.choosedSight, 'cover', res.data.data.cover );
-							Vue.set(this.choosedSight, 'medias', res.data.data.medias );
-							this.$store.commit('hideLoading');
-							this.$emit('refreshTable');
+
+						saveImageFile()
+						.then(() => {
+							
+							formData.append(this.type, new Blob([json], {
+								type: 'application/json',
+							}));
+							
+							formData.append("cover", icon);
+							
+
+							formData.append("cover", fileCover);
+
+							
+							paramsQuery = {
+								params: params,
+								data: formData
+							}
+							for (var pair of formData.entries()) {
+								console.log(pair); 
+							}
+							
+							this.$store.dispatch('service/put', paramsQuery )
+							.then((res) => {
+								console.log(res.data.data);
+								Vue.set(this.choosedSight, 'cover', res.data.data.cover );
+								Vue.set(this.choosedSight, 'medias', res.data.data.medias );
+								this.$store.commit('hideLoading');
+								this.$emit('refreshTable');
+							})
+							.catch((err) => {	
+								console.log(err)
+							})
 						})
-						.catch((err) => {	
-							console.log(err)
-						})
-					})
 					}
+					
 					
 					if ( this.type === 'audioGuide' ) {
 						
@@ -2150,6 +2523,8 @@
 							console.log(err)
 						})
 					}
+
+					
 					
 					
 				}
@@ -2292,6 +2667,16 @@
 			},
 			drawReset() {
 				this.drawnFeatures = []
+			},
+
+			loadIcon(images) {
+				console.log(images[0])
+				this.choosedSight.icon = images[0].src
+				this.icon = images[0]
+			},
+			
+			deleteIcon() {
+				this.choosedSight.icon = ''
 			}
 
 			
