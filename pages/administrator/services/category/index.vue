@@ -64,6 +64,7 @@
 					   		> 
 					   			{{ item.title }}
 					   		</td>
+                               
 					   		
 					  	</tr>
 					</thead>
