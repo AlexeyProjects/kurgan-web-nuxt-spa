@@ -18,7 +18,6 @@
     "md5": "^2.3.0",
     "nuxt": "^2.15.7",
     "qrcode.vue": "1.7",
-    "vee-validate": "^4.5.7",
     "vue-click-outside": "^1.1.0",
     "vue-load-image": "0.2.0",
     "vue-select": "^3.13.0",
@@ -30,7 +29,6 @@
     "vuelayers": "^0.11.37"
   },
   "devDependencies": {
-    "fibers": "^5.0.0",
     "sass": "^1.39.2",
     "sass-loader": "^10.2.0"
   }

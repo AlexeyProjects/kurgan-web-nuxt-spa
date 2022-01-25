@@ -26,7 +26,7 @@
 					<div class="nav-item-drop__item" slot="nav_drop">На модерации </div>
 				</NavItem>
 
-				<NavItem 
+				<!-- <NavItem 
 				slot="nav-item" 
 				:drop="false" 
 				:navlink="true" 
@@ -35,7 +35,7 @@
 					<IconHelp class="nav-item__header__icon" slot="icon"></IconHelp>
 					<div class="nav-item-drop__item" slot="nav_drop">Опубликованые </div>
 					<div class="nav-item-drop__item" slot="nav_drop">На модерации </div>
-				</NavItem>
+				</NavItem> -->
 			</Nav>
 		</Leftbar>
 		<Nuxt />
@@ -61,12 +61,20 @@
 			}
 		},
 		methods: {
-			...mapActions([
-				'nav/GET_NAV'
-			])
+			...mapActions({				
+				queryData: 'service/getData'
+			}),
+			getServiceInfo() {
+				let params = {}
+				params.params = `service/1`
+				this.queryData(params)
+				.then((res) => {
+					console.log(res)
+				})
+			}
 		},
 		mounted() {
-			this.$store.dispatch('nav/GET_NAV')
+			this.getServiceInfo()
 		}
 	}
 </script>

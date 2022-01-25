@@ -238,6 +238,21 @@ body {
 		}
 	}
 }
+
+.d-flex {
+	display: flex;
+}
+
+.a {
+	&-center {
+		align-items: center;
+	}
+
+	&-baseline {
+		align-items: baseline;
+	}
+}
+
 input,textarea {
 	font-family: 'Roboto', sans-serif;
 	padding: 1.2rem 1.6rem;

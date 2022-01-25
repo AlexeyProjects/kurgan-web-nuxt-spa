@@ -1375,9 +1375,24 @@
 							</div>
 
 							<div class="gallery">
-								<div class="gallery-header">
+								<div class="gallery-header a-baseline">
 									<div class="gallery-header__title">
 										Аудиозапись гида
+									</div>
+
+									<div class="card-data-header__translate">
+										<div 
+										@click="changeCardLang('rus')"
+										:class="{ active: langCard == 'rus' }"
+										class="card-data-header__translate__item rus">
+											Русская версия
+										</div>
+										<div 
+										@click="changeCardLang('eng')"
+										:class="{ active: langCard == 'eng' }"
+										class="card-data-header__translate__item eng">
+											Английская версия
+										</div>
 									</div>
 									
 								</div>
@@ -1442,21 +1457,45 @@
 									
 								</div>
 								
-								<div v-if="langCard == 'rus'" class="card-data-content rus">
-									<div class="card-data-content__field">
-										<label for="">Заголовок</label>
-										<input 
-										v-model="choosedSight.title"
-										placeholder="Введите название услуги" 
-										 type="text">
+								<div  class="card-data-content rus">
+									<div v-if="langCard == 'rus'" class="">
+										<div class="card-data-content__field">
+											<label for="">Заголовок</label>
+											<input 
+											v-model="choosedSight.title"
+											placeholder="Введите название услуги" 
+											type="text">
+										</div>
+
+										<div class="card-data-content__field">
+											<label for="">Описание</label>
+											<textarea 
+											v-model="choosedSight.description"
+											placeholder="Введите название услуги" 
+											type="text">
+											</textarea>
+										</div>
 									</div>
 
-									<div class="card-data-content__field">
-										<label for="">Заголовок (на английском языке)</label>
-										<input 
-										placeholder="Enter name of service" 
-										v-model="choosedSight.titleEn" type="text">
+									<div v-if="langCard == 'eng'" class="">
+										<div class="card-data-content__field">
+											<label for="">Заголовок ( Английский ) </label>
+											<input 
+											v-model="choosedSight.titleEn"
+											placeholder="Введите название услуги" 
+											type="text">
+										</div>
+
+										<div class="card-data-content__field">
+											<label for="">Описание ( Английский )</label>
+											<textarea 
+											v-model="choosedSight.descriptionEn"
+											placeholder="Введите название услуги" 
+											type="text">
+											</textarea>
+										</div>
 									</div>
+
 
 									<div class="card-data-header">
 										<div class="card-data-header__title">
