@@ -665,18 +665,18 @@
 
 			getServiceInfo() {
 				let params = {}
-				params.params = `service/1`
+				params.params = `service/me/?cityId=${this.cityId}`
 				this.queryData(params)
 				.then((res) => {
 					console.log(res)
-					this.service = res.data.data
+					// this.service = res.data.data
 					console.log(this.serivce)
-					if (res.data.data === []) {
-						this.type = 'add'
-					}
-					else {
-						// this.type = 'edit'
-					}
+					// if (res.data.data === []) {
+					// 	this.type = 'add'
+					// }
+					// else {
+					// 	// this.type = 'edit'
+					// }
 				})
 			},
 
@@ -704,7 +704,7 @@
 		mounted() {
 			this.$store.commit('showLoading')
 			this.getCategoryList()
-			// this.getServiceInfo()
+			this.getServiceInfo()
 			this.arraymove(this.service.availabilities, 0, 6)
 			
 		}

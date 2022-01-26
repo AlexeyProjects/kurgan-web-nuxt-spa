@@ -15,10 +15,12 @@
 			<div class="card-data-content row">
 				<div class="card-data-content__field field">
 					<label for="">E-mail</label>
-					<input placeholder="vsheml@mail.com" type="text">
+					<input :placeholder="getEmail" type="text">
 				</div>
 
-				<div class="card-data-content__field field password">
+				<div 
+				v-if="false"
+					class="card-data-content__field field password">
 					<label for="">Пароль</label>
 					<input placeholder="•••••••••••••••" type="password">
 					<div class="card-data-content__field__btn btn unhover">
@@ -44,6 +46,10 @@
 			}
 		},
 		computed: {
+			getEmail() {
+				return (JSON.parse(localStorage.getItem('user'))).email
+			},
+
 			getRole() {
 				let result = ''
 

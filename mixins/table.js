@@ -162,6 +162,28 @@ export default {
             })
         },
 
+        getUserData() {
+            this.$store.commit('showLoading')
+            let params = {}
+            params.params = `${this.type}/me?cityId=${this.cityId}&offset=${this.forQuery.offset}&limit=${this.forQuery.limit}&search=${this.searchInput}`
+            this.queryData(params)
+            .then((res) => {
+                console.log('Этот метод')
+                this.responseData = res.data
+                console.log(res.data)
+
+                this.$store.commit('hideLoading')
+            })
+            .catch((error) => {
+                if ( error.response.data.errors[0].code === 1001 || error.response.data.errors[0].code === 1002 ) {
+                    this.$router.push({ path: `/login` })
+                    localStorage.setItem('isLogged', false)
+                    localStorage.removeItem('user')
+                    localStorage.removeItem('token')
+                }              
+            })
+        },
+
         changeUserStatus(item) {
             console.log(item)
             
