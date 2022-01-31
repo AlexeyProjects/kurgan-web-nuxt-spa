@@ -30,7 +30,7 @@
 				slot="nav-item" 
 				:navlink="true" 
 				:navurl="'/moderator/sight'" 
-				:drop="true" 
+				:drop="false" 
 				:title="'Достопримечательности'">
 					<IconSight class="nav-item__header__icon" slot="icon"></IconSight>
 					<div class="nav-item-drop__item" slot="nav_drop">Опубликованые </div>
@@ -39,7 +39,7 @@
 
 				<NavItem 
 				slot="nav-item" 
-				:drop="true" 
+				:drop="false" 
 				:navlink="true" 
 				:navurl="'/moderator/events'" 
 				:title="'События в городе'">
@@ -55,13 +55,16 @@
 				:navurl="'/moderator/services'" 
 				:title="'Услуги'">
 					<IconServices class="nav-item__header__icon" slot="icon"></IconServices>
-					<div class="nav-item-drop__item" slot="nav_drop">Опубликованые </div>
-					<div class="nav-item-drop__item" slot="nav_drop">На модерации </div>
+					<NuxtLink 
+					:to="'/moderator/services/category'"
+					class="nav-item-drop__item nav-item-drop__item--child" slot="nav_drop">
+						Категории 
+					</NuxtLink>
 				</NavItem>
 
 				<NavItem 
 				slot="nav-item" 
-				:drop="true" 
+				:drop="false" 
 				:navlink="true" 
 				:navurl="'/moderator/audiogid'" 
 				:title="'Аудиогид'">

@@ -22,7 +22,6 @@
 <script>
 	export default {
 	  middleware: 'auth',
-	  middleware: 'MODERATOR',
 	  layout: 'moderator',
 	}
 </script>

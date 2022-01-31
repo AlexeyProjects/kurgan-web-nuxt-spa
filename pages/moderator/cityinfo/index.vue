@@ -150,16 +150,6 @@
 		components: { 
 			VueEditor
 		},
-		watch: {
-			cityInfo: {
-		      handler: function(val, oldVal) {
-		        console.log(oldVal, val);
-
-		        localStorage.cityInfoEditor =  JSON.stringify(val) 
-		      },
-		      deep: true
-		    }
-		},
 		data() {
 			return {
 				langCard: 'rus',
@@ -173,24 +163,26 @@
 			    ],
 			    
 			    cityInfo: '',
-			    previewShowing: false
+			    previewShowing: false,
+				method: ''
 			    
 			}
 		},
 		layout: 'moderator',
 	  	middleware: 'auth',
-	  	middleware: 'MODERATOR',
 	  	computed: {	
 	  		...mapGetters({
 	  			getCityInfoData: 'admin/cityinfo/cityInfo',
 	  			globalLoading: 'globalLoading'
+				
 	  		}),
 
 	  	},
 	  	methods: {
 	  		...mapActions({
 	  			sendCityInfo: 'admin/cityinfo/sendCityinfo',
-	  			getCityInfo: 'admin/cityinfo/getCityInfo'
+	  			getCityInfo: 'admin/cityinfo/getCityInfo',
+				createCityinfo: 'admin/cityinfo/createCityinfo'
 	  		}),
 	  		changeCardLang: function(lang) {
 				if ( lang === 'rus' ) {
@@ -208,35 +200,50 @@
 			},
 			sendData() {
 				this.$store.commit('showLoading');
-				this.sendCityInfo(this.cityInfo)
-				.then((res) => {
-					this.$store.commit('hideLoading');
-				})
+				if ( this.method === 'add' ) {
+					this.createCityinfo(this.cityInfo)
+					.then((res) => {
+						this.$store.commit('hideLoading');
+					})
+				}
+				else {
+					this.sendCityInfo(this.cityInfo)
+					.then((res) => {
+						this.$store.commit('hideLoading');
+					})
+				}
+				
 			},
 			getData() {		
-				if ( localStorage.getItem('cityInfoEditor') ) {
-	  					this.$store.commit('hideLoading');
-	  					return
-	  			}
-	  			else {
-	  				this.$store.commit('showLoading');
-	  				this.getCityInfo()
-			  		.then((res) => {
-			  			let data = {}
-			  			Object.assign(data, res.data.data)
-			  			console.log(data)
-			  			this.cityInfo = data
-			  			this.$store.commit('hideLoading');	
-			  		})
-	  			}
+				this.$store.commit('showLoading');
+				this.getCityInfo()
+				.then((res) => {
+					let data = {}				
+					Object.assign(data, this.getCityInfoData)
+					this.cityInfo = data
+					this.$store.commit('hideLoading');
+				})
+				.catch((err) => {
+					this.$store.commit('hideLoading');
+					if ( error.response.data.errors[0].code === 1001 || error.response.data.errors[0].code === 1002 ) {
+						this.$router.push({ path: `/login` })
+						localStorage.setItem('isLogged', false)
+						localStorage.removeItem('user')
+						localStorage.removeItem('token')
+					} 
+				})
 				
 			}
 	  	},
 	  	mounted() {
-
 	  		this.getData()
-	  		this.cityInfo = JSON.parse(localStorage.getItem('cityInfoEditor'))
-	  		console.log(this.globalLoading)
+			this.getCityInfo()
+			.then((res) => {
+				console.log(res.data)
+				if ( !res.data.length ) {
+					this.method = 'add'
+				}
+			})
 	  	}
 	}
 </script>

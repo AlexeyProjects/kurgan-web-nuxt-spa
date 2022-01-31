@@ -141,6 +141,8 @@
 					 			:item="item"
 					 			:status="item.status"
 					 			@changeItem="changeItem"
+								@changeStatusItem="changeStatusItem"
+								 
 					 			>
 					 				
 					 			</TableSettings>
@@ -176,6 +178,7 @@
 			:type="'audioGuide'"
 			:method="method"
 			:choosedSight="choosedSight"
+			@refreshTable="refreshTable"
 			>
 				
 			
@@ -209,15 +212,21 @@
 	import { mapGetters, mapActions } from 'vuex'
 	import VueLoadImage from 'vue-load-image'
 
+	import tableMixin from '@/mixins/table';
+	import paginationMixin from '@/mixins/pagination';
+
 	export default {
+		mixins: [
+			tableMixin,
+			paginationMixin
+		],
 		components: {
 		    'vue-load-image': VueLoadImage
 		},
 		layout: 'moderator',
-	  	middleware: 'auth',
-	  	middleware: 'MODERATOR',
 		data() {
 			return {
+				type: 'audioGuide',
 				cover: {
 					images: [],
 				},
@@ -257,40 +266,6 @@
 						sort: false,
 					}
 				],
-				rows: [
-					{
-						"title": 'Церковь',
-						"titleEn": 'Aurora',
-						"status": 'NEW',
-						"cover": 'https://imgur.com/ZPKQTQW.png'
-					},
-					{
-						"title": 'Аврора',
-						"titleEn": 'Aurora',
-						"status": 'REMOVED',
-						"cover": 'https://imgur.com/RTMAHH5.png'
-					},
-					{
-						"title": 'Аврора',
-						"titleEn": 'Aurora',
-						"status": 'MODERATION',
-						"cover": 'https://imgur.com/WRkSqVd.png'
-					},
-					{
-						"title": 'Аврора',
-						"titleEn": 'Aurora',
-						"status": 'REJECTED',
-						"cover": 'https://imgur.com/tYs1Tzd.png'
-					},
-					{
-						"title": 'Аврора',
-						"titleEn": 'Aurora',
-						"status": 'PUBLISHED',
-						"cover": 'https://imgur.com/eoIiORL.png'
-					},
-				],
-				showPopup: false,
-				previewShowing: false,
 				langCard: 'rus',
 				choosedSight: {
 					"id": null,
@@ -300,105 +275,48 @@
 				  	"descriptionEn": "",
 				  	"status": "MODERATION",
 				  	"cover": "",
-				  	"address": {
-				    	"id": null,
-				    	"address": "",
-				    	"latitude": null,
-				    	"longitude": null
-				  	},
-				  	"availabilities": [
-					  	{
-							"id": 1,
-							"enable": true,
-							"day": 0,
-							"start": "00:00:00",
-							"end": "00:00:00"
-						}, {
-							"id": 2,
-							"enable": true,
-							"day": 1,
-							"start": "00:00:00",
-							"end": "00:00:00"
-						}, {
-							"id": 3,
-							"enable": true,
-							"day": 2,
-							"start": "00:00:00",
-							"end": "00:00:00"
-						}, {
-							"id": 4,
-							"enable": true,
-							"day": 3,
-							"start": "00:00:00",
-							"end": "00:00:00"
-						}, {
-							"id": 5,
-							"enable": true,
-							"day": 4,
-							"start": "00:00:00",
-							"end": "00:00:00"
-						}, {
-							"id": 6,
-							"enable": false,
-							"day": 5,
-							"start": "00:00:00",
-							"end": "00:00:00"
-						}, {
-							"id": 7,
-							"enable": false,
-							"day": 6,
-							"start": "00:00:00",
-							"end": "00:00:00"
+					"polygon": [
+						{
+							"lat": 55.43614774412981,
+							"lon": 65.32098412513733
+						},
+						{
+							"lat": 55.4354660245281,
+							"lon": 65.32053351402283
+						},
+						{
+							"lat": 55.43466255416806,
+							"lon": 65.32119870185852
+						},
+						{
+							"lat": 55.43547819819565,
+							"lon": 65.3235375881195
+						},
+						{
+							"lat": 55.435916447727465,
+							"lon": 65.3240954875946
+						},
+						{
+							"lat": 55.436610332868554,
+							"lon": 65.32323718070984
+						},
+						{
+							"lat": 55.43614774412981,
+							"lon": 65.32098412513733
 						}
 					],
 				  	"medias": [
 				    
 				  	]
-				},
-				currentPage: 1,
-				qtyPage: 0,
-				pageList: [],
-				choosedPageList: [],
-				paginationShow: false,
-				responseData: {},
-				searchInput: '',
-				searching: false,
-				forQuery: {
+				},		
+				forQuery: { 
 					role: 'USER',
 					offset: 0,
 					limit: 20
 				},
-				previewShowing: false,
-				popupImageSrc: '',
-				method: ''
-
 			}
 		},
 		computed: {
-			...mapGetters({
-				globalLoading: 'globalLoading'
-			}),
-			getStatus() {
-				let statusTitle = ''
-				switch(this.choosedSight.status) {
-					case 'MODERATION' :
-						statusTitle = 'На модерации'
-						break;
-					case 'PUBLISHED' :
-						statusTitle = 'Опубликован'
-						break;
-					case 'REMOVED' :
-						statusTitle = 'Удаленный'
-						break;
-					case 'REJECTED' :
-						statusTitle = 'Отклонён'
-						break;
-					case 'NEW' :
-						statusTitle = 'Новый'
-						break;
-				}
-				return statusTitle
-			},
 			getParamsForQuery() { 
 				return `audioGuide?cityId=1&offset=${this.forQuery.offset}&limit=${this.forQuery.limit}&search=${this.searchInput}`
 			}
@@ -407,91 +325,13 @@
 			...mapActions({
 				queryData: 'service/getData'
 			}),
-			showPaginationPages() {
-				this.paginationShow = !this.paginationShow
-			},
-			// Не работает проверка + присвоения класса ( Игнорирует наличие item в this.choosedPageList )
-			sortListInPaginate(offset, currentPage) {
-					this.forQuery.offset = offset
-					this.currentPage = currentPage
-					console.log(currentPage)
-					this.getData()
-				
-			},
-			paginationNext(offset) {
-					this.forQuery.offset = offset
-					this.getData()
-					this.currentPage += 1
-				
-				
-			},
-			paginationPrev(offset) {
-					this.forQuery.offset = offset
-					this.getData()
-					this.currentPage -= 1
-				
-			},
-			paginationStart() {
-				if ( this.currentPage != 1 ) {
-					this.forQuery.offset = 0
-					this.getData()
-					this.currentPage = 1
-				}
-				else {
-					return
-				}
-			},
-			paginationEnd(offset) {
-				this.forQuery.offset = offset
-				this.getData()
-				this.currentPage = this.qtyPage
-			},
-			searchTable() {
-				this.forQuery.offset = 0
-				this.currentPage = 1
-				this.searching = true
-				this.getData()
-			},
-			clearSearch() {
-				this.searchInput = ''
-				this.searching = false
-				this.getData()
-			},
-			getData() {
-				this.$store.commit('showLoading')
-				let params = {}
-				// this.$store.dispatch('admin/users/getUsers', this.getParamsForQuery)
-				params.params = this.getParamsForQuery
-				this.queryData(params)
-				.then((res) => {
-
-					this.responseData = res.data
-					console.log(res.data)
-
-					this.$store.commit('hideLoading')
-				})
-			},
-			getQtyPage(value) {
-				this.qtyPage = value
-			},
+			
 			addSight() {
+				
 				console.log('show')
 				
 				this.method = 'add'
 				this.previewShow()
-			},
-			previewShow() {
-				this.previewShowing = true
-			},
-			previewHide() {
-				this.previewShowing = false
-			},
-			showPhoto(src) {
-				this.showPopup = true
-				this.popupImageSrc = src
-			},
-			hidePopup() {
-				this.showPopup = false
 			},
 			// Table settings methods //
 			changeItem(id) {
@@ -506,9 +346,6 @@
 					console.log(res)
 				})
 			}
-			// openSettings(id) {
-			// 	this.settingsShow = !this.settingsShow
-			// }
 		},
 		mounted() {
 			this.getData()

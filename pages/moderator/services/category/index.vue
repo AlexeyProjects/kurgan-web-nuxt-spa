@@ -1,7 +1,7 @@
 <template>
 	<div class="main">
 		<Topbar
-		:title="'Достопримечательности'"
+		:title="'Категории'"
 		:history="true"
 		>
 			<div slot="history" class="">
@@ -48,9 +48,9 @@
 					</div>
 					<div 
 					@click="addSight"
-					class="table-header__btn withicon btn act">
+					class="table-header__btn btn withicon act">
 						<IconPlusWhite></IconPlusWhite>
-						Добавить достопримечательность
+						Добавить категорию
 					</div>
 				</div>
 				<table >
@@ -60,10 +60,11 @@
 					  	<tr>
 					   		<td 
 					   		v-for="(item,key,index) in headers"
-							:key="key"
+					   		:width="item.width"
 					   		> 
 					   			{{ item.title }}
 					   		</td>
+                               
 					   		
 					  	</tr>
 					</thead>
@@ -74,12 +75,11 @@
 					 	> -->
 					 	<tr 
 					 	v-for="(item,key,index) in responseData.rows"
-						:key="key"
 					 	>
 					 		<td
 					 			
 					 		>
-					 			{{ item.id }}
+					 			{{ item.title }}
 					 		</td>
 					 		<td class="cover">
 
@@ -94,35 +94,38 @@
 							      <div slot="error"></div>
 							    </vue-load-image>
 					 			
-					 			<!-- <img
-					 			@click="showPhoto(item.cover)" 
-					 			:src="item.cover" 
-					 			alt=""
-					 			> -->
+					 		</td>
+					 		<td class="cover">
+					 			<vue-load-image>
+							      <img 
+							      	@click="showPhoto(item.icon)" 
+						 			:src="item.icon" 
+						 			alt=""
+							      	slot="image"/>
+							      <IconImageloader slot="preloader"></IconImageloader>
+							     
+							      <div slot="error"></div>
+							    </vue-load-image>
+
 					 		</td>
 					 		<td>
-					 			{{ item.title }}
+                                 <div class="row">
+                                     <div 
+                                     @click="changeItem(item.id)"
+                                     class="status status--btn status--withicon status--red">
+                                        Изменить
+                                    </div>
+                                    <div 
+                                    @click="deleteCategory(item.id)"
+                                    class="status status--btn status--withicon status--main">
+                                        Удалить
+                                    </div>
+                                 </div>
+                                 
 					 		</td>
-					 		<td>
-					 			<div 
-					 			:class="item.status.toLowerCase()"
-					 			class="status">
-					 				{{ getStatusTitle(item.status) }}
-					 			</div>
+					 		
 
-					 		</td>
-
-					 		<td >
-					 			<TableSettings
-					 			:item="item"
-					 			:status="item.status"
-					 			@changeItem="changeItem"
-								@changeStatusItem="changeStatusItem"
-					 			>
-					 				
-					 			</TableSettings>
-
-					 		</td>
+					 		
 					 	</tr>
 					 </tbody>
 				</table>
@@ -150,7 +153,7 @@
 			<ViewingItem 
 			@previewHide="previewHide"
 			:show="previewShowing"
-			:type="'place'"
+			:type="'category'"
 			:method="method"
 			:choosedSight="choosedSight"
 			@refreshTable="refreshTable"
@@ -184,6 +187,7 @@
 </template>
 
 <script>
+	import { mapGetters, mapActions } from 'vuex'
 	import tableMixin from '@/mixins/table';
 	import paginationMixin from '@/mixins/pagination';
 
@@ -195,32 +199,28 @@
 		layout: 'moderator',
 		data() {
 			return {
-				type: 'place',
-				headers: [
+				type: 'category',
+				headers: [					
 					{
-						title: 'ID',
-						name: 'id',
-						sort: false,
-					},
-					{
-						title: '',
+						title: 'Название категории',
 						name: 'covers',
 						sort: false,
 					},
 					{
-						title: 'Название',
-						sort: false,
-					},
-					{
-						title: 'Статус',
+						title: '',
+                        name: 'icons',
 						sort: false,
 					},
 					{
 						title: '',
-						name: 'settings',
+                        name: 'cover',
+						sort: false
+					},
+					{
+						title: 'Редактирование',
 						sort: false,
 					}
-				],
+				],	
 				langCard: 'rus',
 				choosedSight: {
 				"id": null,
@@ -228,7 +228,7 @@
 				  "titleEn": "",
 				  "description": "",
 				  "descriptionEn": "",
-				  "status": "NEW",
+				  "status": "MODERATION",
 				  "cover": "",
 				  "address": {
 				    "id": null,
@@ -245,40 +245,46 @@
 					offset: 0,
 					limit: 20
 				},
-				previewShowing: false,
+				
 
 			}
 		},
-		computed: {
-
+		computed: {		
 			getParamsForQuery() { 
 				return `${this.type}?cityId=${this.cityId}&offset=${this.forQuery.offset}&limit=${this.forQuery.limit}&search=${this.searchInput}`
-			}
+			},
+			
 		},
 		methods: {
-		
+			...mapActions({
+				queryData: 'service/getData'
+			}),
+			
 			addSight() {
 				this.choosedSight = {
-					"id": null,
-				  	"title": "",
-				  	"titleEn": "",
-				  	"description": "",
-				  	"descriptionEn": "",
-				  	"status": "NEW",
-				  	"cover": "",
-				  	"address": {
-				    	"id": null,
-				    	"address": "",
-				    	"latitude": null,
-				    	"longitude": null
-				  	},
-				  	"medias": [
-				    
-				  	]
+                    "id": null,
+                    "title": "",
+                    "titleEn": "",
+                    "icon": "",
+                    "cover": "",
+
 				},
 				this.method = 'add'
 				this.previewShow()
-			}
+			},
+
+            deleteCategory(id) {
+                let paramsQuery = {}
+                paramsQuery.params = `category/${id}`
+                this.$store.commit('showLoading')
+                this.$store.dispatch('service/delete', paramsQuery)
+                .then(() => {
+                    this.getData()
+                    
+                    
+                    
+                })
+            }
 		},
 		mounted() {
 			this.getData()
