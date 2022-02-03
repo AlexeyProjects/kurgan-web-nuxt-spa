@@ -46,6 +46,13 @@
 							Поиск
 						</div>
 					</div>
+
+					<div 
+					@click="addModerator"
+					class="table-header__btn btn withicon act">
+						<IconPlusWhite></IconPlusWhite>
+						Добавить модератора
+					</div>
 					
 				</div>
 
@@ -197,6 +204,10 @@
 				this.cardInfo = item
 				console.log(item)
 			},
+
+			addModerator() {
+				this.$router.push({ path: '/administrator/access/createmoderator' })
+			}
 
 		},
 		mounted() {
