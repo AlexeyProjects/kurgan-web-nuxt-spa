@@ -31,7 +31,9 @@
 				></IconEnter>
 				Опубликовать
 			</div>
-			<div class="table-settings-list__item">
+			<div 
+			@click="reviewItem(item)"
+			class="table-settings-list__item">
 				<IconEye></IconEye>
 				Посмотреть
 			</div>
@@ -147,6 +149,10 @@
 			    	
 			    }
 			    
+			},
+			reviewItem(item) {
+				this.$emit('reviewShow',item.id)
+				this.hideSettings()
 			}
 		},
 		mounted() {

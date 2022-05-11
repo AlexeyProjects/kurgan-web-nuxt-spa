@@ -22,7 +22,8 @@ export default {
             searching: false,
             previewShowing: false,
             popupImageSrc: '',
-			method: ''
+			method: '',
+            reviewShowing: false
         }
     },
 
@@ -43,9 +44,25 @@ export default {
         },
         previewShow() {
             this.previewShowing = true
+            console.log('preview')
         },
         previewHide() {
             this.previewShowing = false
+        },
+        reviewShow(id) {
+            
+            let params = {}
+            params.params = `${this.type}/${id}`
+            this.queryData(params)
+            .then((res) => {
+                this.choosedSight = res.data.data
+                this.method = 'change'
+                this.reviewShowing = true
+            })
+        },
+        reviewHide() {
+            console.log('hide')
+            this.reviewShowing = false
         },
         showPhoto(src) {
             this.showPopup = true

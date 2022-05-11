@@ -141,11 +141,9 @@
 					 			:item="item"
 					 			:status="item.status"
 					 			@changeItem="changeItem"
+								@reviewShow="reviewShow"
 								@changeStatusItem="changeStatusItem"
-								 
-					 			>
-					 				
-					 			</TableSettings>
+					 			></TableSettings>
 
 					 		</td>
 					 	</tr>
@@ -179,10 +177,16 @@
 			:method="method"
 			:choosedSight="choosedSight"
 			@refreshTable="refreshTable"
-			>
-				
-			
-			</ViewingItem>
+			></ViewingItem>
+
+			<ReviewAudiogid 
+			@reviewHide="reviewHide"
+			:show="reviewShowing"
+			:type="'audioGuide'"
+			:method="method"
+			:choosedSight="choosedSight"
+			@refreshTable="refreshTable"
+			></ReviewAudiogid>
 		</div>
 		
 		<Popup 
