@@ -20,6 +20,7 @@
     "qrcode.vue": "1.7",
     "vue-click-outside": "^1.1.0",
     "vue-load-image": "0.2.0",
+    "vue-plyr": "^7.0.0",
     "vue-select": "^3.13.0",
     "vue-slide-toggle": "^1.1.1",
     "vue2-datepicker": "^3.10.1",

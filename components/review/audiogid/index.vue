@@ -43,7 +43,14 @@
                             </div>
 
                             <div class="review-audio">
-                                
+                                <vue-plyr>
+									<audio controls crossorigin playsinline>
+										<source
+											:src="choosedSight.audio"
+											type="audio/mp3"
+										/>
+									</audio>
+								</vue-plyr>
                             </div>
                             <div class="review-panel">
                                 <div class="btn-address">
@@ -99,14 +106,15 @@
 
 	import DatePicker from 'vue2-datepicker';
   	import 'vue2-datepicker/index.css';
-	import QrcodeVue from 'qrcode.vue'
+	import VuePlyr from 'vue-plyr'
+	import 'vue-plyr/dist/vue-plyr.css'
 
 	export default {
 		components: {
 		    'vue-load-image': VueLoadImage,
 		    DatePicker,
-			QrcodeVue,
-			VueEditor
+			VueEditor,
+			"vue-plyr": VuePlyr
 		},
 		props: {
 			card: [],
