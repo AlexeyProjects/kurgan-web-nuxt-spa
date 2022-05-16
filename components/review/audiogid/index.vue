@@ -67,13 +67,15 @@
                             
                             <div class="card-data">
 								<div v-if="langCard == 'rus'" class="card-data-content rus">
-									<div class="card-data-content__field textarea">
-										{{ choosedSight.description }}
+									<div 
+									v-html="choosedSight.description"
+									class="card-data-content__field textarea">
 									</div>
 								</div>
 								<div v-if="langCard == 'eng'" class="card-data-content eng">
-									<div class="card-data-content__field textarea">
-										{{ choosedSight.descriptionEn }}
+									<div 
+									v-html="choosedSight.descriptionEn"
+									class="card-data-content__field textarea">
 									</div>
 								</div>
 							</div>
