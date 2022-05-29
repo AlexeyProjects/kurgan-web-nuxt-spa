@@ -1467,13 +1467,15 @@
 											type="text">
 										</div>
 
-										<div class="card-data-content__field">
-											<label for="">Описание</label>
-											<textarea 
+										<div class="card-data-content__field textarea">
+											<label class="label-default" for="">Описание (Русский язык)</label>
+
+											<VueEditor
+											v-if="langCard === 'rus'"
+											:editor-toolbar="customToolbar"
 											v-model="choosedSight.description"
-											placeholder="Введите название услуги" 
-											type="text">
-											</textarea>
+											/>
+											
 										</div>
 									</div>
 
@@ -1486,14 +1488,16 @@
 											type="text">
 										</div>
 
-										<div class="card-data-content__field">
-											<label for="">Описание ( Английский )</label>
-											<textarea 
-											v-model="choosedSight.descriptionEn"
-											placeholder="Введите название услуги" 
-											type="text">
-											</textarea>
-										</div>
+										<div class="card-data-content__field textarea">
+										<label class="label-default" for="">Описание ( Английский язык )</label>
+
+										<VueEditor
+										v-if="langCard === 'eng'"
+										:editor-toolbar="customToolbar"
+										v-model="choosedSight.descriptionEn"
+										/>
+										
+									</div>
 									</div>
 
 
@@ -1649,6 +1653,7 @@
 												<label for="">Ссылка</label>
 												<input 
 												v-model="qrCodeUrl"
+												readonly
 												placeholder="Введите название услуги" 
 												 type="text">
 											</div>
@@ -2122,7 +2127,7 @@
 				
 				// let splited = newVal.splice(0, -1)
 				var date = new Date(newVal);
-				date.setDate(date.getDate() + 1);
+				date.setDate(date.getDate());
 
 				function formatDate(date) {
 					var d = new Date(date),
@@ -2139,7 +2144,7 @@
 				}
 				
 				
-
+				console.log(date)
 				this.choosedSight.endDate = formatDate(date)
 			},
 			
@@ -2618,6 +2623,7 @@
 				
 			},
 			qrCodeGenerate() {
+				console.log(this.qrCodeUrl)
 				this.choosedSight.url = this.qrCodeUrl
 				Vue.set(this.choosedSight, 'url', this.qrCodeUrl)
 			},
