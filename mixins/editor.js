@@ -59,7 +59,6 @@ export default {
     },
 
     mounted() {
-        this.getRich()
-        
+        this.getRich() 
     }
 }

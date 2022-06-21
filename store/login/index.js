@@ -80,7 +80,41 @@ export const actions = {
         // localStorage.removeItem('token')
       })
     })
-  }
+  },
+
+  resetPass({commit}, params){
+    return new Promise((resolve, reject) => {
+      console.log(params)
+      console.log(params.newPasswordHash)
+      console.log('patch')
+      axios(    
+          `${this.$axios.defaults.baseURL}auth/resetPassword${params.uuid}`,
+        {  
+          data: {
+            "newPasswordHash": params.newPasswordHash
+          },
+          method: 'PATCH',
+          headers: {
+            'accept': 'application/json',
+            'Content-Type': 'application/json'
+          }, 
+          
+        }
+        )
+      .then(resp => {
+        resolve(resp)
+
+        console.log(resp)
+
+
+
+      })
+      .catch(err => {
+        reject(err)
+        console.log(err)
+      })
+    })
+  },
 }
 
 

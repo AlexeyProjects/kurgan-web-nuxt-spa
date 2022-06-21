@@ -44,7 +44,7 @@
 					<VueEditor
 					v-if="langCard === 'rus'"
 					:editor-toolbar="customToolbar"
-					v-model="choosedSight.descrp"
+					v-model="richData.help"
 					/>
 
 				<!-- English Editor -->
@@ -54,12 +54,15 @@
 					<VueEditor
 					v-if="langCard === 'eng'"
 					:editor-toolbar="customToolbar"
-					v-model="choosedSight.descrpEn"
+					:useMarkdownShortcuts="true"
+					v-model="richData.helpEn"
 					/>
 				</div>
 				
 				<div class="card-buttons row">
-					<div class="card-buttons__item btn act">
+					<div 
+					@click="saveRich"
+					class="card-buttons__item btn act">
 						Сохранить
 					</div>
 					<div class="card-buttons__item btn black nofill withicon">
@@ -89,10 +92,15 @@
 	import { mapGetters } from 'vuex'
 	import { VueEditor } from "vue2-editor";
 
+	import editorRich from '@/mixins/editor'
+
 	export default {
 		components: { 
 			VueEditor
 		},
+		mixins: [
+			editorRich
+		],
 		computed: {
 			...mapGetters({
 				
@@ -109,11 +117,12 @@
 			      [{ color: [] }]
 			    ],
 				previewShowing: false,
-				choosedSight: {
-					descrp: '',
-					descrpEn: ''
+				richData: {
+					help: '',
+					helpEn: ''
 				},
-				langCard: 'rus'
+				langCard: 'rus',
+				queryParams: 'help'
 			}
 		},
 		layout: 'admin',
