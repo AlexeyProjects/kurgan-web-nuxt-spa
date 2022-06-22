@@ -1,6 +1,8 @@
-npm version patch --no-git-tag-version
-NEW_VERSION=$(node -pe "require('./package.json').version")
-git commit -am "Release v$NEW_VERSION"
-git tag -a "$NEW_VERSION" -m "Release v$NEW_VERSION" HEAD
+#!/usr/bin/env bash
+if [[ "$1" == "" ]]; then
+    echo "Usage release.sh <RELEASE_VERSION>"
+fi
+git commit -am "Release v$1"
+git tag -a "$1" -m "Release v$1" HEAD
 git push
 git push --tags
