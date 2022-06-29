@@ -35,7 +35,7 @@ export const actions = {
         const user = resp.data.data
         const token = resp.headers["x-auth-token"]
 
-        
+
         console.log(resp.headers)
         console.log(token)
         localStorage.setItem('isLogged', true)
@@ -55,7 +55,7 @@ export const actions = {
   },
   logout({commit}, user) {
     return new Promise((resolve, reject) => {
-      
+
       console.log(user)
       let token = localStorage.getItem('token');
       console.log(token)
@@ -87,9 +87,9 @@ export const actions = {
       console.log(params)
       console.log(params.newPasswordHash)
       console.log('patch')
-      axios(    
-          `${this.$axios.defaults.baseURL}auth/resetPassword${params.uuid}`,
-        {  
+      axios(
+          `${this.$axios.defaults.baseURL}auth/resetPassword/${params.uuid}`,
+        {
           data: {
             "newPasswordHash": params.newPasswordHash
           },
@@ -97,8 +97,8 @@ export const actions = {
           headers: {
             'accept': 'application/json',
             'Content-Type': 'application/json'
-          }, 
-          
+          },
+
         }
         )
       .then(resp => {
