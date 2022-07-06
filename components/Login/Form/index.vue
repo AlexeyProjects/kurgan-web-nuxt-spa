@@ -5,29 +5,29 @@
 		</div>
 		<div class="login-form-inputs">
 			<label  class="col login-form-inputs__label" for="email">E-mail
-				
+
 			</label>
-			<input 
+			<input
 			v-model="userData.email"
 			placeholder="E-mail" class="input login-form-inputs__item" name="email" type="text">
 			<label class="col login-form-inputs__label" for="password">Пароль
-				
+
 			</label>
 			<InputPassword
 			@inputChange="getPassword"
 			@tabEnter="loginAuth"
 			>
 				<div v-show="errors.password"  class="error red">
-					Пароли введен неверно 
+					Пароли введен неверно
 				</div>
 			</InputPassword>
 			<NuxtLink to="login/recoverypass" class="login-forgotPass">
 				Забыли пароль?
 			</NuxtLink>
-			
+
 		</div>
 		<div class="login-form-buttons row">
-			<div 
+			<div
 			@click="loginAuth"
 			class="login-form-buttons__item auth act btn">
 				Авторизоваться
@@ -40,7 +40,7 @@
 </template>
 
 <style>
-	
+
 </style>
 
 <script>
@@ -75,19 +75,20 @@
 				.then((res) => {
 
 					this.getCityInfo()
-					this.$router.push({ path: `/` })	
+					this.$router.push({ path: `/` })
 
 					console.log('METHOD ACCEPT')
 				})
 				.catch((err) => {
 					console.log(err)
 					console.log('Ошибка в index.vue')
+          console.log(err.response)
 					if ( err.response.status === 401 ) {
 						this.errors.password = true
 						console.log('Не верный пароль')
 					}
 				})
-				
+
 			}
 		},
 		computed: {

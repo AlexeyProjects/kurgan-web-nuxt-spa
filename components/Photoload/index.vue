@@ -2,18 +2,18 @@
 	 <div class="photo-load">
 	 	<label :for="name">
 	 		<slot name="icon"></slot>
-	 		
+
 	 		{{ title }}
 	 	</label>
-	 	<input 
+	 	<input
 
-	 	type="file" 
-	 	:id="name" 
+	 	type="file"
+	 	:id="name"
 	 	:name="name"
 	 	size="2621440"
 	 	:multiple="multiple"
 	 	@change="loadPreviewGallery"
-	 	accept="image/x-png,image/jpeg">
+	 	accept="image/*">
 
 	 </div>
 </template>
@@ -32,12 +32,12 @@
 			title: '',
 			multiple: false,
 			name: ''
-			
+
 		},
 		methods: {
 			previewFiles(event) {
 
-				
+
 			},
 			loadPreviewGallery(event) {
 				console.log(event.target.files)
@@ -83,14 +83,14 @@
 				Array.prototype.push.apply( this.fileBuffer, images );
 				// this.gallery.images = fileBuffer
 				console.log(images)
-				
+
 				console.log(fileBuffer)
 				this.$emit('unloadPhoto', this.fileBuffer)
 				this.fileBuffer = []
 			},
 		},
 		computed: {
-			
+
 		}
 	}
 </script>

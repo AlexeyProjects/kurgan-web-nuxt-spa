@@ -1,11 +1,11 @@
 <template>
-	<div 
+	<div
 	:class="{ loading: globalLoading }"
 	class="main-content">
 		<Loader
 		v-if="globalLoading"
 		></Loader>
-		<div 
+		<div
 		v-if="!globalLoading"
 		class="">
 			<div class="gallery">
@@ -13,43 +13,43 @@
 					<div class="gallery-header__title">
 						Галерея услуги
 					</div>
-					
+
 				</div>
-				<div 
+				<div
 				class="gallery-list cover">
 					<!-- :class="{ error: itemCover.errors.size === true || itemCover.errors.format === true }" -->
-					<!-- <GalleryPhoto 
+					<!-- <GalleryPhoto
 					v-for="(itemCover,key,index) in cover.images"
 					:item="itemCover"
 					:arr="cover.images"
 					:keyArr="key"
 					@deleteImage="deleteImage"
 					>
-					
+
 					</GalleryPhoto> -->
-					<div 
+					<div
 					v-if="service.cover"
 					class="gallery-list__item"
-					
+
 					>
 
 						<vue-load-image
-						
+
 						>
-							<img 
+							<img
 							slot="image"
-							:src="service.cover.url" 
+							:src="service.cover.url"
 							alt=""
 							/>
-							<IconImageloader 
+							<IconImageloader
 							class="popup-body__content__preloader"
 							slot="preloader">
-							
+
 							</IconImageloader>
-							
+
 							<div slot="error"></div>
 						</vue-load-image>
-						<div 
+						<div
 						@click="deleteCover()"
 						class="gallery-list__item__delete">
 							<IconDeleteimage></IconDeleteimage>
@@ -58,15 +58,15 @@
 						v-if="itemCover.error_size || itemCover.error_format"
 						class="gallery-list__item-errors">
 							<div class="gallery-list__item-errors__icon">
-								<IconErrorImage></IconErrorImage> 
+								<IconErrorImage></IconErrorImage>
 							</div>
 							<div class="gallery-list__item-errors__text">
-								<div 
+								<div
 								v-if="itemCover.error_size"
 								class="gallery-list__item-errors__text--size">
 									Неверный размер
 								</div>
-								<div 
+								<div
 								v-if="itemCover.error_format"
 								class="gallery-list__item-errors__text--format">
 									Неверный формат
@@ -74,21 +74,21 @@
 							</div>
 						</div> -->
 					</div>
-					
-					<Photoload 
+
+					<Photoload
 					v-if="!service.cover"
-					@unloadPhoto="loadPreviewCover" 
+					@unloadPhoto="loadPreviewCover"
 					:title="'Загрузить фото'"
 					:multiple="false"
 					:name="'cover'"
 					@refreshPhoto="refreshPhotos"
 					></Photoload>
-					<div 
+					<div
 					v-if="cover.images <= 0"
 					class="photo-requirements">
 							<div class="">• Расширение: png, jpg</div>
 							<div class="">• Размер: не более 5 мб</div>
-							<div class="">• Формат: 16:9, 1:1, 4:3</div>		
+							<div class="">• Формат: 16:9, 1:1, 4:3</div>
 					</div>
 				</div>
 
@@ -100,38 +100,38 @@
 					<div class="gallery-header__title">
 						Галерея услуги
 					</div>
-					<div 
+					<div
 					v-if="gallery.images.length != 0"
 					class="gallery-header__qty">
 						Загружено {{ gallery.images.length }} из 14 фото
 					</div>
 				</div>
-				
-				<div 
+
+				<div
 				:class="{ show : gallery.showMoreGallery } "
 				class="gallery-list hidden">
 					<!-- <GalleryPhoto
 					v-for="(itemGallery,key,index) in gallery.images"
-					
+
 					:item="itemGallery"
 					:errors="itemGallery.errors"
 					:arr="gallery.images"
 					:keyArr="key"
 					@deleteImage="deleteImage"
 					>
-					
+
 					</GalleryPhoto> -->
 					<!-- :class="{ error: itemGallery.error_format }" -->
-					<div 
+					<div
 
-					v-for="(itemGallery, key, index) in service.medias" 
-					
-					
+					v-for="(itemGallery, key, index) in service.medias"
+
+
 					class="gallery-list__item">
-						<img 
+						<img
 						:src='itemGallery.url'
 						alt="">
-						<div 
+						<div
 						@click="deleteImage(key, service.medias)"
 						class="gallery-list__item__delete">
 							<IconDeleteimage></IconDeleteimage>
@@ -140,15 +140,15 @@
 						v-if="itemGallery.error_size || itemGallery.error_format"
 						class="gallery-list__item-errors">
 							<div class="gallery-list__item-errors__icon">
-								<IconErrorImage></IconErrorImage> 
+								<IconErrorImage></IconErrorImage>
 							</div>
 							<div class="gallery-list__item-errors__text">
-								<div 
+								<div
 								v-if="itemGallery.error_size"
 								class="gallery-list__item-errors__text--size">
 									Неверный размер
 								</div>
-								<div 
+								<div
 								v-if="itemGallery.error_format"
 								class="gallery-list__item-errors__text--format">
 									Неверный формат
@@ -157,42 +157,42 @@
 						</div> -->
 					</div>
 
-					<Photoload 
+					<Photoload
 					v-if="gallery.images.length <= 14"
-					class="gallery-list__item__load" 
+					class="gallery-list__item__load"
 					:title="'Загрузить несколько фото'"
-					@unloadPhoto="loadPreviewGallery" 
+					@unloadPhoto="loadPreviewGallery"
 					:multiple="true"
 					@refreshPhoto="refreshPhotos"
 					:name="'medias'"
 					>
-						
+
 					</Photoload>
-					<div 
+					<div
 					v-if="gallery.images.length <= 14"
 					class="photo-requirements gallery-list__item__requirements">
 							<div class="">• Расширение: png, jpg</div>
 							<div class="">• Размер: не более 5 мб</div>
-							<div class="">• Формат: 16:9, 1:1, 4:3</div>		
+							<div class="">• Формат: 16:9, 1:1, 4:3</div>
 					</div>
 				</div>
-				<div 
+				<div
 				@click="showAllGallery"
-				
+
 				class="gallery-list__more">
-					<div 
+					<div
 					v-if="!gallery.showMoreGallery"
 					class="">
 						Показать остальные фото
 					</div>
-					<div 
+					<div
 					v-if="gallery.showMoreGallery"
 					class="">
 						Скрыть остальные фото
 					</div>
 				</div>
 
-				
+
 			</div>
 			<div class="card-data">
 				<div class="card-data-header">
@@ -200,13 +200,13 @@
 						Данные услуги
 					</div>
 					<div class="card-data-header__translate">
-						<div 
+						<div
 						@click="changeCardLang('rus')"
 						:class="{ active: langCard == 'rus' }"
 						class="card-data-header__translate__item rus">
 							Русская версия
 						</div>
-						<div 
+						<div
 						@click="changeCardLang('eng')"
 						:class="{ active: langCard == 'eng' }"
 						class="card-data-header__translate__item eng">
@@ -217,8 +217,8 @@
 				<div v-if="langCard == 'rus'" class="card-data-content rus">
 					<div class="card-data-content__field">
 						<label for="">Название услуги</label>
-						<input 
-						placeholder="Введите название услуги" 
+						<input
+						placeholder="Введите название услуги"
 						v-model="service.title" type="text">
 					</div>
 					<InputGeocode
@@ -226,7 +226,7 @@
 					@choosingGeocodeAddress="choosingGeocodeAddress"
 					/>
 					<div class="card-data-content__field select">
-						<label for="">Вид услуг</label> 
+						<label for="">Вид услуг</label>
 						<InputSelect
 						:multiple="false"
 						:lang="'rus'"
@@ -237,33 +237,33 @@
 					</div>
 
 					<div class="card-data-content__field textarea">
-						<label for="">Описание</label> 
-						<textarea v-model="service.description" 
-						class="input-textarea" 
-						name="" 
-						id="" 
-						cols="30" 
-						placeholder="Введите описание" 
+						<label for="">Описание</label>
+						<textarea v-model="service.description"
+						class="input-textarea"
+						name=""
+						id=""
+						cols="30"
+						placeholder="Введите описание"
 						rows="10">
-						
+
 						</textarea>
-						
+
 					</div>
 				</div>
 				<div v-if="langCard == 'eng'" class="card-data-content eng">
 					<div class="card-data-content__field">
 						<label for="">Название услуги</label>
-						<input 
-						placeholder="Enter name of service" 
+						<input
+						placeholder="Enter name of service"
 						v-model="service.titleEn" type="text">
 					</div>
 					<InputGeocode
 					:address="service.address"
 					@choosingGeocodeAddress="choosingGeocodeAddress"
 					/>
-					
+
 					<div class="card-data-content__field select">
-						<label for="">Вид услуг</label> 
+						<label for="">Вид услуг</label>
 						<InputSelect
 						:multiple="false"
 						:lang="'rus'"
@@ -274,11 +274,11 @@
 					</div>
 
 					<div class="card-data-content__field textarea">
-						<label for="">Описание</label> 
+						<label for="">Описание</label>
 						<textarea v-model="service.descriptionEn" placeholder="Enter description of serivce" class="input-textarea" name="
-						
+
 						" id="" cols="30" rows="10">
-						
+
 						</textarea>
 					</div>
 				</div>
@@ -288,7 +288,7 @@
 					Время работы
 				</div>
 				<div class="card-time-list">
-					<Datatime 
+					<Datatime
 					:item="itemWeek"
 					v-for="(itemWeek, key, index) in service.availabilities"
 					></Datatime>
@@ -299,21 +299,21 @@
 					<Datatime :data="[]"></Datatime>
 					<Datatime :data="[]"></Datatime> -->
 				</div>
-				
+
 			</div>
 			<div class="card-buttons">
-				<div 
+				<div
 				v-if="false"
 				@click="getCity"
 				class="card-buttons__item act btn">
 					получить город
 				</div>
-				<div 
+				<div
 				@click="sendService"
 				class="card-buttons__item act btn">
 					Сохранить
 				</div>
-				<div 
+				<div
 				@click="previewShow"
 				class="card-buttons__item subact btn">
 					<IconEyebold></IconEyebold>
@@ -321,17 +321,17 @@
 				</div>
 			</div>
 			<transition name="viewslide">
-				<ViewingItem 
+				<ViewingItem
 				@previewHide="previewHide"
 				:card="card.service"
 				:type="'infoservice'"
 				v-if="previewShowing">
-				
+
 				</ViewingItem>
 			</transition>
 		</div>
-		
-		
+
+
 	</div>
 </template>
 
@@ -360,7 +360,7 @@
 						title: 'Категория 2',
 						titleEn: 'Category 2 '
 					}
-					
+
 				],
 				"service": {
 					"cover": '',
@@ -468,18 +468,18 @@
 				this.cover = images
 				this.service.cover.url = this.service.cover.src
 				console.log(this.service.cover)
-				
+
 			},
 			loadPreviewGallery(images) {
 				console.log(images)
-				
-				
+
+
 				for ( let key in images ) {
 					images[key].url = images[key].src
 					this.service.medias.push(images[key])
 					console.log(images[key])
 				}
-			   	
+
 			},
 			deleteCover() {
 				this.service.cover = ''
@@ -502,7 +502,7 @@
 				}
 			},
 			refreshPhotos() {
-				this.refreshGallery = !this.refreshGallery 
+				this.refreshGallery = !this.refreshGallery
 			},
 			showAllGallery() {
 				this.gallery.showMoreGallery = !this.gallery.showMoreGallery
@@ -518,17 +518,17 @@
 				let fileCover = []
 				let iconSrc = this.service.icon
 				let icon = []
-				
+
 				if ( this.type === 'add' ) {
 					this.$store.commit('showLoading')
 
 					this.service.medias.forEach(item => {
 						formData.append("medias", item);
-					}) 
-					
+					})
+
 
 					formData.append("cover", this.cover[0]);
-					
+
 					delete obj.cover
 					delete obj.medias
 
@@ -546,10 +546,10 @@
 						console.log(res)
 						this.$store.commit('hideLoading')
 					})
-					.catch((err) => {	
+					.catch((err) => {
 						console.log(err)
 					})
-					
+
 				}
 
 				if ( this.type === 'edit' ) {
@@ -560,20 +560,20 @@
 								.then((res) => res.blob())
 								.then((myBlob) => {
 									console.log(myBlob);
-									const myFile = new File([myBlob], "image.jpeg", {
+									const myFile = new File([myBlob], {
 										type: myBlob.type,
 									});
 									console.log(myFile)
 									arrForGallery.push(myFile)
-								})	
-								
+								})
+
 							}
 
 							await fetch(cover)
 							.then((res) => res.blob())
 							.then((myBlob) => {
 								console.log(myBlob);
-								const myFile = new File([myBlob], "image.jpeg", {
+								const myFile = new File([myBlob], {
 									type: myBlob.type,
 								});
 								fileCover = myFile
@@ -582,15 +582,15 @@
 
 						saveImageFile()
 						.then(() => {
-							
+
 							formData.append('service', new Blob([json], {
 								type: 'application/json',
 							}));
-							
+
 							arrForGallery.forEach((item) => {
 								formData.append("medias", item);
 							})
-							
+
 
 							formData.append("cover", fileCover);
 
@@ -601,9 +601,9 @@
 							console.log(paramsQuery)
 
 							for (var pair of formData.entries()) {
-								console.log(pair); 
+								console.log(pair);
 							}
-							
+
 							this.$store.dispatch('service/put', paramsQuery )
 							.then((res) => {
 								console.log(res.data.data);
@@ -612,16 +612,16 @@
 								this.$store.commit('hideLoading');
 								this.$emit('refreshTable');
 							})
-							.catch((err) => {	
+							.catch((err) => {
 								console.log(err)
 							})
 						})
 					}
 				}
 
-				
 
-				
+
+
 			},
 			getCity() {
 				this.$store.dispatch('service/getCity')
@@ -659,7 +659,7 @@
 						localStorage.setItem('isLogged', false)
 						localStorage.removeItem('user')
 						localStorage.removeItem('token')
-					}              
+					}
 				})
 			},
 
@@ -686,7 +686,7 @@
 
 		},
 		computed: {
-			getParamsForQuery() { 
+			getParamsForQuery() {
 				return `${this.type}?cityId=${this.cityId}&offset=${this.forQuery.offset}&limit=${this.forQuery.limit}&search=${this.searchInput}`
 			}
 			// availabilitiesReverse() {
@@ -698,7 +698,7 @@
 			// 	    return arr
 			// 	}
 			// 	return arraymove(this.card.service.availabilities, 0, 6)
-				
+
 			// }
 		},
 		mounted() {
@@ -706,7 +706,7 @@
 			this.getCategoryList()
 			this.getServiceInfo()
 			this.arraymove(this.service.availabilities, 0, 6)
-			
+
 		}
 	}
 </script>
