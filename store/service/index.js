@@ -59,10 +59,10 @@ export const actions = {
           
         }
         )
-      .then(resp => {
-        resolve(resp)
+      .then((res) => {
+        resolve(res)
 
-        console.log(resp)
+        console.log(res)
 
 
 

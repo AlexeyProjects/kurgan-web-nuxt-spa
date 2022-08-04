@@ -2610,9 +2610,11 @@ import { multiPointToLonLat } from 'vuelayers/lib/ol-ext';
 					console.log(paramsQuery)
 					this.$store.dispatch('service/sendJson', paramsQuery )
 					.then((res) => {
-            this.choosedSight = res.data.data
-					  this.$store.commit('hideLoading')
-					  console.log(res)
+						this.$store.commit('hideLoading')
+						console.log('res')
+						console.log(res)
+						this.qrCodeUrl = res.data.data.url
+						this.choosedSight = res.data.data
 					})
 					.catch((err) => {
 						console.log(err)
