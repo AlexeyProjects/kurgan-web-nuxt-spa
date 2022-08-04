@@ -496,7 +496,7 @@
 							<div class="card-data">
 								<div class="card-data-header">
 									<div class="card-data-header__title">
-										Данные услуги
+										Данные достопримечательности
 									</div>
 									<div class="card-data-header__translate">
 										<div
@@ -521,7 +521,7 @@
 										<label for="">Название объекта</label>
 										<input
 										v-model="choosedSight.title"
-										placeholder="Введите название услуги"
+										placeholder="Введите название достопримечательности"
 										 type="text">
 										<span
 										v-if="choosedSight.title.length < 3"
@@ -563,7 +563,7 @@
 
 									<div class="card-data-content__field textarea">
 										<label for="">Описание</label>
-										<textarea v-model="choosedSight.descriptionEn" placeholder="Enter description of serivce" class="input-textarea" name="
+										<textarea v-model="choosedSight.descriptionEn" placeholder="Enter description of the sight" class="input-textarea" name="
 
 										" id="" cols="30" rows="10">
 
@@ -826,7 +826,7 @@
 							<div class="card-data">
 								<div class="card-data-header">
 									<div class="card-data-header__title">
-										Данные услуги
+										Данные события
 									</div>
 									<div class="card-data-header__translate">
 										<div
@@ -851,7 +851,7 @@
 										<label for="">Название объекта</label>
 										<input
 										v-model="choosedSight.title"
-										placeholder="Введите название услуги"
+										placeholder="Введите название события"
 										 type="text">
 										 <span
 										v-if="choosedSight.title.length < 3"
@@ -881,7 +881,7 @@
 									<div class="card-data-content__field">
 										<label for="">Название объекта</label>
 										<input
-										placeholder="Enter name of service"
+										placeholder="Enter name of the event"
 										v-model="choosedSight.titleEn" type="text">
 									</div>
 									<InputGeocode
@@ -892,7 +892,7 @@
 
 									<div class="card-data-content__field textarea">
 										<label for="">Описание</label>
-										<textarea v-model="choosedSight.descriptionEn" placeholder="Enter description of serivce" class="input-textarea" name="
+										<textarea v-model="choosedSight.descriptionEn" placeholder="Enter description of the event" class="input-textarea" name="
 
 										" id="" cols="30" rows="10">
 
@@ -1463,7 +1463,7 @@
 											<label for="">Заголовок</label>
 											<input
 											v-model="choosedSight.title"
-											placeholder="Введите название услуги"
+											placeholder="Введите название аудиогида"
 											type="text">
 										</div>
 
@@ -1484,7 +1484,7 @@
 											<label for="">Заголовок ( Английский ) </label>
 											<input
 											v-model="choosedSight.titleEn"
-											placeholder="Введите название услуги"
+											placeholder="Enter name of the audio guide"
 											type="text">
 										</div>
 
@@ -1654,7 +1654,7 @@
 												<input
 												v-model="qrCodeUrl"
 												readonly
-												placeholder="Введите название услуги"
+												placeholder="Ссылка появится после добавления"
 												 type="text">
 											</div>
 										</div>
@@ -1709,7 +1709,7 @@
 										<label for="">Название объекта</label>
 										<input
 										v-model="choosedSight.title"
-										placeholder="Введите название услуги"
+										placeholder="Введите название объекта"
 										 type="text">
 									</div>
 
@@ -1730,7 +1730,7 @@
 									<div class="card-data-content__field">
 										<label for="">Название объекта</label>
 										<input
-										placeholder="Enter name of service"
+										placeholder="Enter the name of the object"
 										v-model="choosedSight.titleEn" type="text">
 									</div>
 
@@ -2610,8 +2610,9 @@ import { multiPointToLonLat } from 'vuelayers/lib/ol-ext';
 					console.log(paramsQuery)
 					this.$store.dispatch('service/sendJson', paramsQuery )
 					.then((res) => {
-					this.$store.commit('hideLoading')
-					console.log(res)
+            this.choosedSight = res.data.data
+					  this.$store.commit('hideLoading')
+					  console.log(res)
 					})
 					.catch((err) => {
 						console.log(err)

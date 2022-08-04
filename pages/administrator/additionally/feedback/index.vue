@@ -5,29 +5,32 @@
 		:history="true"
 		>
 			<div slot="history" class="">
-				
+
 				<NuxtLink to="/">
 					Панель управления/
 				</NuxtLink>
 				<NuxtLink to="/administrator/additionally">
-					Дополнительно/ 
+					Дополнительно/
 				</NuxtLink>
 			</div>
 		</Topbar>
 		<div class="main-content full">
 			<div class="card-data">
 				<div class="card-data-header">
-					<div class="card-data-header__title">
-						Данные услуги
+					<div v-if="langCard === 'rus'" class="card-data-header__title">
+						Заполните полезные контакты
+					</div>
+          <div v-else-if="langCard === 'eng'" class="card-data-header__title">
+						Fill in useful contacts
 					</div>
 					<div class="card-data-header__translate">
-						<div 
+						<div
 						@click="changeCardLang('rus')"
 						:class="{ active: langCard == 'rus' }"
 						class="card-data-header__translate__item rus">
 							Русская версия
 						</div>
-						<div 
+						<div
 						@click="changeCardLang('eng')"
 						:class="{ active: langCard == 'eng' }"
 						class="card-data-header__translate__item eng">
@@ -35,12 +38,12 @@
 						</div>
 					</div>
 				</div>
-				<div 
+				<div
 				v-if="!globalLoading"
 				class="">
 					<div class="card-data-content__editors">
 					<!-- Русский Editor -->
-						<label 
+						<label
 						v-if="langCard == 'rus'"
 						class="label-default" for="">Описание (Русский язык)</label>
 						<VueEditor
@@ -50,7 +53,7 @@
 						/>
 
 					<!-- English Editor -->
-						<label 
+						<label
 						v-if="langCard == 'eng'"
 						class="label-default" for="">Описание (Английский язык)</label>
 						<VueEditor
@@ -59,14 +62,14 @@
 						v-model="richData.feedbackEn"
 						/>
 					</div>
-					
+
 					<div class="card-buttons row">
-						<div 
+						<div
 						@click="saveRich"
 						class="card-buttons__item btn act">
 							Сохранить
 						</div>
-						<div 
+						<div
 						@click="previewShow"
 						class="card-buttons__item btn black nofill withicon">
 							<IconEye class="large"></IconEye>
@@ -74,11 +77,11 @@
 						</div>
 					</div>
 				</div>
-				
-				
+
+
 			</div>
-			
-			
+
+
 			<ViewingItemAdditionally
 			@previewHide="previewHide"
 			:show="previewShowing"
@@ -87,8 +90,8 @@
 			:choosedSight="choosedSight"
 			:data="richData"
 			/>
-				
-			
+
+
 			</ViewingItem>
 			<Loader
 			v-if="globalLoading"
@@ -108,14 +111,14 @@
 		mixins: [
 			editorRich
 		],
-		components: { 
+		components: {
 			VueEditor
 		},
 		computed: {
 			...mapGetters({
-				
+
 			}),
-			
+
 		},
 		data() {
 			return {
